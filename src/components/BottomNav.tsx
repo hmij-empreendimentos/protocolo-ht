@@ -6,8 +6,8 @@ import { Home, LayoutGrid } from "lucide-react";
 import { WhatsappIcon } from "./icons";
 import { InstallButton } from "./InstallButton";
 
-// TODO: número de WhatsApp real del soporte
-const WHATSAPP_URL = "https://wa.me/0000000000";
+const WHATSAPP_URL =
+  "https://wa.me/5537991211613?text=Hola%2C%20tengo%20una%20duda%20sobre%20el%20Protocolo%20HT.";
 
 type NavItem = {
   href: string;

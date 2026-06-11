@@ -1,26 +1,25 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
-/** Marca tipográfica del Protocolo HT (dorado sobre oscuro). */
+/** Marca del Protocolo HT — usa el logo real (logo.avif). */
 export function LogoMark({ size = "md" }: { size?: "sm" | "md" }) {
-  const box = size === "sm" ? "size-10 text-lg" : "size-12 text-xl";
+  const px = size === "sm" ? 40 : 48;
   return (
     <div className="flex items-center gap-3">
-      <span
-        className={
-          "flex items-center justify-center rounded-xl bg-gradient-to-br from-ht-surface-2 to-ht-bg font-black ring-1 ring-ht-gold/50 " +
-          box
-        }
-      >
-        <span className="text-gold-gradient">HT</span>
-      </span>
+      <Image
+        src="/logo/logo.avif"
+        alt="Protocolo HT"
+        width={px}
+        height={px}
+        priority
+        className="rounded-xl ring-1 ring-ht-gold/40"
+      />
       <div className="flex flex-col leading-none">
         <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-ht-muted">
           Protocolo
         </span>
-        <span className="text-lg font-black tracking-wide text-ht-text">
-          HT
-        </span>
+        <span className="text-lg font-black tracking-wide text-ht-text">HT</span>
       </div>
     </div>
   );

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Módulo 02 — Modo Acelerado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    :root {
+      --red: #c0122a; --red-dark: #8a0d1e; --red-glow: rgba(192,18,42,0.25); --red-soft: rgba(192,18,42,0.08);
+      --bg: #080808; --bg2: #0d0d0d; --bg3: #131313; --bg4: #181818;
+      --border: rgba(255,255,255,0.06); --border-red: rgba(192,18,42,0.4);
+      --text: #e8e2d8; --text-muted: #7a7470; --text-dim: #3d3830;
+      --gold: #c8922a; --gold-glow: rgba(200,146,42,0.2);
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-weight: 400; line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; z-index: 0; }
+    .xp-bar-wrap { position: sticky; top: 0; z-index: 100; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0.6rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+    .xp-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--red); flex-shrink: 0; white-space: nowrap; }
+    .xp-track { flex: 1; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+    .xp-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--red-dark), var(--red)); border-radius: 2px; transition: width 1.2s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 0 8px var(--red-glow); }
+    .xp-pct { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--red); flex-shrink: 0; min-width: 2.5rem; text-align: right; }
+    .hero { position: relative; background: var(--bg2); padding: 2.5rem 1.25rem 2rem; overflow: hidden; border-bottom: 1px solid var(--border); }
+    .hero-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(192,18,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(192,18,42,0.04) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+    .hero-glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(192,18,42,0.18) 0%, transparent 70%); pointer-events: none; animation: pulseGlow 4s ease-in-out infinite; }
+    @keyframes pulseGlow { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--red-soft); border: 1px solid var(--border-red); border-radius: 20px; padding: 0.3rem 0.75rem; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; }
+    .hero-badge-icon { font-size: 0.85rem; line-height: 1; }
+    .hero-cap-label { font-size: 11px; color: var(--text-dim); letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 0.3rem; position: relative; }
+    .hero-titulo { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; line-height: 0.95; letter-spacing: 1px; position: relative; }
+    .hero-titulo .white { color: #f5f0e8; }
+    .hero-titulo .red { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+    .hero-sub { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 1rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.5; position: relative; }
+    .hero-divider { width: 40px; height: 2px; background: var(--red); margin: 1rem 0; box-shadow: 0 0 8px var(--red-glow); position: relative; }
+    .mod-banner { margin: 1.5rem 1.25rem 0; background: linear-gradient(135deg, #1a0a0d, #120608); border: 1px solid var(--border-red); border-radius: 14px; padding: 1.1rem; position: relative; overflow: hidden; }
+    .mod-banner::before { content: ''; position: absolute; top: -40px; right: -40px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(192,18,42,0.2) 0%, transparent 70%); pointer-events: none; }
+    .mod-banner-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .mod-banner-icon { font-size: 2.5rem; flex-shrink: 0; line-height: 1; }
+    .mod-banner-tag { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); display: block; margin-bottom: 0.15rem; }
+    .mod-banner-titulo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #f5f0e8; line-height: 1.05; letter-spacing: 0.5px; }
+    .mod-banner-desc { font-size: 13px; color: #908a82; line-height: 1.6; position: relative; }
+    .tap-hint { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 1.25rem 1.25rem 0.5rem; font-size: 11px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+    .tap-hint-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--red); animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .acc-wrap { padding: 0.5rem 1.25rem 3rem; }
+    .acc-item { margin-bottom: 0.6rem; border-radius: 12px; background: var(--bg3); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s; }
+    .acc-item.open { border-color: var(--border-red); box-shadow: 0 0 20px rgba(192,18,42,0.08), inset 0 0 30px rgba(192,18,42,0.03); }
+    .acc-item.completed { border-color: rgba(100,180,100,0.2); }
+    .acc-trigger { width: 100%; background: none; border: none; padding: 1rem; display: flex; align-items: center; gap: 0.85rem; cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+    .acc-trigger:active { opacity: 0.85; }
+    .acc-icon-wrap { width: 40px; height: 40px; border-radius: 10px; background: rgba(192,18,42,0.1); border: 1px solid rgba(192,18,42,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; transition: background 0.3s, border-color 0.3s; }
+    .acc-item.open .acc-icon-wrap { background: rgba(192,18,42,0.2); border-color: rgba(192,18,42,0.5); box-shadow: 0 0 10px rgba(192,18,42,0.2); }
+    .acc-item.completed .acc-icon-wrap { background: rgba(80,180,80,0.1); border-color: rgba(80,180,80,0.3); }
+    .acc-titles { flex: 1; min-width: 0; }
+    .acc-section-label { font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 0.15rem; }
+    .acc-item.open .acc-section-label { color: var(--red); }
+    .acc-titulo { font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; color: #c8c2b8; line-height: 1.1; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .acc-item.open .acc-titulo { color: #f5f0e8; }
+    .acc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0; }
+    .acc-arrow-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s, background 0.2s; }
+    .acc-item.open .acc-arrow-btn { transform: rotate(180deg); border-color: var(--red); background: rgba(192,18,42,0.1); }
+    .acc-arrow-btn svg { width: 10px; height: 10px; stroke: #5a5550; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.2s; }
+    .acc-item.open .acc-arrow-btn svg { stroke: var(--red); }
+    .acc-check { font-size: 14px; opacity: 0; transition: opacity 0.3s; }
+    .acc-item.completed .acc-check { opacity: 1; }
+    .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .acc-body-inner { padding: 0 1rem 1.25rem 1rem; border-top: 1px solid var(--border); }
+    .acc-body p { color: #9a9490; font-size: 14.5px; line-height: 1.8; margin-bottom: 0.9rem; padding-top: 0.5rem; }
+    .acc-body p:first-child { padding-top: 1rem; }
+    .acc-body em { color: #c0bab2; font-style: italic; }
+    .acc-body strong { color: #e8e2d8; font-weight: 600; }
+    .info-box { background: linear-gradient(135deg, #16100e, #110c0a); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 0.9rem 1rem; margin: 1rem 0; position: relative; overflow: hidden; }
+    .info-box p { font-size: 13.5px; color: #b0aaa2; margin: 0; line-height: 1.7; padding: 0; }
+    .warn-box { background: rgba(200,146,42,0.06); border: 1px solid rgba(200,146,42,0.2); border-radius: 10px; padding: 0.9rem 1rem; margin: 1rem 0; display: flex; gap: 0.75rem; align-items: flex-start; }
+    .warn-box-icon { font-size: 1.2rem; flex-shrink: 0; line-height: 1.3; }
+    .warn-box p { font-size: 13px; color: #a09080; margin: 0; line-height: 1.65; padding: 0; }
+    .warn-box strong { color: #c8a060; }
+    .quote { background: var(--bg4); border-radius: 10px; border-left: 3px solid #444; padding: 1rem; margin: 1.1rem 0; position: relative; }
+    .quote::before { content: '"'; position: absolute; top: -0.5rem; left: 0.75rem; font-family: 'Crimson Pro', serif; font-size: 3rem; color: rgba(255,255,255,0.05); line-height: 1; }
+    .quote-text { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 1.05rem; color: #888280; line-height: 1.6; }
+    .quote-cite { display: block; margin-top: 0.5rem; font-size: 10px; font-style: normal; font-family: 'Barlow', sans-serif; font-weight: 600; color: var(--red); letter-spacing: 1.5px; text-transform: uppercase; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 1.1rem 0 0.4rem; }
+    .stat-card { background: var(--bg4); border: 1px solid var(--border); border-top: 2px solid var(--red); border-radius: 8px; padding: 0.75rem 0.4rem; text-align: center; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--red); display: block; line-height: 1; text-shadow: 0 0 12px var(--red-glow); }
+    .stat-label { font-size: 9px; color: #484340; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1.4; margin-top: 0.25rem; }
+    .stat-fonte { font-size: 10px; color: #2d2a26; line-height: 1.5; margin-bottom: 0.5rem; padding: 0; }
+    .loop-diagram { background: linear-gradient(135deg, #0d0d0d, #060606); border: 1px solid var(--border-red); border-radius: 14px; padding: 1.1rem 0.85rem; margin: 1.2rem 0; position: relative; overflow: hidden; }
+    .loop-diagram::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(192,18,42,0.08) 0%, transparent 60%); pointer-events: none; }
+    .loop-titulo { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); text-align: center; margin-bottom: 1rem; position: relative; }
+    .loop-step { background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 0.85rem; margin-bottom: 0.4rem; display: flex; gap: 0.7rem; align-items: center; position: relative; }
+    .loop-step-emoji { font-size: 1.5rem; flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: rgba(192,18,42,0.1); border: 1px solid rgba(192,18,42,0.2); display: flex; align-items: center; justify-content: center; }
+    .loop-step-info { flex: 1; }
+    .loop-step-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 0.1rem; }
+    .loop-step-titulo { font-weight: 600; font-size: 13px; color: #e8e2d8; margin-bottom: 0.15rem; }
+    .loop-step-desc { font-size: 11.5px; color: #6e6860; line-height: 1.55; }
+    .loop-arrow { text-align: center; color: var(--red); font-size: 1.1rem; line-height: 1; margin: 0.05rem 0; position: relative; }
+    .ley-card { background: var(--bg4); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 10px; padding: 0.9rem 1rem; margin: 0.6rem 0; }
+    .ley-num { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--red); line-height: 1; margin-bottom: 0.2rem; }
+    .ley-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 0.35rem; display: block; }
+    .ley-titulo { font-weight: 600; font-size: 13.5px; color: #e8e2d8; margin-bottom: 0.35rem; letter-spacing: 0.3px; }
+    .ley-desc { font-size: 12.5px; color: #807a72; line-height: 1.6; }
+    .ley-desc strong { color: #c0bab2; }
+    .stack-card { background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; margin: 0.55rem 0; position: relative; }
+    .stack-formula { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 1rem; color: #d8d2c8; line-height: 1.5; margin-bottom: 0.35rem; }
+    .stack-formula strong { color: var(--red); font-weight: 600; font-style: normal; }
+    .stack-explica { font-size: 12px; color: #6e6860; line-height: 1.55; }
+    .dodont-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; margin: 1rem 0; }
+    .dodont-card { background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .dodont-do { border-left: 3px solid #4a9d5e; }
+    .dodont-dont { border-left: 3px solid var(--red); }
+    .dodont-label { display: flex; align-items: center; gap: 0.45rem; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .dodont-do .dodont-label { color: #4a9d5e; }
+    .dodont-dont .dodont-label { color: var(--red); }
+    .dodont-list { list-style: none; padding: 0; margin: 0; }
+    .dodont-list li { font-size: 13px; color: #807a72; line-height: 1.55; padding: 0.3rem 0; display: flex; gap: 0.5rem; align-items: flex-start; }
+    .dodont-list li::before { flex-shrink: 0; font-size: 11px; margin-top: 2px; }
+    .dodont-do .dodont-list li::before { content: '✓'; color: #4a9d5e; font-weight: 700; }
+    .dodont-dont .dodont-list li::before { content: '✕'; color: var(--red); font-weight: 700; }
+    .checklist { background: linear-gradient(135deg, #0d0d0d, #0a0a0a); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin: 1rem 0; }
+    .checklist-titulo { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: #f0ebe3; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+    .checklist-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0.5rem; border-radius: 8px; cursor: pointer; transition: background 0.2s; -webkit-tap-highlight-color: transparent; }
+    .checklist-item:active { background: rgba(255,255,255,0.02); }
+    .checklist-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #3a3530; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, background 0.2s; }
+    .checklist-checkbox svg { width: 12px; height: 12px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity 0.2s; }
+    .checklist-item.checked .checklist-checkbox { background: var(--red); border-color: var(--red); box-shadow: 0 0 8px var(--red-glow); }
+    .checklist-item.checked .checklist-checkbox svg { opacity: 1; }
+    .checklist-text { font-size: 13.5px; color: #b0aaa2; line-height: 1.5; flex: 1; transition: color 0.2s, text-decoration 0.2s; }
+    .checklist-item.checked .checklist-text { color: #4a4540; text-decoration: line-through; }
+    .ref-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+    .ref-label { font-size: 9px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 0.75rem; }
+    .ref-item { font-size: 11.5px; color: #3d3a36; line-height: 1.65; padding: 0.35rem 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .ref-item:last-child { border-bottom: none; }
+    .disclaimer { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 0.9rem; margin-top: 1.75rem; font-size: 11px; color: #302d2a; line-height: 1.65; }
+    .disclaimer strong { color: #484340; }
+    .complete-wrap { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .complete-btn { width: 100%; background: linear-gradient(135deg, var(--red-dark), var(--red)); color: #fff; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; padding: 1rem; border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.6rem; box-shadow: 0 4px 20px rgba(192,18,42,0.3); transition: opacity 0.2s, transform 0.15s; -webkit-tap-highlight-color: transparent; }
+    .complete-btn:active { transform: scale(0.97); opacity: 0.9; }
+    .complete-btn .btn-icon { font-size: 1.1rem; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4rem); background: #1a3a1a; border: 1px solid rgba(80,180,80,0.3); border-radius: 20px; padding: 0.65rem 1.25rem; font-size: 13px; font-weight: 600; color: #80d880; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; opacity: 0; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s; z-index: 999; pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .hero { animation: fadeUp 0.5s ease both; }
+    .mod-banner { animation: fadeUp 0.5s 0.15s ease both; }
+    .acc-item:nth-child(1) { animation: fadeUp 0.4s 0.2s ease both; }
+    .acc-item:nth-child(2) { animation: fadeUp 0.4s 0.28s ease both; }
+    .acc-item:nth-child(3) { animation: fadeUp 0.4s 0.36s ease both; }
+    .acc-item:nth-child(4) { animation: fadeUp 0.4s 0.44s ease both; }
+    .acc-item:nth-child(5) { animation: fadeUp 0.4s 0.52s ease both; }
+    .acc-item:nth-child(6) { animation: fadeUp 0.4s 0.6s ease both; }
+    .acc-item:nth-child(7) { animation: fadeUp 0.4s 0.68s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- XP BAR -->
+<div class="xp-bar-wrap">
+  <span class="xp-label">Mód. 2 / 6 · Modo Acelerado</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+  <span class="xp-pct" id="xpPct">0%</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-icon">⚙️</span>
+    Módulo 02 · Modo Acelerado
+  </div>
+  <span class="hero-cap-label">Programa complementario a Cuerpo Máximo</span>
+  <h1 class="hero-titulo">
+    <span class="white">El Código</span><br>
+    <span class="red">del Entreno</span>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">La estructura que separa al que avanza cada semana del que repite el mismo cuerpo durante meses</p>
+</div>
+
+<!-- MODULE BANNER -->
+<div class="mod-banner">
+  <div class="mod-banner-top">
+    <div class="mod-banner-icon">⚙️</div>
+    <div>
+      <span class="mod-banner-tag">Módulo 02 — Arquitectura del entrenamiento</span>
+      <div class="mod-banner-titulo">Frecuencia, división y progresión</div>
+    </div>
+  </div>
+  <p class="mod-banner-desc">Un programa de entrenamiento no es una lista de ejercicios. Es un sistema con frecuencia calculada, división inteligente y progresión medible. Aquí aprendes a diseñar el tuyo.</p>
+</div>
+
+<!-- TAP HINT -->
+<div class="tap-hint">
+  <div class="tap-hint-dot"></div>
+  Toca para expandir cada sección
+  <div class="tap-hint-dot"></div>
+</div>
+
+<!-- ACCORDION -->
+<div class="acc-wrap">
+
+  <!-- S1 -->
+  <div class="acc-item" id="s1">
+    <button class="acc-trigger" onclick="toggle('s1')">
+      <div class="acc-icon-wrap">🧬</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El concepto</span>
+        <div class="acc-titulo">Entrenar no es lo mismo que programar</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s1">
+      <div class="acc-body-inner">
+        <p>La mayoría de los hombres que entrenan no tienen un <strong>programa</strong>. Tienen una lista de ejercicios que repiten semana tras semana, sin variación de volumen, sin progresión de carga, sin estructura de recuperación. Eso no es programar — es repetir movimientos.</p>
+        <p>Mike Israetel, PhD en Fisiología del Deporte y cofundador de Renaissance Periodization, lo resume así: <em>"Sin progresión planificada, no tienes un programa de entrenamiento. Tienes ejercicio repetido."</em> La diferencia entre ambos es la diferencia entre avanzar y quedarse donde estás.</p>
+        <p>Un programa de entrenamiento tiene cuatro componentes esenciales: <strong>frecuencia</strong> (cuántas veces entrenas cada grupo muscular por semana), <strong>volumen</strong> (cuántas series semanales dedicas a cada grupo), <strong>intensidad</strong> (qué tan cerca del fallo llegas) y <strong>progresión</strong> (cómo aumentas la demanda con el tiempo). Cuando los cuatro están alineados, cada semana construye sobre la anterior. Cuando falta uno, el sistema se estanca.</p>
+        <div class="info-box">
+          <p><strong>El cambio de mirada:</strong> dejar de ir al gimnasio a "hacer ejercicio" y empezar a ir a <em>ejecutar un programa</em>. La primera mentalidad produce sudor. La segunda produce resultados medibles.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="acc-item" id="s2">
+    <button class="acc-trigger" onclick="toggle('s2')">
+      <div class="acc-icon-wrap">🔄</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El loop del entreno</span>
+        <div class="acc-titulo">Las 4 fases de la progresión</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s2">
+      <div class="acc-body-inner">
+        <p>Todo programa de entrenamiento efectivo opera bajo un ciclo de cuatro fases. Este ciclo se repite semana tras semana, y es lo que genera la adaptación continua que produce resultados visibles.</p>
+
+        <div class="loop-diagram">
+          <div class="loop-titulo">🔄 El loop del entrenamiento</div>
+
+          <div class="loop-step">
+            <div class="loop-step-emoji">💥</div>
+            <div class="loop-step-info">
+              <div class="loop-step-label">Fase 01</div>
+              <div class="loop-step-titulo">Estímulo controlado</div>
+              <div class="loop-step-desc">Cada sesión aplica una dosis precisa de tensión mecánica y estrés metabólico al músculo. Ni demasiado, ni insuficiente.</div>
+            </div>
+          </div>
+
+          <div class="loop-arrow">↓</div>
+
+          <div class="loop-step">
+            <div class="loop-step-emoji">🛌</div>
+            <div class="loop-step-info">
+              <div class="loop-step-label">Fase 02</div>
+              <div class="loop-step-titulo">Recuperación activa</div>
+              <div class="loop-step-desc">El músculo se repara durante el descanso. Sueño, proteína, hidratación y tiempo son los recursos esenciales de esta fase.</div>
+            </div>
+          </div>
+
+          <div class="loop-arrow">↓</div>
+
+          <div class="loop-step">
+            <div class="loop-step-emoji">📈</div>
+            <div class="loop-step-info">
+              <div class="loop-step-label">Fase 03</div>
+              <div class="loop-step-titulo">Adaptación (supercompensación)</div>
+              <div class="loop-step-desc">El cuerpo se reconstruye ligeramente más fuerte. El músculo tiene más fibras, más fuerza, más resistencia que antes del estímulo.</div>
+            </div>
+          </div>
+
+          <div class="loop-arrow">↓</div>
+
+          <div class="loop-step">
+            <div class="loop-step-emoji">⬆️</div>
+            <div class="loop-step-info">
+              <div class="loop-step-label">Fase 04</div>
+              <div class="loop-step-titulo">Progresión del estímulo</div>
+              <div class="loop-step-desc">El nuevo estímulo debe ser ligeramente mayor que el anterior: más carga, más repeticiones, o más volumen. Sin progresión, no hay nueva adaptación.</div>
+            </div>
+          </div>
+        </div>
+
+        <p>La clave es que las cuatro fases forman un <em>ciclo continuo</em>. Si saltas la fase 2 (recuperación), la fase 3 (adaptación) no ocurre. Si saltas la fase 4 (progresión), el cuerpo se adapta al estímulo actual y deja de cambiar. Eso es el estancamiento — y es exactamente lo que el Modo Acelerado resuelve.</p>
+
+        <div class="quote">
+          <div class="quote-text">"El entrenamiento es el estímulo. La comida y el sueño son la construcción. La progresión es lo que garantiza que sigas construyendo. Sin las tres, no tienes programa."</div>
+          <cite class="quote-cite">— Eric Helms, PhD, AUT University</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 -->
+  <div class="acc-item" id="s3">
+    <button class="acc-trigger" onclick="toggle('s3')">
+      <div class="acc-icon-wrap">📐</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Las 4 leyes</span>
+        <div class="acc-titulo">Reglas de la rutina que funciona</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s3">
+      <div class="acc-body-inner">
+        <p>La investigación en ciencia del ejercicio converge en cuatro principios que toda rutina efectiva debe cumplir. No son opiniones — son los hallazgos más consistentes de décadas de estudios en hipertrofia y fuerza.</p>
+
+        <div class="ley-card">
+          <div class="ley-num">01</div>
+          <span class="ley-label">Principio de consistencia</span>
+          <div class="ley-titulo">Entrena con regularidad predecible</div>
+          <div class="ley-desc">3 a 5 sesiones por semana, distribuidas de forma estable. Schoenfeld (2016) encontró que <strong>entrenar cada grupo muscular al menos 2 veces por semana</strong> produce más hipertrofia que 1 vez, con el mismo volumen total. La regularidad es más importante que la intensidad aislada.</div>
+        </div>
+
+        <div class="ley-card">
+          <div class="ley-num">02</div>
+          <span class="ley-label">Principio de división inteligente</span>
+          <div class="ley-titulo">Distribuye el volumen, no lo acumules</div>
+          <div class="ley-desc">En lugar de destrozar un grupo muscular en una sesión semanal de 20 series, <strong>divídelas en 2 sesiones de 10</strong>. El rendimiento por serie es mayor, la fatiga acumulada es menor, y la señal hipertrófica se activa dos veces en lugar de una. Israetel (2017) llama a esto <em>"la ventaja de frecuencia"</em>.</div>
+        </div>
+
+        <div class="ley-card">
+          <div class="ley-num">03</div>
+          <span class="ley-label">Principio de progresión</span>
+          <div class="ley-titulo">Cada semana, algo debe aumentar</div>
+          <div class="ley-desc">Carga, repeticiones, o series — al menos una variable debe crecer cada semana. <strong>Sin sobrecarga progresiva no hay adaptación nueva.</strong> El ACSM (2009) lo establece como el factor más importante para el desarrollo continuo de fuerza y masa muscular.</div>
+        </div>
+
+        <div class="ley-card">
+          <div class="ley-num">04</div>
+          <span class="ley-label">Principio de medición</span>
+          <div class="ley-titulo">Lo que no mides, no mejora</div>
+          <div class="ley-desc">Registra cada sesión: ejercicio, carga, repeticiones, series. <strong>Un cuaderno de entrenamiento simple cambia todo.</strong> Cuando ves que la semana pasada hiciste 60kg × 8 y hoy necesitas 60kg × 9 o 62.5kg × 8, tienes un objetivo concreto. Sin registro, solo tienes sensaciones.</div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Para desactivar el estancamiento:</strong> revisa cuál de estas 4 leyes estás violando. En el 90% de los casos, la respuesta es la ley 3 (no hay progresión) o la ley 4 (no hay registro). Arregla eso primero.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 -->
+  <div class="acc-item" id="s4">
+    <button class="acc-trigger" onclick="toggle('s4')">
+      <div class="acc-icon-wrap">🔗</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Encadenar hábitos</span>
+        <div class="acc-titulo">Anclar el entreno a tu rutina</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s4">
+      <div class="acc-body-inner">
+        <p>El mejor programa del mundo no funciona si no lo ejecutas. Y la ejecución consistente no depende de motivación — depende de <strong>anclar el entrenamiento a rutinas que ya existen en tu día</strong>.</p>
+        <p>La investigación de BJ Fogg (Stanford Behavior Design Lab) y James Clear muestra que los comportamientos nuevos se instalan mejor cuando se "enganchan" a una conducta ya automatizada. Para el entrenamiento, esto se traduce en crear una cadena de acciones que elimine la decisión de "¿entreno hoy?".</p>
+        <p>La fórmula: <em>"Después de [rutina existente], hago [acción de preparación para entrenar]."</em></p>
+
+        <div class="stack-card">
+          <div class="stack-formula">Después de <strong>despertarme y lavarme la cara</strong>, me pongo <strong>la ropa de entrenamiento antes que cualquier otra cosa</strong>.</div>
+          <div class="stack-explica">La ropa puesta elimina la fricción más grande: decidir. Ya estás vestido para entrenar — ahora la inercia trabaja a tu favor.</div>
+        </div>
+
+        <div class="stack-card">
+          <div class="stack-formula">Después de <strong>llegar del trabajo</strong>, voy directo <strong>al gimnasio sin pasar por casa</strong>.</div>
+          <div class="stack-explica">Pasar por casa activa el modo descanso. Ir directo elimina la ventana donde aparece el "hoy no tengo ganas".</div>
+        </div>
+
+        <div class="stack-card">
+          <div class="stack-formula">Después de <strong>cada sesión</strong>, anoto en mi cuaderno <strong>cargas y repeticiones antes de salir del gimnasio</strong>.</div>
+          <div class="stack-explica">Si lo dejas para después, no lo haces. Anotar inmediatamente cierra el ciclo y alimenta la progresión de la próxima sesión.</div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Regla práctica:</strong> prepara la bolsa del gimnasio la noche anterior. Cuando la bolsa está lista, la fricción de la mañana baja en un 70%. Los hombres que más consistencia tienen son los que más preparan la noche antes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 -->
+  <div class="acc-item" id="s5">
+    <button class="acc-trigger" onclick="toggle('s5')">
+      <div class="acc-icon-wrap">🏗️</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Tu división</span>
+        <div class="acc-titulo">Cómo armar tu split semanal</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s5">
+      <div class="acc-body-inner">
+        <p>La división semanal (split) define qué músculos entrenas cada día. No hay un split "perfecto" universal — pero hay principios que la ciencia ha validado para maximizar resultados.</p>
+
+        <p>Brad Schoenfeld y otros investigadores han mostrado que, para hipertrofia, el factor más importante del split no es <em>qué</em> ejercicios haces cada día, sino <strong>cuántas veces por semana cada grupo muscular recibe estímulo</strong>. Para la mayoría de los hombres, eso significa un split que permita entrenar cada grupo al menos 2 veces por semana.</p>
+
+        <div class="ley-card">
+          <div class="ley-num">A</div>
+          <span class="ley-label">3 días / semana</span>
+          <div class="ley-titulo">Full Body (cuerpo completo)</div>
+          <div class="ley-desc">Cada sesión trabaja todos los grupos principales. <strong>Ideal para principiantes o agendas ajustadas.</strong> Frecuencia alta por grupo (3x/semana), volumen por sesión moderado. Ejemplo: Lunes – Miércoles – Viernes.</div>
+        </div>
+
+        <div class="ley-card">
+          <div class="ley-num">B</div>
+          <span class="ley-label">4 días / semana</span>
+          <div class="ley-titulo">Upper/Lower (tren superior / tren inferior)</div>
+          <div class="ley-desc">Dos días de tren superior, dos de tren inferior. <strong>Frecuencia 2x/semana por grupo, volumen moderado-alto.</strong> Buena opción para intermedios. Ejemplo: Lunes (Upper) – Martes (Lower) – Jueves (Upper) – Viernes (Lower).</div>
+        </div>
+
+        <div class="ley-card">
+          <div class="ley-num">C</div>
+          <span class="ley-label">5–6 días / semana</span>
+          <div class="ley-titulo">Push/Pull/Legs</div>
+          <div class="ley-desc">Empuje (pecho, hombros, tríceps), tirón (espalda, bíceps) y piernas. <strong>Frecuencia 2x por grupo, alto volumen total.</strong> Para intermedios-avanzados con buena recuperación. Ejemplo: Push–Pull–Legs–descanso–Push–Pull–Legs.</div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-num">2x</span>
+            <div class="stat-label">frecuencia mínima por grupo para hipertrofia</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">10–20</span>
+            <div class="stat-label">series semanales por grupo muscular</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">48h</span>
+            <div class="stat-label">descanso mínimo entre sesiones del mismo grupo</div>
+          </div>
+        </div>
+        <p class="stat-fonte">Fuentes: Schoenfeld, B. J. (2016), meta-análisis de frecuencia · Israetel, M. (2017), Scientific Principles of Strength Training.</p>
+
+        <div class="checklist">
+          <div class="checklist-titulo">⚙️ Diseñar mi split</div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Definí cuántos días por semana puedo entrenar de forma realista</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Elegí un split que entrene cada grupo al menos 2 veces</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Asigné 10–20 series semanales por grupo muscular</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Tengo un cuaderno o app para registrar cada sesión</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Preparé mi bolsa del gimnasio para mañana</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6 -->
+  <div class="acc-item" id="s6">
+    <button class="acc-trigger" onclick="toggle('s6')">
+      <div class="acc-icon-wrap">⚖️</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Reglas prácticas</span>
+        <div class="acc-titulo">Hazlo / no lo hagas</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s6">
+      <div class="acc-body-inner">
+        <p>Los errores comunes al diseñar un programa de entrenamiento no son fallas de esfuerzo — son fallas de estructura. Estas reglas vienen directamente de la ciencia del ejercicio aplicada.</p>
+
+        <div class="dodont-grid">
+          <div class="dodont-card dodont-do">
+            <div class="dodont-label">✓ Hazlo</div>
+            <ul class="dodont-list">
+              <li>Elige un split que encaje con tu vida real — no el ideal teórico.</li>
+              <li>Registra cada sesión: ejercicio, carga, repeticiones, series.</li>
+              <li>Aumenta al menos una variable por semana (carga, reps o series).</li>
+              <li>Trabaja cada grupo muscular al menos 2 veces por semana.</li>
+              <li>Mantén el mismo programa al menos 4–6 semanas antes de cambiar.</li>
+            </ul>
+          </div>
+          <div class="dodont-card dodont-dont">
+            <div class="dodont-label">✕ No lo hagas</div>
+            <ul class="dodont-list">
+              <li>No cambies de programa cada semana — el cuerpo necesita tiempo para adaptarse.</li>
+              <li>No hagas más de 20 series semanales por grupo si eres intermedio — hay un techo de volumen útil.</li>
+              <li>No ignores los grupos "aburridos" (piernas, espalda baja) — los desequilibrios causan lesiones.</li>
+              <li>No copies el programa de un atleta avanzado si llevas menos de 2 años entrenando.</li>
+              <li>No dependas de la sensación de "buena sesión" — depende de los datos del registro.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> Si tienes alguna lesión activa, dolor articular persistente o condición de salud, consulta con un fisioterapeuta o médico del deporte antes de iniciar o modificar tu programa de entrenamiento. Este material es educativo y no reemplaza orientación profesional individualizada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S7 REFS -->
+  <div class="acc-item" id="s7">
+    <button class="acc-trigger" onclick="toggle('s7')">
+      <div class="acc-icon-wrap">📚</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Fuentes</span>
+        <div class="acc-titulo">Referencias bibliográficas</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s7">
+      <div class="acc-body-inner">
+        <div class="ref-box">
+          <div class="ref-label">Referencias de este módulo</div>
+          <div class="ref-item">Schoenfeld, B. J., Ogborn, D., & Krieger, J. W. (2016). Effects of resistance training frequency on measures of muscle hypertrophy: A systematic review and meta-analysis. <em>Sports Medicine,</em> 46(11), 1689–1697.</div>
+          <div class="ref-item">Israetel, M., Hoffmann, J., & Smith, C. W. (2017). <em>Scientific Principles of Strength Training.</em> Renaissance Periodization.</div>
+          <div class="ref-item">Schoenfeld, B. J. (2020). <em>Science and Development of Muscle Hypertrophy</em> (2nd ed.). Human Kinetics.</div>
+          <div class="ref-item">Helms, E. R., Morgan, A., & Valdez, A. (2019). <em>The Muscle and Strength Pyramid: Training</em> (2nd ed.). Muscle and Strength Pyramids.</div>
+          <div class="ref-item">American College of Sports Medicine (2009). Position Stand: Progression models in resistance training for healthy adults. <em>Medicine & Science in Sports & Exercise,</em> 41(3), 687–708.</div>
+          <div class="ref-item">Fogg, B. J. (2019). <em>Tiny Habits: The Small Changes That Change Everything.</em> Stanford Behavior Design Lab.</div>
+          <div class="ref-item">Clear, J. (2018). <em>Atomic Habits.</em> Avery/Penguin Random House. Concepto de habit stacking aplicado a rutinas de entrenamiento.</div>
+          <div class="ref-item">Krieger, J. W. (2010). Single vs. multiple sets of resistance exercise for muscle hypertrophy: A meta-analysis. <em>Journal of Strength and Conditioning Research,</em> 24(4), 1150–1159.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>⚠️ Aviso:</strong> Material exclusivamente educativo, parte del programa Modo Acelerado, complemento de Cuerpo Máximo. Las referencias citadas son reales y verificables. Este programa no promete resultados específicos ni garantizados — los avances dependen de la constancia individual, la genética, la alimentación y el descanso. No sustituye asesoramiento médico, fisioterapéutico ni profesional. Los splits y volúmenes aquí mencionados son referencias generales — la programación ideal varía según el nivel, edad, historial de entrenamiento y condiciones individuales de cada persona.
+  </div>
+
+  <!-- BOTÃO -->
+  <div class="complete-wrap">
+    <button class="complete-btn" onclick="completarCap()">
+      <span class="btn-icon">⚡</span>
+      Marcar módulo como completado
+    </button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">🏆 ¡Módulo 2 completado!</div>
+
+<script>
+  var openItems = {};
+  var completed = {};
+  var totalSections = 7;
+
+  function toggle(id) {
+    var item = document.getElementById(id);
+    var body = document.getElementById('body-' + id);
+    var isOpen = openItems[id];
+    if (isOpen) {
+      body.style.maxHeight = '0px';
+      item.classList.remove('open');
+      openItems[id] = false;
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.classList.add('open');
+      openItems[id] = true;
+      if (!completed[id]) {
+        setTimeout(function() { markRead(id); }, 1800);
+      }
+    }
+    updateXP();
+  }
+
+  function markRead(id) {
+    if (completed[id]) return;
+    completed[id] = true;
+    document.getElementById(id).classList.add('completed');
+    updateXP();
+  }
+
+  function updateXP() {
+    var count = Object.keys(completed).length;
+    var pct = Math.round((count / totalSections) * 100);
+    document.getElementById('xpFill').style.width = pct + '%';
+    document.getElementById('xpPct').textContent = pct + '%';
+  }
+
+  function completarCap() {
+    for (var i = 1; i <= totalSections; i++) {
+      completed['s' + i] = true;
+      document.getElementById('s' + i).classList.add('completed');
+    }
+    document.getElementById('xpFill').style.width = '100%';
+    document.getElementById('xpPct').textContent = '100%';
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+
+  setTimeout(function() {
+    document.getElementById('xpFill').style.width = '0%';
+  }, 100);
+</script>
+
+</body>
+</html>

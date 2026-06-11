@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menú Power Premium</title>
+  <style>
+    :root{
+      --bg:#f8faf9; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+      --accent:#16a34a; --accent-2:#10b981; --border:#e5e7eb;
+      --shadow:0 10px 20px rgba(0,0,0,.06),0 6px 6px rgba(0,0,0,.04);
+      --radius:20px; --maxw:760px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b1110; --card:#0f1716; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --shadow:0 10px 20px rgba(0,0,0,.5),0 6px 6px rgba(0,0,0,.35); }
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 100% -10%, rgba(16,185,129,.06), transparent 50%), radial-gradient(1000px 700px at -10% 110%, rgba(22,163,74,.05), transparent 55%), var(--bg);
+      color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    .container{max-width:var(--maxw);margin:clamp(16px,3.5vw,36px) auto;padding:clamp(14px,3vw,28px);min-height:100px}
+    .header{display:grid;gap:10px;text-align:left;margin-bottom:clamp(18px,3.5vw,28px)}
+    .badge{
+      align-self:start;display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.3px;
+      background:linear-gradient(180deg, rgba(16,185,129,.15), rgba(16,185,129,.08));
+      color:var(--accent);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;
+    }
+    h1{font-size:clamp(22px,3.8vw,32px);line-height:1.2;margin:0;letter-spacing:.2px}
+    .lead{color:var(--muted);font-size:clamp(14px,2.6vw,17px);margin:0}
+    .accordion{display:grid;gap:12px}
+    details{ background:var(--card); border:1px solid var(--border); border-radius:calc(var(--radius) - 8px); box-shadow:var(--shadow); overflow:hidden; }
+    summary{ list-style:none; cursor:pointer; padding:clamp(14px,3.3vw,20px) clamp(16px,3.5vw,22px); display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px; font-size:clamp(15px,3vw,18px);font-weight:600;color:var(--text); outline:none; }
+    summary::-webkit-details-marker{display:none}
+    summary::after{ content:""; width:20px;height:20px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .25s ease; opacity:.9; }
+    details[open] summary::after{ transform:rotate(-135deg) }
+    .panel{ padding: 0 clamp(16px,3.5vw,22px) clamp(16px,3.5vw,22px); animation: fade .25s ease; }
+    @keyframes fade{from{opacity:.6; transform:translateY(-2px)} to{opacity:1; transform:translateY(0)}}
+    .content h2{margin:10px 0 6px;font-size:1.15em; color:var(--accent)} .content h3{margin:10px 0 6px;font-size:1em} .content p{margin:12px 0} .content ul{padding-left:18px;margin:10px 0} .content li{margin:6px 0}
+    .muted{color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    @media (max-width:820px){.grid-3{grid-template-columns:1fr 1fr}}
+    @media (max-width:680px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    .card{border:1px solid var(--border);background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+    .callout{ border-left:4px solid var(--accent); background:linear-gradient(180deg, rgba(16,185,129,.06), rgba(16,185,129,.03)); padding:12px 14px;border-radius:12px;margin:12px 0; }
+    .list-check li::marker{content:"✓ "}
+    .foot{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    strong { color: var(--accent-2); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <span class="badge">Plan Nutricional Semanal</span>
+      <h1>Menú Power Premium</h1>
+      <p class="lead">Una guía completa para una alimentación equilibrada, saludable y llena de energía.</p>
+    </header>
+
+    <section class="accordion">
+      <!-- Módulo 1: Lista de Compras -->
+      <details open>
+        <summary>Lista de Compras</summary>
+        <div class="panel content">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Proteínas</h3>
+              <ul>
+                <li>500g Filete de salmón</li>
+                <li>1kg Pechuga de pollo</li>
+                <li>500g Carne de res magra</li>
+                <li>3 Latas de atún (en agua)</li>
+                <li>6 Huevos</li>
+                <li>200g Lentejas</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Granos y Carbohidratos</h3>
+              <ul>
+                <li>500g Quinoa</li>
+                <li>500g Arroz integral</li>
+                <li>400g Cuscús marroquí</li>
+                <li>800g Batatas</li>
+                <li>1 Paquete de avena integral</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Verduras y Hortalizas</h3>
+              <ul>
+                <li>6 Tomates</li>
+                <li>2 Brócolis grandes</li>
+                <li>3 Calabacines medianos</li>
+                <li>3 Zanahorias</li>
+                <li>2 Remolachas</li>
+                <li>200g Rúcula / 200g Espinacas</li>
+                <li>1 Lechuga (o Batavia)</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Otros Esenciales</h3>
+              <ul>
+                <li>Frutas: Manzanas, Plátanos, Limones, Fresas</li>
+                <li>Frutos Secos: Nueces, Almendras, Chía</li>
+                <li>Condimentos: Cúrcuma, Jengibre, Miel, AOVE</li>
+                <li>Bebidas: Té verde, Leche de almendras</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Módulo 2: Menú Diario (Lunes a Miércoles) -->
+      <details>
+        <summary>Menú: Lunes a Miércoles</summary>
+        <div class="panel content">
+          <div class="grid-3">
+            <div class="card">
+              <h2>Lunes</h2>
+              <p><strong>Desayuno:</strong> Tortilla de 2 huevos con espinacas y tomate, pan integral, té verde.</p>
+              <p><strong>Almuerzo:</strong> Salmón a la plancha, quinoa y brócoli al vapor.</p>
+              <p><strong>Snack:</strong> 1 Manzana y 10 almendras.</p>
+              <p><strong>Cena:</strong> Sopa de lentejas con cúrcuma, ensalada de rúcula con limón.</p>
+            </div>
+            <div class="card">
+              <h2>Martes</h2>
+              <p><strong>Desayuno:</strong> Yogur natural con semillas de chía y fresas.</p>
+              <p><strong>Almuerzo:</strong> Pechuga de pollo a la plancha, arroz integral y zanahorias cocidas.</p>
+              <p><strong>Snack:</strong> 1 Plátano con 1 cucharada de mantequilla de cacahuete.</p>
+              <p><strong>Cena:</strong> Tortilla de atún, ensalada de lechuga y tomate.</p>
+            </div>
+            <div class="card">
+              <h2>Miércoles</h2>
+              <p><strong>Desayuno:</strong> Gachas de avena con leche de almendras y miel.</p>
+              <p><strong>Almuerzo:</strong> Filete de res magra, cuscús y calabacín a la parrilla.</p>
+              <p><strong>Snack:</strong> 1 Pera y un puñado de nueces.</p>
+              <p><strong>Cena:</strong> Sopa de verduras con batata, espinacas salteadas con ajo.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Módulo 3: Menú Diario (Jueves a Domingo) -->
+      <details>
+        <summary>Menú: Jueves a Domingo</summary>
+        <div class="panel content">
+          <div class="grid-2">
+            <div class="card">
+              <h2>Jueves</h2>
+              <p><strong>Desayuno:</strong> Bebida Power Premium con 1 rebanada de pan integral.</p>
+              <p><strong>Almuerzo:</strong> Curry de pollo con arroz integral y remolacha rallada.</p>
+              <p><strong>Cena:</strong> Filete de pescado al horno con puré de coliflor y ensalada de espinacas.</p>
+            </div>
+            <div class="card">
+              <h2>Viernes</h2>
+              <p><strong>Desayuno:</strong> Tortilla de champiñones, tostada integral y té de hierbas.</p>
+              <p><strong>Almuerzo:</strong> Carne picada magra con verduras, quinoa y brócoli.</p>
+              <p><strong>Cena:</strong> Crema de calabaza con jengibre, ensalada de lechuga y rúcula.</p>
+            </div>
+            <div class="card">
+              <h2>Sábado</h2>
+              <p><strong>Desayuno:</strong> Smoothie de frutos rojos con leche de almendras, pan integral con aguacate.</p>
+              <p><strong>Almuerzo:</strong> Pollo a la plancha, batata al horno y ensalada de tomate.</p>
+              <p><strong>Cena:</strong> Tortilla de verduras con rúcula y ensalada de zanahoria.</p>
+            </div>
+            <div class="card">
+              <h2>Domingo</h2>
+              <p><strong>Desayuno:</strong> Bebida Power Premium, huevos revueltos con espinacas.</p>
+              <p><strong>Almuerzo:</strong> Filete de salmón con quinoa y brócoli.</p>
+              <p><strong>Cena:</strong> Sopa de verduras con lentejas y ensalada verde.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Módulo 4: Sustituciones -->
+      <details>
+        <summary>Lista de Sustituciones</summary>
+        <div class="panel content">
+          <p class="muted">Si no encuentras un ingrediente, puedes usar estas alternativas:</p>
+          <ul class="list-check">
+            <li><strong>Proteínas:</strong> Salmón → Trucha | Pollo → Pavo | Atún → Sardinas</li>
+            <li><strong>Granos:</strong> Quinoa → Lentejas | Arroz Integral → Espelta | Cuscús → Bulgur</li>
+            <li><strong>Verduras:</strong> Brócoli → Coliflor | Espinacas → Acelgas | Remolacha → Colinabo</li>
+            <li><strong>Frutas:</strong> Manzana → Pera | Fresas → Frambuesas | Mandarina → Naranja</li>
+            <li><strong>Otros:</strong> Leche de Almendras → Leche de Coco o Avena | Nueces → Anacardos</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Módulo 5: Sugerencias Adicionales -->
+      <details>
+        <summary>Sugerencias y Estilo de Vida</summary>
+        <div class="panel content">
+          <div class="callout">
+            <strong>1. Planificación:</strong> Prepare los ingredientes con antelación (porcionar carne, cortar verduras) para ahorrar tiempo durante la semana.
+          </div>
+          <div class="callout">
+            <strong>2. Hidratación:</strong> Se recomienda una ingesta diaria de agua de 2 a 2,5 litros.
+          </div>
+          <div class="callout">
+            <strong>3. Movimiento:</strong> Combine el plan con caminatas diarias de 30 minutos u otra actividad física ligera.
+          </div>
+          <div class="callout">
+            <strong>4. Variación:</strong> Permítase una "comida libre" el sábado o domingo para mantener la motivación a largo plazo.
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer class="foot">
+      &copy; 2024 Power Premium - E-Book Digital
+    </footer>
+  </div>
+</body>
+</html>

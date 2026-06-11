@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Módulo 01 — Mapa del H.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+    :root {
+      --red: #c0122a;
+      --red-dark: #8a0d1e;
+      --red-glow: rgba(192,18,42,0.25);
+      --red-soft: rgba(192,18,42,0.08);
+      --bg: #080808;
+      --bg2: #0d0d0d;
+      --bg3: #131313;
+      --bg4: #181818;
+      --border: rgba(255,255,255,0.06);
+      --border-red: rgba(192,18,42,0.4);
+      --text: #e8e2d8;
+      --text-muted: #7a7470;
+      --text-dim: #3d3830;
+      --gold: #c8922a;
+      --gold-glow: rgba(200,146,42,0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* XP BAR */
+    .xp-bar-wrap {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .xp-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      flex-shrink: 0; white-space: nowrap;
+    }
+    .xp-track { flex: 1; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+    .xp-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--red-dark), var(--red));
+      border-radius: 2px;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .xp-pct {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; color: var(--red);
+      flex-shrink: 0; min-width: 2.5rem; text-align: right;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative; background: var(--bg2);
+      padding: 2.5rem 1.25rem 2rem;
+      overflow: hidden; border-bottom: 1px solid var(--border);
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(192,18,42,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,18,42,0.04) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(192,18,42,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--red-soft);
+      border: 1px solid var(--border-red);
+      border-radius: 20px;
+      padding: 0.3rem 0.75rem;
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 1rem;
+    }
+    .hero-badge-icon { font-size: 0.85rem; line-height: 1; }
+    .hero-cap-label {
+      font-size: 11px; color: var(--text-dim);
+      letter-spacing: 3px; text-transform: uppercase;
+      display: block; margin-bottom: 0.3rem;
+      position: relative;
+    }
+    .hero-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem; line-height: 0.95;
+      letter-spacing: 1px; position: relative;
+    }
+    .hero-titulo .white { color: #f5f0e8; }
+    .hero-titulo .red { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+    .hero-sub {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic; font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem; line-height: 1.5;
+      position: relative;
+    }
+    .hero-divider {
+      width: 40px; height: 2px;
+      background: var(--red);
+      margin: 1rem 0;
+      box-shadow: 0 0 8px var(--red-glow);
+      position: relative;
+    }
+
+    /* MODULE BANNER */
+    .mod-banner {
+      margin: 1.5rem 1.25rem 0;
+      background: linear-gradient(135deg, #1a0a0d, #120608);
+      border: 1px solid var(--border-red);
+      border-radius: 14px;
+      padding: 1.1rem;
+      position: relative; overflow: hidden;
+    }
+    .mod-banner::before {
+      content: ''; position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(192,18,42,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mod-banner-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .mod-banner-icon { font-size: 2.5rem; flex-shrink: 0; line-height: 1; }
+    .mod-banner-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      display: block; margin-bottom: 0.15rem;
+    }
+    .mod-banner-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; color: #f5f0e8;
+      line-height: 1.05; letter-spacing: 0.5px;
+    }
+    .mod-banner-desc {
+      font-size: 13px; color: #908a82;
+      line-height: 1.6; position: relative;
+    }
+
+    /* TAP HINT */
+    .tap-hint {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 1.25rem 1.25rem 0.5rem;
+      font-size: 11px; color: var(--text-dim);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .tap-hint-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--red); animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ACCORDION */
+    .acc-wrap { padding: 0.5rem 1.25rem 3rem; }
+    .acc-item {
+      margin-bottom: 0.6rem; border-radius: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .acc-item.open {
+      border-color: var(--border-red);
+      box-shadow: 0 0 20px rgba(192,18,42,0.08), inset 0 0 30px rgba(192,18,42,0.03);
+    }
+    .acc-item.completed { border-color: rgba(100,180,100,0.2); }
+
+    .acc-trigger {
+      width: 100%; background: none; border: none;
+      padding: 1rem;
+      display: flex; align-items: center; gap: 0.85rem;
+      cursor: pointer; text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .acc-trigger:active { opacity: 0.85; }
+
+    .acc-icon-wrap {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(192,18,42,0.1);
+      border: 1px solid rgba(192,18,42,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .acc-item.open .acc-icon-wrap {
+      background: rgba(192,18,42,0.2);
+      border-color: rgba(192,18,42,0.5);
+      box-shadow: 0 0 10px rgba(192,18,42,0.2);
+    }
+    .acc-item.completed .acc-icon-wrap {
+      background: rgba(80,180,80,0.1);
+      border-color: rgba(80,180,80,0.3);
+    }
+
+    .acc-titles { flex: 1; min-width: 0; }
+    .acc-section-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-dim);
+      display: block; margin-bottom: 0.15rem;
+    }
+    .acc-item.open .acc-section-label { color: var(--red); }
+    .acc-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem; color: #c8c2b8;
+      line-height: 1.1; letter-spacing: 0.5px;
+      white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .acc-item.open .acc-titulo { color: #f5f0e8; }
+
+    .acc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0; }
+    .acc-arrow-btn {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s, background 0.2s;
+    }
+    .acc-item.open .acc-arrow-btn {
+      transform: rotate(180deg);
+      border-color: var(--red);
+      background: rgba(192,18,42,0.1);
+    }
+    .acc-arrow-btn svg {
+      width: 10px; height: 10px; stroke: #5a5550;
+      fill: none; stroke-width: 2.5;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+    .acc-item.open .acc-arrow-btn svg { stroke: var(--red); }
+    .acc-check { font-size: 14px; opacity: 0; transition: opacity 0.3s; }
+    .acc-item.completed .acc-check { opacity: 1; }
+
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .acc-body-inner {
+      padding: 0 1rem 1.25rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .acc-body p {
+      color: #9a9490;
+      font-size: 14.5px; line-height: 1.8;
+      margin-bottom: 0.9rem; padding-top: 0.5rem;
+    }
+    .acc-body p:first-child { padding-top: 1rem; }
+    .acc-body em { color: #c0bab2; font-style: italic; }
+    .acc-body strong { color: #e8e2d8; font-weight: 600; }
+
+    /* INFO BOX */
+    .info-box {
+      background: linear-gradient(135deg, #16100e, #110c0a);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1rem; margin: 1rem 0;
+      position: relative; overflow: hidden;
+    }
+    .info-box p { font-size: 13.5px; color: #b0aaa2; margin: 0; line-height: 1.7; padding: 0; }
+
+    /* WARN BOX */
+    .warn-box {
+      background: rgba(200,146,42,0.06);
+      border: 1px solid rgba(200,146,42,0.2);
+      border-radius: 10px; padding: 0.9rem 1rem;
+      margin: 1rem 0; display: flex; gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .warn-box-icon { font-size: 1.2rem; flex-shrink: 0; line-height: 1.3; }
+    .warn-box p { font-size: 13px; color: #a09080; margin: 0; line-height: 1.65; padding: 0; }
+    .warn-box strong { color: #c8a060; }
+
+    /* QUOTE */
+    .quote {
+      background: var(--bg4); border-radius: 10px;
+      border-left: 3px solid #444;
+      padding: 1rem; margin: 1.1rem 0;
+      position: relative;
+    }
+    .quote::before {
+      content: '"'; position: absolute;
+      top: -0.5rem; left: 0.75rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 3rem; color: rgba(255,255,255,0.05);
+      line-height: 1;
+    }
+    .quote-text {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic; font-size: 1.05rem;
+      color: #888280; line-height: 1.6;
+    }
+    .quote-cite {
+      display: block; margin-top: 0.5rem;
+      font-size: 10px; font-style: normal;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600; color: var(--red);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    /* FUNCION CARDS */
+    .funcion-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin: 0.55rem 0;
+      display: flex; gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .funcion-emoji {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(192,18,42,0.08);
+      border: 1px solid rgba(192,18,42,0.15);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .funcion-info { flex: 1; }
+    .funcion-titulo {
+      font-weight: 600; font-size: 13.5px;
+      color: #e8e2d8; margin-bottom: 0.25rem;
+      letter-spacing: 0.3px;
+    }
+    .funcion-desc {
+      font-size: 12.5px; color: #807a72;
+      line-height: 1.6;
+    }
+    .funcion-desc strong { color: #c0bab2; }
+
+    /* FASES GRID */
+    .fases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin: 1.1rem 0;
+    }
+    .fase-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--red);
+      border-radius: 10px;
+      padding: 0.8rem 0.5rem;
+      text-align: center;
+    }
+    .fase-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--red);
+      display: block;
+      line-height: 1;
+      text-shadow: 0 0 8px var(--red-glow);
+      margin-bottom: 0.25rem;
+    }
+    .fase-nombre {
+      font-size: 11px;
+      font-weight: 700;
+      color: #c8c2b8;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.2rem;
+    }
+    .fase-tiempo {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* CICLO MOCKUP - hipnograma simplificado */
+    .ciclo-mock {
+      background: linear-gradient(135deg, #0d0d0d, #060606);
+      border: 1px solid var(--border-red);
+      border-radius: 14px;
+      padding: 1.1rem 0.85rem;
+      margin: 1.25rem 0;
+      position: relative; overflow: hidden;
+    }
+    .ciclo-mock::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at center, rgba(192,18,42,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .ciclo-mock-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      text-align: center; margin-bottom: 0.85rem;
+      position: relative;
+    }
+    .hipno-graph {
+      display: flex; align-items: end; justify-content: center;
+      gap: 0.25rem; height: 80px; margin: 0.5rem 0;
+      position: relative;
+    }
+    .hipno-bar {
+      flex: 1; max-width: 16px;
+      background: linear-gradient(180deg, var(--red), var(--red-dark));
+      border-radius: 3px 3px 0 0;
+      box-shadow: 0 0 6px var(--red-glow);
+      position: relative;
+    }
+    .hipno-bar.deep { height: 85%; }
+    .hipno-bar.light { height: 35%; opacity: 0.5; }
+    .hipno-bar.rem { height: 60%; opacity: 0.75; }
+    .hipno-bar.medium { height: 50%; opacity: 0.65; }
+    .ciclo-mock-sub {
+      font-size: 11px; color: var(--text-muted);
+      line-height: 1.5; margin-top: 0.5rem;
+      text-align: center; position: relative;
+    }
+
+    /* RELOJ 24H */
+    .reloj-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      margin: 0.4rem 0;
+      display: flex; gap: 0.65rem;
+      align-items: center;
+    }
+    .reloj-hora {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem;
+      color: var(--gold);
+      letter-spacing: 1px;
+      flex-shrink: 0;
+      min-width: 75px;
+    }
+    .reloj-info {
+      flex: 1;
+      font-size: 12.5px;
+      color: #807a72;
+      line-height: 1.5;
+    }
+    .reloj-info strong { color: #c0bab2; }
+
+    /* SENALES GRID */
+    .senales-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      margin: 1rem 0;
+    }
+    .senales-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 0.95rem;
+    }
+    .senales-mala { border-left: 3px solid var(--red); }
+    .senales-buena { border-left: 3px solid #4a9d5e; }
+    .senales-label {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .senales-mala .senales-label { color: var(--red); }
+    .senales-buena .senales-label { color: #4a9d5e; }
+    .senales-list { list-style: none; padding: 0; margin: 0; }
+    .senales-list li {
+      font-size: 13px; color: #807a72;
+      line-height: 1.55; padding: 0.3rem 0;
+      display: flex; gap: 0.5rem; align-items: flex-start;
+    }
+    .senales-list li::before {
+      flex-shrink: 0; font-size: 11px; margin-top: 2px;
+    }
+    .senales-mala .senales-list li::before { content: '–'; color: var(--red); font-weight: 700; }
+    .senales-buena .senales-list li::before { content: '+'; color: #4a9d5e; font-weight: 700; }
+
+    /* DISRUPTOR CARDS */
+    .disruptor-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin: 0.55rem 0;
+    }
+    .disruptor-top {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 0.35rem;
+    }
+    .disruptor-emoji {
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .disruptor-titulo {
+      font-weight: 600; font-size: 13px;
+      color: #e8e2d8;
+      letter-spacing: 0.3px;
+    }
+    .disruptor-desc {
+      font-size: 12.5px; color: #807a72;
+      line-height: 1.6;
+    }
+    .disruptor-desc strong { color: #c0bab2; }
+
+    /* CHECKLIST */
+    .checklist {
+      background: linear-gradient(135deg, #0d0d0d, #0a0a0a);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem; margin: 1rem 0;
+    }
+    .checklist-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; color: #f0ebe3;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.85rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .checklist-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.55rem 0.5rem; border-radius: 8px;
+      cursor: pointer; transition: background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .checklist-item:active { background: rgba(255,255,255,0.02); }
+    .checklist-checkbox {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 1.5px solid #3a3530; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .checklist-checkbox svg {
+      width: 12px; height: 12px; stroke: #fff;
+      fill: none; stroke-width: 3;
+      stroke-linecap: round; stroke-linejoin: round;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .checklist-item.checked .checklist-checkbox {
+      background: var(--red); border-color: var(--red);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .checklist-item.checked .checklist-checkbox svg { opacity: 1; }
+    .checklist-text {
+      font-size: 13.5px; color: #b0aaa2;
+      line-height: 1.5; flex: 1;
+      transition: color 0.2s, text-decoration 0.2s;
+    }
+    .checklist-item.checked .checklist-text {
+      color: #4a4540; text-decoration: line-through;
+    }
+
+    /* REFS */
+    .ref-box {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem;
+    }
+    .ref-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .ref-item {
+      font-size: 11.5px; color: #3d3a36; line-height: 1.65;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .ref-item:last-child { border-bottom: none; }
+
+    .disclaimer {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 10px; padding: 0.9rem;
+      margin-top: 1.75rem;
+      font-size: 11px; color: #302d2a;
+      line-height: 1.65;
+    }
+    .disclaimer strong { color: #484340; }
+
+    /* BOTÃO */
+    .complete-wrap {
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .complete-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red-dark), var(--red));
+      color: #fff;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 1rem; border: none;
+      border-radius: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 20px rgba(192,18,42,0.3);
+      transition: opacity 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .complete-btn:active { transform: scale(0.97); opacity: 0.9; }
+    .complete-btn .btn-icon { font-size: 1.1rem; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem;
+      left: 50%; transform: translateX(-50%) translateY(4rem);
+      background: #1a3a1a;
+      border: 1px solid rgba(80,180,80,0.3);
+      border-radius: 20px; padding: 0.65rem 1.25rem;
+      font-size: 13px; font-weight: 600; color: #80d880;
+      display: flex; align-items: center; gap: 0.5rem;
+      white-space: nowrap; opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+      z-index: 999; pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeUp 0.5s ease both; }
+    .mod-banner { animation: fadeUp 0.5s 0.15s ease both; }
+    .acc-item:nth-child(1) { animation: fadeUp 0.4s 0.2s ease both; }
+    .acc-item:nth-child(2) { animation: fadeUp 0.4s 0.28s ease both; }
+    .acc-item:nth-child(3) { animation: fadeUp 0.4s 0.36s ease both; }
+    .acc-item:nth-child(4) { animation: fadeUp 0.4s 0.44s ease both; }
+    .acc-item:nth-child(5) { animation: fadeUp 0.4s 0.52s ease both; }
+    .acc-item:nth-child(6) { animation: fadeUp 0.4s 0.6s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- XP BAR -->
+<div class="xp-bar-wrap">
+  <span class="xp-label">Mód. 1 / 5 · Mapa del H.</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+  <span class="xp-pct" id="xpPct">0%</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-icon">🌙</span>
+    Módulo 01 · Mapa del H.
+  </div>
+  <span class="hero-cap-label">Guía educativa sobre el sueño masculino</span>
+  <h1 class="hero-titulo">
+    <span class="white">La Ciencia</span><br>
+    <span class="red">del Sueño</span>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">Por qué no descansas aunque duermas — y qué dice la investigación científica sobre cambiar eso</p>
+</div>
+
+<!-- MODULE BANNER -->
+<div class="mod-banner">
+  <div class="mod-banner-top">
+    <div class="mod-banner-icon">🌙</div>
+    <div>
+      <span class="mod-banner-tag">Módulo 01 — Fundamentos del sueño</span>
+      <div class="mod-banner-titulo">Lo que tu cerebro hace mientras duermes</div>
+    </div>
+  </div>
+  <p class="mod-banner-desc">Antes de cambiar cómo duermes, necesitas entender por qué duermes — y por qué el cerebro hace más trabajo durmiendo que despierto.</p>
+</div>
+
+<!-- TAP HINT -->
+<div class="tap-hint">
+  <div class="tap-hint-dot"></div>
+  Toca para expandir cada sección
+  <div class="tap-hint-dot"></div>
+</div>
+
+<!-- ACCORDION -->
+<div class="acc-wrap">
+
+  <!-- S1 -->
+  <div class="acc-item" id="s1">
+    <button class="acc-trigger" onclick="toggle('s1')">
+      <div class="acc-icon-wrap">🧠</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El proceso</span>
+        <div class="acc-titulo">Qué pasa mientras duermes</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s1">
+      <div class="acc-body-inner">
+        <p>Existe una idea popular de que dormir es "apagar el cerebro". La investigación de las últimas décadas demuestra lo contrario: durante el sueño, el cerebro ejecuta funciones biológicas que <strong>no puede realizar mientras estás despierto</strong>.</p>
+        <p>Matthew Walker, profesor de neurociencia en la Universidad de California, Berkeley, y director del Center for Human Sleep Science, lleva más de 25 años estudiando el sueño. Su trabajo, sintetizado en el libro <em>Why We Sleep</em> (2017), documenta que el sueño no es un descanso pasivo — es un período de actividad biológica intensa, organizada y necesaria.</p>
+
+        <p>Las principales funciones que el cerebro y el cuerpo ejecutan durante el sueño:</p>
+
+        <div class="funcion-card">
+          <div class="funcion-emoji">💾</div>
+          <div class="funcion-info">
+            <div class="funcion-titulo">Consolidación de memoria</div>
+            <div class="funcion-desc"><strong>El cerebro guarda lo aprendido.</strong> Durante el sueño, la información del día se transfiere de la memoria de corto plazo al almacenamiento de largo plazo. Sin sueño suficiente, el aprendizaje del día anterior se pierde.</div>
+          </div>
+        </div>
+
+        <div class="funcion-card">
+          <div class="funcion-emoji">🧹</div>
+          <div class="funcion-info">
+            <div class="funcion-titulo">Limpieza cerebral</div>
+            <div class="funcion-desc"><strong>El sistema glinfático actúa.</strong> Descubierto en 2013 por la investigadora Maiken Nedergaard, de la University of Rochester, este sistema elimina desechos metabólicos acumulados durante el día. Solo opera durante el sueño profundo.</div>
+          </div>
+        </div>
+
+        <div class="funcion-card">
+          <div class="funcion-emoji">🔧</div>
+          <div class="funcion-info">
+            <div class="funcion-titulo">Reparación de tejidos</div>
+            <div class="funcion-desc"><strong>El cuerpo se regenera.</strong> Durante el sueño profundo se libera hormona del crecimiento, que participa en la reparación de tejidos musculares, óseos y celulares.</div>
+          </div>
+        </div>
+
+        <div class="funcion-card">
+          <div class="funcion-emoji">❤️</div>
+          <div class="funcion-info">
+            <div class="funcion-titulo">Regulación emocional</div>
+            <div class="funcion-desc"><strong>El cerebro procesa el día.</strong> Las experiencias emocionales se reorganizan durante el sueño REM. Un sueño insuficiente reduce la capacidad de regular emociones al día siguiente.</div>
+          </div>
+        </div>
+
+        <div class="funcion-card">
+          <div class="funcion-emoji">🛡️</div>
+          <div class="funcion-info">
+            <div class="funcion-titulo">Soporte al sistema inmune</div>
+            <div class="funcion-desc"><strong>Las defensas se fortalecen.</strong> Durante el sueño se producen proteínas llamadas citoquinas, que participan en la respuesta inmune. Investigación documenta menor resistencia a infecciones tras períodos de sueño insuficiente.</div>
+          </div>
+        </div>
+
+        <div class="quote">
+          <div class="quote-text">"El sueño es el cimiento sobre el cual se construyen todos los aspectos de la salud física y mental. Cuando se compromete el sueño, se compromete todo lo demás."</div>
+          <cite class="quote-cite">— Dr. Matthew Walker, UC Berkeley</cite>
+        </div>
+
+        <div class="info-box">
+          <p><strong>El insight central:</strong> dormir mal no es solo "estar cansado al día siguiente". Es perder funciones biológicas que el cerebro y el cuerpo realizan exclusivamente durante el sueño — funciones que afectan claridad mental, estado de ánimo y energía sostenida.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="acc-item" id="s2">
+    <button class="acc-trigger" onclick="toggle('s2')">
+      <div class="acc-icon-wrap">🌊</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Los ciclos</span>
+        <div class="acc-titulo">Las 4 fases del sueño</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s2">
+      <div class="acc-body-inner">
+        <p>El sueño no es un estado uniforme. Cada noche, tu cuerpo atraviesa entre <strong>4 y 6 ciclos completos</strong>, cada uno de aproximadamente 90 minutos. Esta estructura fue descrita inicialmente por Nathaniel Kleitman y Eugene Aserinsky en la Universidad de Chicago, en investigaciones de las décadas de 1950 y 1960 que fundaron la ciencia moderna del sueño.</p>
+        <p>Cada ciclo está compuesto por 4 fases diferentes, cada una con funciones biológicas específicas:</p>
+
+        <div class="fases-grid">
+          <div class="fase-card">
+            <span class="fase-num">N1</span>
+            <div class="fase-nombre">Transición</div>
+            <div class="fase-tiempo">1–5 min</div>
+          </div>
+          <div class="fase-card">
+            <span class="fase-num">N2</span>
+            <div class="fase-nombre">Sueño Ligero</div>
+            <div class="fase-tiempo">10–25 min</div>
+          </div>
+          <div class="fase-card">
+            <span class="fase-num">N3</span>
+            <div class="fase-nombre">Sueño Profundo</div>
+            <div class="fase-tiempo">20–40 min</div>
+          </div>
+          <div class="fase-card">
+            <span class="fase-num">REM</span>
+            <div class="fase-nombre">Movimiento Ocular</div>
+            <div class="fase-tiempo">10–60 min</div>
+          </div>
+        </div>
+
+        <p><strong>Sueño Profundo (N3).</strong> Es la fase donde ocurre la mayor parte de la recuperación física. El cuerpo libera hormona del crecimiento, repara tejidos y refuerza el sistema inmune. Si esta fase es interrumpida o reducida, la sensación de cansancio al despertar puede aparecer incluso después de 8 horas de sueño.</p>
+
+        <p><strong>Sueño REM (Rapid Eye Movement).</strong> Es la fase donde ocurre la mayor parte de la recuperación mental. El cerebro procesa emociones del día, consolida memorias y reorganiza información. La mayoría de los sueños vívidos ocurren aquí. Una reducción del REM se asocia con desregulación emocional y problemas de memoria al día siguiente.</p>
+
+        <div class="ciclo-mock">
+          <div class="ciclo-mock-label">🌊 Distribución típica en una noche</div>
+          <div class="hipno-graph">
+            <div class="hipno-bar light"></div>
+            <div class="hipno-bar medium"></div>
+            <div class="hipno-bar deep"></div>
+            <div class="hipno-bar medium"></div>
+            <div class="hipno-bar rem"></div>
+            <div class="hipno-bar light"></div>
+            <div class="hipno-bar medium"></div>
+            <div class="hipno-bar rem"></div>
+          </div>
+          <div class="ciclo-mock-sub">Más sueño profundo al inicio. Más REM hacia el final.</div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Sobre el alcohol y el sueño:</strong> La investigación de Walker y otros documenta que el alcohol puede acelerar el inicio del sueño, pero <strong>reduce significativamente la fase REM</strong>. Esto explica el cansancio al día siguiente incluso tras varias horas de "sueño" después de beber. Este dato es educativo — no constituye recomendación clínica.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 -->
+  <div class="acc-item" id="s3">
+    <button class="acc-trigger" onclick="toggle('s3')">
+      <div class="acc-icon-wrap">📊</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El paradigma</span>
+        <div class="acc-titulo">Calidad importa más que cantidad</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s3">
+      <div class="acc-body-inner">
+        <p>Una persona puede dormir 8 horas y despertar cansada. Otra puede dormir 6 horas y despertar relativamente recuperada. La diferencia, según la investigación contemporánea sobre sueño, está en lo que se llama <strong>arquitectura del sueño</strong> — la distribución y completitud de las fases durante la noche.</p>
+        <p>La cantidad de horas es importante, pero por sí sola no garantiza descanso. Un sueño fragmentado de 8 horas, con interrupciones que cortan los ciclos antes de completarse, produce menos recuperación que un sueño consolidado de 6.5 horas con ciclos completos.</p>
+
+        <div class="quote">
+          <div class="quote-text">"No todas las horas de sueño son iguales. La calidad — medida por la consolidación de ciclos completos — determina qué tanto te recuperas durante la noche."</div>
+          <cite class="quote-cite">— Investigación sobre arquitectura del sueño</cite>
+        </div>
+
+        <div class="senales-grid">
+          <div class="senales-card senales-mala">
+            <div class="senales-label">– Señales de baja calidad</div>
+            <ul class="senales-list">
+              <li>Despiertas varias veces durante la noche</li>
+              <li>Tardas más de 30 minutos en quedarte dormido</li>
+              <li>Te levantas igual o más cansado que al acostarte</li>
+              <li>Dependes de alarmas fuertes para despertar</li>
+              <li>Sientes que necesitas café para "arrancar"</li>
+              <li>Hay caídas notorias de energía entre las 14h y 16h</li>
+            </ul>
+          </div>
+
+          <div class="senales-card senales-buena">
+            <div class="senales-label">+ Señales de buena calidad</div>
+            <ul class="senales-list">
+              <li>Te quedas dormido en menos de 15 minutos</li>
+              <li>Duermes corrido o despiertas una vez como máximo</li>
+              <li>Despiertas naturalmente cerca de la alarma</li>
+              <li>Te sientes alerta dentro de los primeros 30 minutos</li>
+              <li>Tu energía se mantiene relativamente estable</li>
+              <li>No necesitas "siestas de emergencia" en la tarde</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>El objetivo educativo de este programa:</strong> no buscar dormir <em>más</em>, sino entender cómo se estructura un sueño de mejor calidad. Los hábitos y conductas que rodean el sueño tienen un impacto directo en su arquitectura.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 -->
+  <div class="acc-item" id="s4">
+    <button class="acc-trigger" onclick="toggle('s4')">
+      <div class="acc-icon-wrap">🕐</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El reloj interno</span>
+        <div class="acc-titulo">El ritmo circadiano</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s4">
+      <div class="acc-body-inner">
+        <p>Dentro del cerebro existe una estructura llamada <strong>núcleo supraquiasmático</strong>, ubicada en el hipotálamo. Funciona como un "reloj maestro" que regula el ciclo de 24 horas — sueño y vigilia, alerta y descanso. Este sistema se conoce como <strong>ritmo circadiano</strong> (del latín <em>circa diem</em>, "alrededor de un día").</p>
+        <p>El ritmo circadiano fue caracterizado a profundidad por investigadores como Charles Czeisler (Harvard Medical School) y Mary Carskadon (Brown University), pioneros en cronobiología — el estudio científico de los ritmos biológicos. La luz solar es el principal sincronizador de este reloj interno.</p>
+
+        <p>Una jornada típica de 24 horas, según la cronobiología:</p>
+
+        <div class="reloj-card">
+          <div class="reloj-hora">6–8h</div>
+          <div class="reloj-info"><strong>Activación matinal.</strong> El cuerpo inicia naturalmente el despertar, aumenta la temperatura corporal y se prepara para la actividad del día.</div>
+        </div>
+
+        <div class="reloj-card">
+          <div class="reloj-hora">10–14h</div>
+          <div class="reloj-info"><strong>Pico de alerta.</strong> El período de mayor rendimiento cognitivo del día para la mayoría de las personas. Trabajo profundo y tareas complejas funcionan mejor aquí.</div>
+        </div>
+
+        <div class="reloj-card">
+          <div class="reloj-hora">14–16h</div>
+          <div class="reloj-info"><strong>Bajón natural.</strong> Es normal una reducción de la alerta a media tarde. No es señal de problema — es parte del ciclo natural.</div>
+        </div>
+
+        <div class="reloj-card">
+          <div class="reloj-hora">18–20h</div>
+          <div class="reloj-info"><strong>Inicio del modo descanso.</strong> El cuerpo comienza a desacelerar gradualmente. La temperatura corporal empieza a bajar.</div>
+        </div>
+
+        <div class="reloj-card">
+          <div class="reloj-hora">21–23h</div>
+          <div class="reloj-info"><strong>Preparación para el sueño.</strong> Si la exposición lumínica es adecuada, el cuerpo prepara naturalmente la transición hacia el sueño.</div>
+        </div>
+
+        <div class="reloj-card">
+          <div class="reloj-hora">2–4h</div>
+          <div class="reloj-info"><strong>Sueño más profundo.</strong> En esta franja se concentra la mayor parte del sueño profundo de la noche — la fase de máxima recuperación física.</div>
+        </div>
+
+        <p>Los <strong>3 principales disruptores del ritmo circadiano</strong> identificados por la investigación:</p>
+
+        <div class="disruptor-card">
+          <div class="disruptor-top">
+            <div class="disruptor-emoji">📱</div>
+            <div class="disruptor-titulo">Luz azul de pantallas en la noche</div>
+          </div>
+          <div class="disruptor-desc"><strong>Confunde al cerebro.</strong> La luz azul emitida por celulares, computadoras y televisores en horarios nocturnos envía al cerebro la señal de que aún es de día — alterando la preparación natural para el sueño.</div>
+        </div>
+
+        <div class="disruptor-card">
+          <div class="disruptor-top">
+            <div class="disruptor-emoji">⏰</div>
+            <div class="disruptor-titulo">Horarios irregulares</div>
+          </div>
+          <div class="disruptor-desc"><strong>El reloj no se calibra.</strong> Acostarse y despertarse a horas muy variables impide que el sistema circadiano establezca un ritmo estable. Walker compara esto con "viajar a una zona horaria distinta cada noche".</div>
+        </div>
+
+        <div class="disruptor-card">
+          <div class="disruptor-top">
+            <div class="disruptor-emoji">☀️</div>
+            <div class="disruptor-titulo">Falta de luz solar matinal</div>
+          </div>
+          <div class="disruptor-desc"><strong>Sin señal de inicio del día.</strong> Andrew Huberman, profesor de la Stanford School of Medicine, documenta que la exposición a luz solar dentro de los primeros 30–60 minutos tras despertar es uno de los anclajes más fuertes del ritmo circadiano.</div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Importante:</strong> los tiempos para que el ritmo circadiano se reajuste varían entre personas según múltiples factores individuales — edad, hábitos previos, contexto laboral, exposición lumínica. La constancia en pequeños ajustes diarios suele tener más impacto que cambios drásticos puntuales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 -->
+  <div class="acc-item" id="s5">
+    <button class="acc-trigger" onclick="toggle('s5')">
+      <div class="acc-icon-wrap">✅</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Auto-observación</span>
+        <div class="acc-titulo">Mapear tu sueño actual</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s5">
+      <div class="acc-body-inner">
+        <p>Antes de cambiar cualquier hábito relacionado al sueño, vale la pena observar honestamente tu punto de partida. Esta auto-observación no busca diagnóstico — busca datos prácticos para que sepas dónde estás y qué ajustes hacen sentido para tu contexto.</p>
+
+        <div class="checklist">
+          <div class="checklist-titulo">🌙 Mi diagnóstico inicial del sueño</div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Identifiqué a qué hora me acuesto normalmente</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Identifiqué a qué hora despierto naturalmente (sin alarma)</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Noté cuánto tardo en quedarme dormido</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Conté cuántas veces despierto durante la noche</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Observé qué tan alerta me siento en los primeros 30 minutos del día</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Identifiqué mis principales disruptores actuales</div>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> si experimentas dificultades persistentes para dormir, despertares frecuentes durante varias semanas, ronquidos fuertes con pausas respiratorias, somnolencia diurna severa, o cualquier otra alteración del sueño que afecte tu vida cotidiana, este material educativo no sustituye una evaluación profesional. Trastornos del sueño como apnea, insomnio crónico u otros requieren acompañamiento médico calificado. Consulta con un profesional de salud cuando sea necesario.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6 REFS -->
+  <div class="acc-item" id="s6">
+    <button class="acc-trigger" onclick="toggle('s6')">
+      <div class="acc-icon-wrap">📚</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Fuentes</span>
+        <div class="acc-titulo">Referencias bibliográficas</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s6">
+      <div class="acc-body-inner">
+        <div class="ref-box">
+          <div class="ref-label">Referencias de este módulo</div>
+          <div class="ref-item">Walker, M. (2017). <em>Why We Sleep: Unlocking the Power of Sleep and Dreams.</em> Scribner. Center for Human Sleep Science, University of California, Berkeley.</div>
+          <div class="ref-item">Kleitman, N. (1963). <em>Sleep and Wakefulness.</em> University of Chicago Press. Texto fundacional sobre los ciclos del sueño.</div>
+          <div class="ref-item">Aserinsky, E., & Kleitman, N. (1953). Regularly occurring periods of eye motility, and concomitant phenomena, during sleep. <em>Science,</em> 118(3062), 273–274. Descubrimiento del sueño REM.</div>
+          <div class="ref-item">Xie, L., Kang, H., Xu, Q., et al. (2013). Sleep drives metabolite clearance from the adult brain. <em>Science,</em> 342(6156), 373–377. Investigación del sistema glinfático liderada por Maiken Nedergaard, University of Rochester.</div>
+          <div class="ref-item">Czeisler, C. A., et al. (1999). Stability, precision, and near-24-hour period of the human circadian pacemaker. <em>Science,</em> 284(5423), 2177–2181. Harvard Medical School.</div>
+          <div class="ref-item">Carskadon, M. A., & Dement, W. C. (2011). Normal human sleep: An overview. <em>Principles and Practice of Sleep Medicine</em> (5th ed.). Brown University.</div>
+          <div class="ref-item">Huberman, A. D. (2021). Toolkit for sleep. <em>Huberman Lab Podcast.</em> Stanford School of Medicine. Sobre exposición lumínica matinal y ritmo circadiano.</div>
+          <div class="ref-item">Ebrahim, I. O., Shapiro, C. M., Williams, A. J., & Fenwick, P. B. (2013). Alcohol and sleep I: Effects on normal sleep. <em>Alcoholism: Clinical and Experimental Research,</em> 37(4), 539–549.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>⚠️ Aviso:</strong> Material exclusivamente educativo, parte del programa Mapa del H. Las referencias citadas son reales y verificables. Este programa no promete resultados específicos ni garantizados — los avances dependen de la constancia individual y de múltiples factores personales. No sustituye asesoramiento médico, psicológico ni profesional. Si experimentas alteraciones persistentes del sueño, ronquidos con pausas respiratorias, somnolencia diurna severa o cualquier otra condición que afecte tu bienestar, consulta con un profesional de salud calificado.
+  </div>
+
+  <!-- BOTÃO -->
+  <div class="complete-wrap">
+    <button class="complete-btn" onclick="completarCap()">
+      <span class="btn-icon">⚡</span>
+      Marcar módulo como completado
+    </button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">🏆 ¡Módulo 1 completado!</div>
+
+<script>
+  var openItems = {};
+  var completed = {};
+  var totalSections = 6;
+
+  function toggle(id) {
+    var item = document.getElementById(id);
+    var body = document.getElementById('body-' + id);
+    var isOpen = openItems[id];
+    if (isOpen) {
+      body.style.maxHeight = '0px';
+      item.classList.remove('open');
+      openItems[id] = false;
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.classList.add('open');
+      openItems[id] = true;
+      if (!completed[id]) {
+        setTimeout(function() { markRead(id); }, 1800);
+      }
+    }
+    updateXP();
+  }
+
+  function markRead(id) {
+    if (completed[id]) return;
+    completed[id] = true;
+    document.getElementById(id).classList.add('completed');
+    updateXP();
+  }
+
+  function updateXP() {
+    var count = Object.keys(completed).length;
+    var pct = Math.round((count / totalSections) * 100);
+    document.getElementById('xpFill').style.width = pct + '%';
+    document.getElementById('xpPct').textContent = pct + '%';
+  }
+
+  function completarCap() {
+    for (var i = 1; i <= totalSections; i++) {
+      completed['s' + i] = true;
+      document.getElementById('s' + i).classList.add('completed');
+    }
+    document.getElementById('xpFill').style.width = '100%';
+    document.getElementById('xpPct').textContent = '100%';
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+
+  setTimeout(function() {
+    document.getElementById('xpFill').style.width = '0%';
+  }, 100);
+</script>
+
+</body>
+</html>

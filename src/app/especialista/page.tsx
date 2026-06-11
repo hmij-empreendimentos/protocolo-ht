@@ -6,13 +6,11 @@ export const metadata = {
   title: "Hablar con Especialista · Protocolo HT",
 };
 
-// TODO: cuando el cliente entregue el chatbot (Chatvolt u otro), pega aquí la URL
-// del iframe y descomenta el bloque del embed más abajo.
-const CHAT_EMBED_URL: string | null = null;
+// Chat del especialista (página del cliente).
+const CHAT_EMBED_URL: string | null = "https://soporte-ht.netlify.app/";
 
-// TODO: número de WhatsApp real del especialista
 const WHATSAPP_URL =
-  "https://wa.me/0000000000?text=Hola%2C%20quiero%20hablar%20con%20el%20especialista%20del%20Protocolo%20HT.";
+  "https://wa.me/5537991211613?text=Hola%2C%20quiero%20hablar%20con%20el%20especialista%20del%20Protocolo%20HT.";
 
 export default function EspecialistaPage() {
   return (

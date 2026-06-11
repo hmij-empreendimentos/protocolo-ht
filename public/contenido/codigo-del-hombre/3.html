@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Módulo 03 — Mapa del H.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+    :root {
+      --red: #c0122a;
+      --red-dark: #8a0d1e;
+      --red-glow: rgba(192,18,42,0.25);
+      --red-soft: rgba(192,18,42,0.08);
+      --bg: #080808;
+      --bg2: #0d0d0d;
+      --bg3: #131313;
+      --bg4: #181818;
+      --border: rgba(255,255,255,0.06);
+      --border-red: rgba(192,18,42,0.4);
+      --text: #e8e2d8;
+      --text-muted: #7a7470;
+      --text-dim: #3d3830;
+      --gold: #c8922a;
+      --gold-glow: rgba(200,146,42,0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* XP BAR */
+    .xp-bar-wrap {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .xp-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      flex-shrink: 0; white-space: nowrap;
+    }
+    .xp-track { flex: 1; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+    .xp-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--red-dark), var(--red));
+      border-radius: 2px;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .xp-pct {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; color: var(--red);
+      flex-shrink: 0; min-width: 2.5rem; text-align: right;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative; background: var(--bg2);
+      padding: 2.5rem 1.25rem 2rem;
+      overflow: hidden; border-bottom: 1px solid var(--border);
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(192,18,42,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,18,42,0.04) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(192,18,42,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--red-soft);
+      border: 1px solid var(--border-red);
+      border-radius: 20px;
+      padding: 0.3rem 0.75rem;
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 1rem;
+    }
+    .hero-badge-icon { font-size: 0.85rem; line-height: 1; }
+    .hero-cap-label {
+      font-size: 11px; color: var(--text-dim);
+      letter-spacing: 3px; text-transform: uppercase;
+      display: block; margin-bottom: 0.3rem;
+      position: relative;
+    }
+    .hero-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.7rem; line-height: 0.95;
+      letter-spacing: 1px; position: relative;
+    }
+    .hero-titulo .white { color: #f5f0e8; }
+    .hero-titulo .red { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+    .hero-sub {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic; font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem; line-height: 1.5;
+      position: relative;
+    }
+    .hero-divider {
+      width: 40px; height: 2px;
+      background: var(--red);
+      margin: 1rem 0;
+      box-shadow: 0 0 8px var(--red-glow);
+      position: relative;
+    }
+
+    /* MODULE BANNER */
+    .mod-banner {
+      margin: 1.5rem 1.25rem 0;
+      background: linear-gradient(135deg, #1a0a0d, #120608);
+      border: 1px solid var(--border-red);
+      border-radius: 14px;
+      padding: 1.1rem;
+      position: relative; overflow: hidden;
+    }
+    .mod-banner::before {
+      content: ''; position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(192,18,42,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mod-banner-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .mod-banner-icon { font-size: 2.5rem; flex-shrink: 0; line-height: 1; }
+    .mod-banner-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      display: block; margin-bottom: 0.15rem;
+    }
+    .mod-banner-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; color: #f5f0e8;
+      line-height: 1.05; letter-spacing: 0.5px;
+    }
+    .mod-banner-desc {
+      font-size: 13px; color: #908a82;
+      line-height: 1.6; position: relative;
+    }
+
+    /* TAP HINT */
+    .tap-hint {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 1.25rem 1.25rem 0.5rem;
+      font-size: 11px; color: var(--text-dim);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .tap-hint-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--red); animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* AVISO INICIAL DESTACADO */
+    .aviso-pro {
+      margin: 1.25rem 1.25rem 0;
+      background: linear-gradient(135deg, rgba(200,146,42,0.08), rgba(200,146,42,0.03));
+      border: 1px solid rgba(200,146,42,0.3);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      display: flex; gap: 0.85rem;
+      align-items: flex-start;
+    }
+    .aviso-pro-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1.2; }
+    .aviso-pro-content { flex: 1; }
+    .aviso-pro-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .aviso-pro-text {
+      font-size: 12.5px; color: #a09080;
+      line-height: 1.65;
+    }
+    .aviso-pro-text strong { color: #c8a060; }
+
+    /* ACCORDION */
+    .acc-wrap { padding: 0.5rem 1.25rem 3rem; }
+    .acc-item {
+      margin-bottom: 0.6rem; border-radius: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .acc-item.open {
+      border-color: var(--border-red);
+      box-shadow: 0 0 20px rgba(192,18,42,0.08), inset 0 0 30px rgba(192,18,42,0.03);
+    }
+    .acc-item.completed { border-color: rgba(100,180,100,0.2); }
+
+    .acc-trigger {
+      width: 100%; background: none; border: none;
+      padding: 1rem;
+      display: flex; align-items: center; gap: 0.85rem;
+      cursor: pointer; text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .acc-trigger:active { opacity: 0.85; }
+
+    .acc-icon-wrap {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(192,18,42,0.1);
+      border: 1px solid rgba(192,18,42,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .acc-item.open .acc-icon-wrap {
+      background: rgba(192,18,42,0.2);
+      border-color: rgba(192,18,42,0.5);
+      box-shadow: 0 0 10px rgba(192,18,42,0.2);
+    }
+    .acc-item.completed .acc-icon-wrap {
+      background: rgba(80,180,80,0.1);
+      border-color: rgba(80,180,80,0.3);
+    }
+
+    .acc-titles { flex: 1; min-width: 0; }
+    .acc-section-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-dim);
+      display: block; margin-bottom: 0.15rem;
+    }
+    .acc-item.open .acc-section-label { color: var(--red); }
+    .acc-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem; color: #c8c2b8;
+      line-height: 1.1; letter-spacing: 0.5px;
+      white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .acc-item.open .acc-titulo { color: #f5f0e8; }
+
+    .acc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0; }
+    .acc-arrow-btn {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s, background 0.2s;
+    }
+    .acc-item.open .acc-arrow-btn {
+      transform: rotate(180deg);
+      border-color: var(--red);
+      background: rgba(192,18,42,0.1);
+    }
+    .acc-arrow-btn svg {
+      width: 10px; height: 10px; stroke: #5a5550;
+      fill: none; stroke-width: 2.5;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+    .acc-item.open .acc-arrow-btn svg { stroke: var(--red); }
+    .acc-check { font-size: 14px; opacity: 0; transition: opacity 0.3s; }
+    .acc-item.completed .acc-check { opacity: 1; }
+
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .acc-body-inner {
+      padding: 0 1rem 1.25rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .acc-body p {
+      color: #9a9490;
+      font-size: 14.5px; line-height: 1.8;
+      margin-bottom: 0.9rem; padding-top: 0.5rem;
+    }
+    .acc-body p:first-child { padding-top: 1rem; }
+    .acc-body em { color: #c0bab2; font-style: italic; }
+    .acc-body strong { color: #e8e2d8; font-weight: 600; }
+
+    /* INFO BOX */
+    .info-box {
+      background: linear-gradient(135deg, #16100e, #110c0a);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1rem; margin: 1rem 0;
+      position: relative; overflow: hidden;
+    }
+    .info-box p { font-size: 13.5px; color: #b0aaa2; margin: 0; line-height: 1.7; padding: 0; }
+
+    /* WARN BOX */
+    .warn-box {
+      background: rgba(200,146,42,0.06);
+      border: 1px solid rgba(200,146,42,0.2);
+      border-radius: 10px; padding: 0.9rem 1rem;
+      margin: 1rem 0; display: flex; gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .warn-box-icon { font-size: 1.2rem; flex-shrink: 0; line-height: 1.3; }
+    .warn-box p { font-size: 13px; color: #a09080; margin: 0; line-height: 1.65; padding: 0; }
+    .warn-box strong { color: #c8a060; }
+
+    /* QUOTE */
+    .quote {
+      background: var(--bg4); border-radius: 10px;
+      border-left: 3px solid #444;
+      padding: 1rem; margin: 1.1rem 0;
+      position: relative;
+    }
+    .quote::before {
+      content: '"'; position: absolute;
+      top: -0.5rem; left: 0.75rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 3rem; color: rgba(255,255,255,0.05);
+      line-height: 1;
+    }
+    .quote-text {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic; font-size: 1.05rem;
+      color: #888280; line-height: 1.6;
+    }
+    .quote-cite {
+      display: block; margin-top: 0.5rem;
+      font-size: 10px; font-style: normal;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600; color: var(--red);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    /* TRADICIONALES GRID - alimentos */
+    .trad-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin: 1.1rem 0;
+    }
+    .trad-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 0.6rem;
+      text-align: center;
+    }
+    .trad-card.evitar { border-left: 2px solid var(--red); }
+    .trad-icon {
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: 0.3rem;
+      line-height: 1;
+    }
+    .trad-nombre {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e0dbd2;
+      letter-spacing: 0.3px;
+    }
+    .trad-tag {
+      font-size: 10px;
+      color: #6e6860;
+      margin-top: 0.2rem;
+      line-height: 1.3;
+    }
+    .trad-card.evitar .trad-tag { color: #8a5050; }
+
+    /* COMIDA PESADA - razones */
+    .razon-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      margin: 0.5rem 0;
+      display: flex; gap: 0.7rem;
+      align-items: flex-start;
+    }
+    .razon-emoji {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .razon-text {
+      font-size: 13px;
+      color: #807a72;
+      line-height: 1.6;
+    }
+    .razon-text strong { color: #c0bab2; }
+
+    /* TIMELINE COMIDAS */
+    .comida-timeline {
+      position: relative;
+      margin: 1.1rem 0;
+      padding-left: 1.5rem;
+    }
+    .comida-timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--red), transparent);
+      opacity: 0.4;
+    }
+    .comida-item {
+      position: relative;
+      padding: 0.5rem 0 0.85rem 0.85rem;
+      margin: 0;
+    }
+    .comida-item::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem;
+      top: 0.85rem;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--red);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .comida-hora {
+      font-family: 'Bebas Neue', sans-serif;
+      color: var(--red);
+      font-size: 1rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.2rem;
+    }
+    .comida-titulo {
+      font-weight: 600;
+      font-size: 13px;
+      color: #e0dbd2;
+      margin-bottom: 0.2rem;
+    }
+    .comida-desc {
+      font-size: 12.5px;
+      color: #807a72;
+      line-height: 1.55;
+    }
+
+    /* PRINCIPIO CARD */
+    .principio-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+      padding: 0.8rem 0.95rem;
+      margin: 0.5rem 0;
+      display: flex; gap: 0.7rem;
+      align-items: flex-start;
+    }
+    .principio-emoji {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .principio-info { flex: 1; }
+    .principio-titulo {
+      font-weight: 600; font-size: 13px;
+      color: #e0dbd2;
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.3px;
+    }
+    .principio-desc {
+      font-size: 12.5px; color: #807a72;
+      line-height: 1.6;
+    }
+    .principio-desc strong { color: #c0bab2; }
+
+    /* DO/DON'T */
+    .dodont-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 0.6rem; margin: 1rem 0;
+    }
+    .dodont-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 0.95rem;
+    }
+    .dodont-do { border-left: 3px solid #4a9d5e; }
+    .dodont-dont { border-left: 3px solid var(--red); }
+    .dodont-label {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .dodont-do .dodont-label { color: #4a9d5e; }
+    .dodont-dont .dodont-label { color: var(--red); }
+    .dodont-list { list-style: none; padding: 0; margin: 0; }
+    .dodont-list li {
+      font-size: 13px; color: #807a72;
+      line-height: 1.55; padding: 0.3rem 0;
+      display: flex; gap: 0.5rem; align-items: flex-start;
+    }
+    .dodont-list li::before {
+      flex-shrink: 0; font-size: 11px; margin-top: 2px;
+    }
+    .dodont-do .dodont-list li::before { content: '✓'; color: #4a9d5e; font-weight: 700; }
+    .dodont-dont .dodont-list li::before { content: '✕'; color: var(--red); font-weight: 700; }
+
+    /* REFS */
+    .ref-box {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem;
+    }
+    .ref-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .ref-item {
+      font-size: 11.5px; color: #3d3a36; line-height: 1.65;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .ref-item:last-child { border-bottom: none; }
+
+    .disclaimer {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 10px; padding: 0.9rem;
+      margin-top: 1.75rem;
+      font-size: 11px; color: #302d2a;
+      line-height: 1.65;
+    }
+    .disclaimer strong { color: #484340; }
+
+    /* BOTÃO */
+    .complete-wrap {
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .complete-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red-dark), var(--red));
+      color: #fff;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 1rem; border: none;
+      border-radius: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 20px rgba(192,18,42,0.3);
+      transition: opacity 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .complete-btn:active { transform: scale(0.97); opacity: 0.9; }
+    .complete-btn .btn-icon { font-size: 1.1rem; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem;
+      left: 50%; transform: translateX(-50%) translateY(4rem);
+      background: #1a3a1a;
+      border: 1px solid rgba(80,180,80,0.3);
+      border-radius: 20px; padding: 0.65rem 1.25rem;
+      font-size: 13px; font-weight: 600; color: #80d880;
+      display: flex; align-items: center; gap: 0.5rem;
+      white-space: nowrap; opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+      z-index: 999; pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeUp 0.5s ease both; }
+    .mod-banner { animation: fadeUp 0.5s 0.13s ease both; }
+    .aviso-pro { animation: fadeUp 0.5s 0.18s ease both; }
+    .acc-item:nth-child(1) { animation: fadeUp 0.4s 0.22s ease both; }
+    .acc-item:nth-child(2) { animation: fadeUp 0.4s 0.30s ease both; }
+    .acc-item:nth-child(3) { animation: fadeUp 0.4s 0.38s ease both; }
+    .acc-item:nth-child(4) { animation: fadeUp 0.4s 0.46s ease both; }
+    .acc-item:nth-child(5) { animation: fadeUp 0.4s 0.54s ease both; }
+    .acc-item:nth-child(6) { animation: fadeUp 0.4s 0.62s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- XP BAR -->
+<div class="xp-bar-wrap">
+  <span class="xp-label">Mód. 3 / 5 · Mapa del H.</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+  <span class="xp-pct" id="xpPct">0%</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-icon">🍽️</span>
+    Módulo 03 · Mapa del H.
+  </div>
+  <span class="hero-cap-label">Guía educativa sobre el sueño masculino</span>
+  <h1 class="hero-titulo">
+    <span class="white">Alimentación</span><br>
+    <span class="red">y Sueño</span>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">Lo que comes y cuándo lo comes puede influir en cómo descansas — una visión educativa basada en investigación</p>
+</div>
+
+<!-- MODULE BANNER -->
+<div class="mod-banner">
+  <div class="mod-banner-top">
+    <div class="mod-banner-icon">🍽️</div>
+    <div>
+      <span class="mod-banner-tag">Módulo 03 — Hábitos alimentarios</span>
+      <div class="mod-banner-titulo">Conceptos generales sobre comida y descanso</div>
+    </div>
+  </div>
+  <p class="mod-banner-desc">Este módulo presenta principios educativos generales — no es un plan nutricional ni sustituye el acompañamiento de un nutricionista profesional.</p>
+</div>
+
+<!-- AVISO PRO PRINCIPAL -->
+<div class="aviso-pro">
+  <div class="aviso-pro-icon">⚠️</div>
+  <div class="aviso-pro-content">
+    <div class="aviso-pro-label">Aviso importante</div>
+    <div class="aviso-pro-text">El contenido de este módulo es <strong>exclusivamente educativo</strong>. No constituye plan nutricional, recomendación dietética, ni prescripción de alimentos o suplementos. Decisiones sobre alimentación, especialmente si tienes condiciones médicas (diabetes, reflujo, gastritis, hipertensión, alergias o cualquier otra), <strong>requieren orientación de un profesional de salud o nutricionista calificado</strong>.</div>
+  </div>
+</div>
+
+<!-- TAP HINT -->
+<div class="tap-hint">
+  <div class="tap-hint-dot"></div>
+  Toca para expandir cada sección
+  <div class="tap-hint-dot"></div>
+</div>
+
+<!-- ACCORDION -->
+<div class="acc-wrap">
+
+  <!-- S1 - CONEXION GENERAL -->
+  <div class="acc-item" id="s1">
+    <button class="acc-trigger" onclick="toggle('s1')">
+      <div class="acc-icon-wrap">🔗</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El concepto</span>
+        <div class="acc-titulo">La conexión entre comida y sueño</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s1">
+      <div class="acc-body-inner">
+        <p>La investigación sobre sueño muestra una relación clara entre los hábitos alimentarios y la calidad del descanso nocturno. No es solo lo que se come — el <em>horario</em> en que se come también tiene influencia documentada.</p>
+        <p>Matthew Walker, profesor de neurociencia en UC Berkeley, ha resumido en <em>Why We Sleep</em> (2017) que comer muy cerca de la hora de dormir o consumir ciertos alimentos en la noche puede dificultar el inicio del sueño y reducir su calidad. Este módulo presenta los principios generales documentados por la investigación.</p>
+
+        <div class="quote">
+          <div class="quote-text">"Los hábitos alimentarios y los horarios de comida influyen en el reloj biológico y, por lo tanto, en la calidad del sueño. La consistencia importa tanto como las elecciones específicas."</div>
+          <cite class="quote-cite">— Investigación sobre cronobiología nutricional</cite>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Lo que este módulo NO es:</strong> no es una lista de alimentos "que sanan" o "que curan" problemas de sueño. No es una guía nutricional personalizada. No es una recomendación de suplementos. Es una <em>visión educativa general</em> basada en literatura científica sobre la relación comida-sueño.</p>
+        </div>
+
+        <p>Las áreas que la investigación ha estudiado más son:</p>
+
+        <div class="principio-card">
+          <div class="principio-emoji">⏰</div>
+          <div class="principio-info">
+            <div class="principio-titulo">El horario de las comidas</div>
+            <div class="principio-desc">Cuándo se come parece tener un impacto importante en el sueño, a veces incluso mayor que qué se come.</div>
+          </div>
+        </div>
+
+        <div class="principio-card">
+          <div class="principio-emoji">🍷</div>
+          <div class="principio-info">
+            <div class="principio-titulo">El alcohol</div>
+            <div class="principio-desc">Su efecto sobre el sueño es uno de los más estudiados — y uno de los más contraintuitivos para quienes lo consumen.</div>
+          </div>
+        </div>
+
+        <div class="principio-card">
+          <div class="principio-emoji">🍝</div>
+          <div class="principio-info">
+            <div class="principio-titulo">Comidas pesadas en la noche</div>
+            <div class="principio-desc">El tamaño y composición de la última comida del día afectan la digestión, y la digestión afecta el sueño.</div>
+          </div>
+        </div>
+
+        <div class="principio-card">
+          <div class="principio-emoji">📅</div>
+          <div class="principio-info">
+            <div class="principio-titulo">La regularidad</div>
+            <div class="principio-desc">Comer aproximadamente a las mismas horas todos los días refuerza el ritmo circadiano y el ciclo de descanso.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 - ALIMENTOS TRADICIONALES -->
+  <div class="acc-item" id="s2">
+    <button class="acc-trigger" onclick="toggle('s2')">
+      <div class="acc-icon-wrap">🥣</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Alimentos comunes</span>
+        <div class="acc-titulo">Rutinas tradicionales de la noche</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s2">
+      <div class="acc-body-inner">
+        <p>En diversas culturas existen alimentos tradicionalmente asociados a rutinas relajantes nocturnas. Vale la pena verlos como parte de un <strong>ritual de transición hacia el descanso</strong> — más que como "remedios" para dormir.</p>
+        <p>La investigación nutricional contemporánea ha estudiado algunos de estos alimentos, pero los resultados son variados y no permiten afirmar que un alimento específico "mejore el sueño" de forma garantizada. Lo que sí se observa es que ciertos hábitos alimentarios nocturnos ligeros son compatibles con rutinas de descanso bien estructuradas.</p>
+
+        <p>Algunos alimentos frecuentemente mencionados en literatura general sobre rutinas nocturnas:</p>
+
+        <div class="trad-grid">
+          <div class="trad-card">
+            <span class="trad-icon">🍌</span>
+            <div class="trad-nombre">Plátano</div>
+            <div class="trad-tag">Ligero, fácil de digerir</div>
+          </div>
+          <div class="trad-card">
+            <span class="trad-icon">🥜</span>
+            <div class="trad-nombre">Frutos secos</div>
+            <div class="trad-tag">En cantidad pequeña</div>
+          </div>
+          <div class="trad-card">
+            <span class="trad-icon">🍒</span>
+            <div class="trad-nombre">Cerezas</div>
+            <div class="trad-tag">Estudio en literatura</div>
+          </div>
+          <div class="trad-card">
+            <span class="trad-icon">🥛</span>
+            <div class="trad-nombre">Lácteos tibios</div>
+            <div class="trad-tag">Asociación tradicional</div>
+          </div>
+          <div class="trad-card">
+            <span class="trad-icon">🍵</span>
+            <div class="trad-nombre">Infusiones sin cafeína</div>
+            <div class="trad-tag">Manzanilla, tilo, valeriana</div>
+          </div>
+          <div class="trad-card">
+            <span class="trad-icon">🌾</span>
+            <div class="trad-nombre">Avena</div>
+            <div class="trad-tag">Carbohidrato complejo</div>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> ningún alimento por sí solo "causa" buen sueño. La investigación nutricional rigurosa muestra que los efectos de alimentos individuales sobre el sueño son modestos y varían entre personas. Lo que sí tiene impacto consistente es el <em>patrón general</em> de hábitos alimentarios.</p>
+        </div>
+
+        <p>Algunos alimentos y bebidas que la investigación documenta como frecuentemente disruptivos para el sueño cuando se consumen cerca de la hora de dormir:</p>
+
+        <div class="trad-grid">
+          <div class="trad-card evitar">
+            <span class="trad-icon">☕</span>
+            <div class="trad-nombre">Cafeína tarde</div>
+            <div class="trad-tag">Después de 14h</div>
+          </div>
+          <div class="trad-card evitar">
+            <span class="trad-icon">🍷</span>
+            <div class="trad-nombre">Alcohol nocturno</div>
+            <div class="trad-tag">Ver sección 3</div>
+          </div>
+          <div class="trad-card evitar">
+            <span class="trad-icon">🍕</span>
+            <div class="trad-nombre">Comidas muy pesadas</div>
+            <div class="trad-tag">Dificultan digestión</div>
+          </div>
+          <div class="trad-card evitar">
+            <span class="trad-icon">🌶️</span>
+            <div class="trad-nombre">Picantes intensos</div>
+            <div class="trad-tag">Pueden incomodar</div>
+          </div>
+          <div class="trad-card evitar">
+            <span class="trad-icon">🍬</span>
+            <div class="trad-nombre">Azúcar refinada</div>
+            <div class="trad-tag">Activación nocturna</div>
+          </div>
+          <div class="trad-card evitar">
+            <span class="trad-icon">🥤</span>
+            <div class="trad-nombre">Exceso de líquidos</div>
+            <div class="trad-tag">Despertares para baño</div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Una observación práctica:</strong> en lugar de pensar "qué alimento me hará dormir mejor", suele ser más útil preguntar "¿qué está dificultando mi descanso?". Identificar y reducir lo que sabotea suele tener más impacto que añadir nuevos elementos.</p>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Sobre suplementos:</strong> este módulo no recomienda el uso de suplementos alimentarios, vitamínicos o de cualquier tipo. El uso de suplementos requiere orientación profesional individualizada. Si consideras suplementación, consulta con un médico o nutricionista calificado que pueda evaluar tu caso específico.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 - ALCOHOL -->
+  <div class="acc-item" id="s3">
+    <button class="acc-trigger" onclick="toggle('s3')">
+      <div class="acc-icon-wrap">🍷</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">El caso del alcohol</span>
+        <div class="acc-titulo">Lo que la investigación documenta</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s3">
+      <div class="acc-body-inner">
+        <p>Existe la creencia popular de que una copa antes de dormir ayuda a conciliar el sueño. La investigación contemporánea sobre sueño ha estudiado esta cuestión durante décadas y los resultados son consistentes — y contraintuitivos.</p>
+        <p>Ebrahim, Shapiro y colegas, en una revisión publicada en <em>Alcoholism: Clinical and Experimental Research</em> (2013), sintetizaron décadas de evidencia sobre cómo el alcohol afecta el sueño. La conclusión central: el alcohol puede acelerar el inicio del sueño, pero <strong>reduce significativamente la calidad del sueño en general</strong> — especialmente la fase REM, donde ocurre buena parte de la recuperación mental.</p>
+
+        <div class="quote">
+          <div class="quote-text">"El alcohol puede hacer que te duermas más rápido, pero arruina lo que importa: la arquitectura del sueño. Es uno de los supresores más potentes del REM que existen."</div>
+          <cite class="quote-cite">— Dr. Matthew Walker, UC Berkeley</cite>
+        </div>
+
+        <p>Lo que la investigación documenta sobre los efectos del alcohol en el sueño:</p>
+
+        <div class="razon-card">
+          <div class="razon-emoji">⚡</div>
+          <div class="razon-text"><strong>Acelera el inicio del sueño.</strong> El alcohol tiene un efecto inicial sedante, lo que explica por qué muchas personas creen que les ayuda a dormir.</div>
+        </div>
+
+        <div class="razon-card">
+          <div class="razon-emoji">📉</div>
+          <div class="razon-text"><strong>Reduce significativamente la fase REM.</strong> La investigación documenta consistentemente esta reducción, que se asocia con menor recuperación mental y procesamiento emocional.</div>
+        </div>
+
+        <div class="razon-card">
+          <div class="razon-emoji">🔁</div>
+          <div class="razon-text"><strong>Fragmenta el sueño.</strong> Aumenta los despertares en la segunda mitad de la noche, cuando la persona ya metabolizó parte del alcohol y el efecto sedante se invierte en efecto activador.</div>
+        </div>
+
+        <div class="razon-card">
+          <div class="razon-emoji">💧</div>
+          <div class="razon-text"><strong>Deshidratación.</strong> El alcohol tiene efecto diurético, lo que puede causar despertares para ir al baño y sensación de boca seca al día siguiente.</div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>El paradigma a cuestionar:</strong> la idea de "una copa para dormir mejor" es una de las creencias sobre sueño más extendidas — y, según la investigación, una de las menos respaldadas. La sensación subjetiva de "dormí rápido" no equivale a "dormí bien".</p>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> este contenido es exclusivamente educativo. Decisiones sobre consumo de alcohol son personales y dependen de muchos factores individuales. Si el consumo de alcohol es preocupante o difícil de regular, busca orientación con un profesional de salud calificado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 - COMIDAS PESADAS -->
+  <div class="acc-item" id="s4">
+    <button class="acc-trigger" onclick="toggle('s4')">
+      <div class="acc-icon-wrap">🍽️</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Cenas pesadas</span>
+        <div class="acc-titulo">Por qué importan</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s4">
+      <div class="acc-body-inner">
+        <p>Comer una comida pesada poco antes de acostarse es uno de los factores que más frecuentemente se asocia con sueño de baja calidad en la literatura nutricional sobre cronobiología.</p>
+        <p>El cuerpo tiene su propio "reloj metabólico" — un sistema de regulación que, idealmente, funciona mejor cuando los procesos digestivos pesados terminan antes del inicio del descanso. Comer mucho cerca de la hora de dormir significa <strong>pedirle al cuerpo que digiera mientras intenta entrar en modo de recuperación</strong>.</p>
+
+        <p>Por qué cenar muy tarde o muy pesado puede dificultar el sueño:</p>
+
+        <div class="razon-card">
+          <div class="razon-emoji">🔥</div>
+          <div class="razon-text"><strong>La digestión activa al cuerpo.</strong> Procesar una comida pesada requiere actividad del sistema digestivo — lo opuesto al modo de relajación que el cuerpo necesita para iniciar el sueño.</div>
+        </div>
+
+        <div class="razon-card">
+          <div class="razon-emoji">🌡️</div>
+          <div class="razon-text"><strong>La digestión eleva la temperatura corporal.</strong> El cuerpo necesita una caída gradual de temperatura para iniciar el sueño. La digestión activa va en dirección opuesta.</div>
+        </div>
+
+        <div class="razon-card">
+          <div class="razon-emoji">⬆️</div>
+          <div class="razon-text"><strong>Riesgo de reflujo al acostarse.</strong> Acostarse con el estómago lleno aumenta la probabilidad de molestias digestivas, especialmente en personas con sensibilidad o condiciones gástricas previas.</div>
+        </div>
+
+        <div class="razon-card">
+          <div class="razon-emoji">💭</div>
+          <div class="razon-text"><strong>Sueño menos consolidado.</strong> La literatura documenta asociación entre cenas pesadas tardías y mayor fragmentación del sueño durante la noche.</div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Una regla educativa general:</strong> diversos investigadores sugieren un intervalo aproximado de 2 a 3 horas entre la última comida importante y la hora de acostarse. No es una regla absoluta — varía entre personas — pero es una referencia frecuentemente citada.</p>
+        </div>
+
+        <p>Si surge hambre genuina cerca de la hora de dormir, un <em>snack ligero</em> suele ser preferible a acostarse con hambre intensa que pueda dificultar conciliar el sueño. Las elecciones específicas — qué comer, en qué cantidad — son individuales y, idealmente, orientadas por un profesional de nutrición.</p>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> si tienes condiciones gástricas como reflujo, gastritis, úlcera o cualquier otra alteración digestiva, las pautas de horario y cantidad de comidas deben ser definidas con un profesional de salud. Lo descrito en este módulo es una visión educativa general que no sustituye orientación clínica individualizada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 - HORARIOS Y REGULARIDAD -->
+  <div class="acc-item" id="s5">
+    <button class="acc-trigger" onclick="toggle('s5')">
+      <div class="acc-icon-wrap">⏰</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Horarios y regularidad</span>
+        <div class="acc-titulo">El poder de la consistencia</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s5">
+      <div class="acc-body-inner">
+        <p>Más importante que cualquier alimento específico es el patrón. La <strong>consistencia en los horarios de las comidas</strong> es uno de los factores que la cronobiología nutricional documenta con mayor claridad.</p>
+        <p>Satchin Panda, profesor del Salk Institute for Biological Studies en California, ha investigado durante décadas el campo conocido como <em>Time-Restricted Eating</em> (alimentación con ventana horaria). Una de sus observaciones centrales: el cuerpo responde mejor cuando las comidas ocurren dentro de una ventana relativamente estable cada día, en lugar de distribuirse de forma irregular a lo largo del día y la noche.</p>
+
+        <p>Una distribución general de horarios — solo como referencia educativa:</p>
+
+        <div class="comida-timeline">
+          <div class="comida-item">
+            <div class="comida-hora">Por la mañana</div>
+            <div class="comida-titulo">Primera comida</div>
+            <div class="comida-desc">Algunas horas después de despertar, según preferencia personal y rutina. Algunos optan por comer apenas despiertan; otros por esperar. Ambas son válidas según el contexto individual.</div>
+          </div>
+          <div class="comida-item">
+            <div class="comida-hora">A mediodía</div>
+            <div class="comida-titulo">Comida principal</div>
+            <div class="comida-desc">Para muchas personas, el mediodía es un momento en que el cuerpo tolera bien una comida más sustancial — coincide con el pico natural de alerta diurna.</div>
+          </div>
+          <div class="comida-item">
+            <div class="comida-hora">Tarde-noche</div>
+            <div class="comida-titulo">Cena ligera, con tiempo</div>
+            <div class="comida-desc">Algunas referencias sugieren cenar al menos 2 a 3 horas antes de acostarse, de manera que la digestión más intensa ocurra antes del descanso.</div>
+          </div>
+          <div class="comida-item">
+            <div class="comida-hora">Antes de dormir</div>
+            <div class="comida-titulo">Hidratación moderada</div>
+            <div class="comida-desc">Una buena hidratación durante el día reduce la necesidad de beber mucha agua justo antes de dormir, lo que disminuye los despertares para ir al baño.</div>
+          </div>
+        </div>
+
+        <p>Algunos principios generales sobre regularidad documentados en la literatura:</p>
+
+        <div class="principio-card">
+          <div class="principio-emoji">📅</div>
+          <div class="principio-info">
+            <div class="principio-titulo">Consistencia de horarios</div>
+            <div class="principio-desc">Comer aproximadamente a las mismas horas todos los días refuerza el reloj circadiano. Variaciones grandes de día a día tienden a desregularlo.</div>
+          </div>
+        </div>
+
+        <div class="principio-card">
+          <div class="principio-emoji">⏳</div>
+          <div class="principio-info">
+            <div class="principio-titulo">Ventana de alimentación</div>
+            <div class="principio-desc">La investigación de Panda sugiere que mantener las comidas dentro de una ventana de 10 a 12 horas (por ejemplo, primera comida a las 8h y última a las 19h) es una práctica que muchas personas toleran bien — pero la ventana ideal varía individualmente.</div>
+          </div>
+        </div>
+
+        <div class="principio-card">
+          <div class="principio-emoji">🌙</div>
+          <div class="principio-info">
+            <div class="principio-titulo">Cuidar la última comida</div>
+            <div class="principio-desc">Comidas muy tardías y muy abundantes están más asociadas con sueño fragmentado que comidas tempranas, incluso si la cantidad total del día es similar.</div>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Si trabajas en horarios irregulares:</strong> trabajadores nocturnos o con turnos rotativos enfrentan desafíos específicos en términos de regularidad alimentaria. Adaptar estos principios al propio ciclo requiere ajustes personalizados, idealmente con orientación profesional.</p>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> patrones específicos de alimentación, ventanas horarias estrictas o cualquier cambio significativo en la rutina alimentaria deben ser definidos con un profesional de nutrición — especialmente si existen condiciones como diabetes, alteraciones de la glicemia, problemas tiroideos, embarazo, lactancia o cualquier otra condición particular. Este material no sustituye acompañamiento profesional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6 - REGRAS + REFS -->
+  <div class="acc-item" id="s6">
+    <button class="acc-trigger" onclick="toggle('s6')">
+      <div class="acc-icon-wrap">📚</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Reglas y fuentes</span>
+        <div class="acc-titulo">Cierre del módulo</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s6">
+      <div class="acc-body-inner">
+        <p>Resumen práctico del módulo. Como en cualquier área relacionada con alimentación, estos principios son <strong>educativos y generales</strong> — no son guías personalizadas.</p>
+
+        <div class="dodont-grid">
+          <div class="dodont-card dodont-do">
+            <div class="dodont-label">✓ Hazlo</div>
+            <ul class="dodont-list">
+              <li>Mantén horarios de comida razonablemente consistentes día tras día.</li>
+              <li>Procura cenar al menos 2 a 3 horas antes de acostarte.</li>
+              <li>Prefiere cenas más ligeras a cenas muy abundantes.</li>
+              <li>Mantén una buena hidratación durante el día, reduciéndola cerca de la noche.</li>
+              <li>Si tienes condiciones de salud, consulta con un nutricionista o médico antes de cambios significativos.</li>
+            </ul>
+          </div>
+          <div class="dodont-card dodont-dont">
+            <div class="dodont-label">✕ No lo hagas</div>
+            <ul class="dodont-list">
+              <li>No uses el alcohol como ayuda para dormir — la investigación documenta que reduce la calidad del sueño.</li>
+              <li>No inicies suplementos por cuenta propia. Su uso requiere orientación profesional.</li>
+              <li>No comas comidas muy pesadas justo antes de acostarte.</li>
+              <li>No esperes que un alimento específico "resuelva" un problema de sueño — el patrón importa más que cualquier ingrediente.</li>
+              <li>No adoptes ventanas alimentarias muy restrictivas sin orientación profesional.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>El mensaje central del módulo:</strong> los hábitos alimentarios influyen en el sueño, pero la influencia más fuerte viene del <em>patrón general</em> — horarios, regularidad, cuidado con la última comida del día — y no de alimentos específicos o "fórmulas". Cambios importantes en la dieta deben hacerse con orientación profesional.</p>
+        </div>
+
+        <div class="ref-box">
+          <div class="ref-label">Referencias de este módulo</div>
+          <div class="ref-item">Walker, M. (2017). <em>Why We Sleep: Unlocking the Power of Sleep and Dreams.</em> Scribner. Center for Human Sleep Science, UC Berkeley.</div>
+          <div class="ref-item">Ebrahim, I. O., Shapiro, C. M., Williams, A. J., & Fenwick, P. B. (2013). Alcohol and sleep I: Effects on normal sleep. <em>Alcoholism: Clinical and Experimental Research,</em> 37(4), 539–549.</div>
+          <div class="ref-item">Panda, S. (2018). <em>The Circadian Code: Lose Weight, Supercharge Your Energy, and Sleep Well Every Night.</em> Rodale Books. Salk Institute for Biological Studies.</div>
+          <div class="ref-item">Manoogian, E. N. C., & Panda, S. (2017). Circadian rhythms, time-restricted feeding, and healthy aging. <em>Ageing Research Reviews,</em> 39, 59–67.</div>
+          <div class="ref-item">St-Onge, M.-P., Mikic, A., & Pietrolungo, C. E. (2016). Effects of diet on sleep quality. <em>Advances in Nutrition,</em> 7(5), 938–949. Columbia University.</div>
+          <div class="ref-item">Crispim, C. A., et al. (2011). Relationship between food intake and sleep pattern in healthy individuals. <em>Journal of Clinical Sleep Medicine,</em> 7(6), 659–664.</div>
+          <div class="ref-item">Kinsey, A. W., & Ormsbee, M. J. (2015). The health impact of nighttime eating: Old and new perspectives. <em>Nutrients,</em> 7(4), 2648–2662. Florida State University.</div>
+          <div class="ref-item">Roehrs, T., & Roth, T. (2001). Sleep, sleepiness, and alcohol use. <em>Alcohol Research & Health,</em> 25(2), 101–109. National Institute on Alcohol Abuse and Alcoholism.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>⚠️ Aviso:</strong> Material exclusivamente educativo, parte del programa Mapa del H. Las referencias citadas son reales y verificables. Este módulo presenta principios generales sobre la relación entre hábitos alimentarios y sueño — <strong>no constituye plan nutricional, guía dietética, prescripción de alimentos o recomendación de suplementos</strong>. Decisiones sobre alimentación, especialmente en presencia de condiciones médicas (diabetes, hipertensión, reflujo, gastritis, alergias, embarazo, lactancia u otras), requieren orientación de un médico o nutricionista calificado. Este programa no promete resultados específicos ni garantizados — los avances dependen de la constancia individual y de múltiples factores personales.
+  </div>
+
+  <!-- BOTÃO -->
+  <div class="complete-wrap">
+    <button class="complete-btn" onclick="completarCap()">
+      <span class="btn-icon">⚡</span>
+      Marcar módulo como completado
+    </button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">🏆 ¡Módulo 3 completado!</div>
+
+<script>
+  var openItems = {};
+  var completed = {};
+  var totalSections = 6;
+
+  function toggle(id) {
+    var item = document.getElementById(id);
+    var body = document.getElementById('body-' + id);
+    var isOpen = openItems[id];
+    if (isOpen) {
+      body.style.maxHeight = '0px';
+      item.classList.remove('open');
+      openItems[id] = false;
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.classList.add('open');
+      openItems[id] = true;
+      if (!completed[id]) {
+        setTimeout(function() { markRead(id); }, 1800);
+      }
+    }
+    updateXP();
+  }
+
+  function markRead(id) {
+    if (completed[id]) return;
+    completed[id] = true;
+    document.getElementById(id).classList.add('completed');
+    updateXP();
+  }
+
+  function updateXP() {
+    var count = Object.keys(completed).length;
+    var pct = Math.round((count / totalSections) * 100);
+    document.getElementById('xpFill').style.width = pct + '%';
+    document.getElementById('xpPct').textContent = pct + '%';
+  }
+
+  function completarCap() {
+    for (var i = 1; i <= totalSections; i++) {
+      completed['s' + i] = true;
+      document.getElementById('s' + i).classList.add('completed');
+    }
+    document.getElementById('xpFill').style.width = '100%';
+    document.getElementById('xpPct').textContent = '100%';
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+  }
+
+  setTimeout(function() {
+    document.getElementById('xpFill').style.width = '0%';
+  }, 100);
+</script>
+
+</body>
+</html>

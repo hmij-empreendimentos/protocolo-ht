@@ -2,19 +2,18 @@
  * Módulos / cards de la home del webapp PROTOCOLO HT.
  *
  * Tipos de card:
- *  - `contenido`  → módulo con video + PDFs (navega a /modulos/[slug])
- *  - `whatsapp`   → abre wa.me/<número> en nueva pestaña
- *  - `email`      → abre mailto:<email>
+ *  - `contenido`    → módulo con submódulos (cada submódulo es una página HTML)
  *  - `especialista` → abre el chat con el especialista (/especialista)
+ *  - `whatsapp`     → abre wa.me/<número>
+ *  - `email`        → abre mailto:<email>
  *
- * Si un módulo `contenido` tiene `submodulos`, la página de [slug] muestra
- * la lista de submódulos en lugar del contenido directo.
+ * El contenido real de cada submódulo vive como página HTML en
+ * `public/contenido/<slug>/<n>.html` y se muestra incrustado. La imagen de
+ * portada de cada submódulo está en `public/modulos/<slug>/<n>.avif`.
+ * El arte del card de cada módulo está en `public/cards/`.
  *
- * NOTA: el contenido real (IDs de video Vturb/YouTube, descripciones y PDFs)
- * lo proporciona el cliente. Los marcados con `// TODO` son placeholders.
+ * Para editar títulos de submódulos: cambia el texto en los arreglos `subs(...)`.
  */
-
-const VTURB_ACCOUNT_ID = "TODO-ACCOUNT-ID";
 
 export type VturbVideo = {
   provider: "vturb";
@@ -40,29 +39,27 @@ export type Submodulo = {
   slug: string;
   titulo: string;
   descripcion?: string;
-  /** Imagen de portada opcional. Si no hay, se usa el card con degradado + ícono. */
   imagen?: string;
-  /** Clave del ícono Lucide (ver iconMap en ModuloCard). */
   icono?: string;
+  /** Página HTML incrustada (contenido del módulo). */
+  html?: string;
   video?: VideoEmbed;
   pdfs?: Pdf[];
 };
 
-/** Tono de acento del card (controla el degradado y el resplandor). */
 export type Acento = "gold" | "red" | "steel";
 
 export type ModuloContenido = {
   tipo: "contenido";
   slug: string;
   titulo: string;
-  /** Etiqueta corta mostrada bajo el título. */
   etiqueta: string;
   badge: "principal" | "bonus";
   icono: string;
   acento: Acento;
-  /** Imagen de portada opcional (si el cliente sube el arte del card). */
   imagen?: string;
   descripcion?: string;
+  html?: string;
   video?: VideoEmbed;
   pdfs?: Pdf[];
   submodulos?: Submodulo[];
@@ -76,6 +73,7 @@ export type ModuloEspecialista = {
   badge: "bonus";
   icono: string;
   acento: Acento;
+  imagen?: string;
   descripcion?: string;
 };
 
@@ -87,6 +85,7 @@ export type ModuloWhatsapp = {
   badge: "bonus";
   icono: string;
   acento: Acento;
+  imagen?: string;
   urlWhatsapp: string;
 };
 
@@ -98,6 +97,7 @@ export type ModuloEmail = {
   badge: "bonus";
   icono: string;
   acento: Acento;
+  imagen?: string;
   email: string;
   asunto?: string;
 };
@@ -108,13 +108,22 @@ export type Modulo =
   | ModuloWhatsapp
   | ModuloEmail;
 
-/** Helper: construye un VturbVideo con el accountId de la marca. */
-export function vturb(
-  videoId: string,
-  aspectRatio: VturbVideo["aspectRatio"] = "9:16",
-): VturbVideo {
-  return { provider: "vturb", accountId: VTURB_ACCOUNT_ID, videoId, aspectRatio };
+/** Construye los submódulos de un módulo a partir de la lista de títulos. */
+function subs(slug: string, titulos: string[]): Submodulo[] {
+  return titulos.map((titulo, i) => {
+    const n = i + 1;
+    return {
+      slug: `modulo-${n}`,
+      titulo,
+      imagen: `/modulos/${slug}/${n}.avif`,
+      html: `/contenido/${slug}/${n}.html`,
+    };
+  });
 }
+
+// Número de WhatsApp del soporte (Honey Trick Protocol).
+const WHATSAPP =
+  "https://wa.me/5537991211613?text=Hola%2C%20tengo%20dudas%20sobre%20el%20Protocolo%20HT.";
 
 export const MODULOS: Modulo[] = [
   {
@@ -125,9 +134,9 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "flag",
     acento: "gold",
+    imagen: "/cards/comienza-por-aqui.avif",
     descripcion:
-      "Bienvenido al Protocolo HT. Mira este video corto antes de comenzar: te explicamos cómo usar el app y aprovechar cada módulo.",
-    // video: vturb("TODO-VIDEO-ID"),
+      "Bienvenido al Protocolo HT. Empieza por aquí para entender cómo aprovechar cada módulo y avanzar paso a paso.",
   },
   {
     tipo: "contenido",
@@ -137,34 +146,21 @@ export const MODULOS: Modulo[] = [
     badge: "principal",
     icono: "flame",
     acento: "gold",
+    imagen: "/cards/protocolo-ht.avif",
     descripcion:
-      "El protocolo completo paso a paso. Aquí está el método central para transformar tu rendimiento.",
-    submodulos: [
-      {
-        slug: "introduccion",
-        titulo: "Introducción al Protocolo",
-        icono: "play",
-        descripcion: "Qué es el Protocolo HT y cómo funciona.",
-      },
-      {
-        slug: "fase-1",
-        titulo: "Fase 1: Fundamentos",
-        icono: "layers",
-        descripcion: "La base sobre la que se construye todo.",
-      },
-      {
-        slug: "fase-2",
-        titulo: "Fase 2: Activación",
-        icono: "zap",
-        descripcion: "Pon el protocolo en marcha.",
-      },
-      {
-        slug: "fase-3",
-        titulo: "Fase 3: Consolidación",
-        icono: "trophy",
-        descripcion: "Mantén y consolida los resultados.",
-      },
-    ],
+      "Tu protocolo completo paso a paso: recetas, técnicas, entrenamiento, nutrición, descanso y seguimiento.",
+    submodulos: subs("protocolo-ht", [
+      "Receta Natural",
+      "Técnicas y Ejercicios",
+      "Técnica de Kegel",
+      "Fundamentos de la Fuerza y la Energía",
+      "Entrenamiento de Fuerza Guiado",
+      "Nutrición para tu Energía",
+      "Sueño y Recuperación",
+      "Manejo del Estrés",
+      "Seguimiento Semanal",
+      "Bono: Guía Rápida de Arranque",
+    ]),
   },
   {
     tipo: "contenido",
@@ -174,9 +170,17 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "gauge",
     acento: "red",
+    imagen: "/cards/modo-acelerado.avif",
     descripcion:
-      "El atajo para quienes quieren ver resultados lo antes posible, sin saltarse lo esencial.",
-    // video: vturb("TODO-VIDEO-ID"),
+      "El camino rápido para ver resultados antes, sin saltarte lo esencial del protocolo.",
+    submodulos: subs("modo-acelerado", [
+      "Módulo 1",
+      "Módulo 2",
+      "Módulo 3",
+      "Módulo 4",
+      "Módulo 5",
+      "Módulo 6",
+    ]),
   },
   {
     tipo: "contenido",
@@ -186,9 +190,18 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "trending-up",
     acento: "red",
+    imagen: "/cards/boost-ht.avif",
     descripcion:
-      "Lleva tus resultados al siguiente nivel con estrategias avanzadas de potenciación.",
-    // video: vturb("TODO-VIDEO-ID"),
+      "Potencia tus resultados: próstata, energía, nutrición inteligente, sueño y cuidado capilar.",
+    submodulos: subs("boost-ht", [
+      "Power Premium Próstata",
+      "Detox Premium Energía",
+      "Menú Power Premium",
+      "Tónico Capilar Natural",
+      "Alimentación Inteligente",
+      "Sueño Reparador",
+      "Nutrientes y Cabello",
+    ]),
   },
   {
     tipo: "contenido",
@@ -198,9 +211,16 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "shield",
     acento: "steel",
+    imagen: "/cards/codigo-del-hombre.avif",
     descripcion:
-      "Mentalidad, disciplina y postura. El código que separa al hombre común del hombre de resultados.",
-    // video: vturb("TODO-VIDEO-ID"),
+      "El mapa del hombre: mentalidad, disciplina y postura para sostener tus resultados.",
+    submodulos: subs("codigo-del-hombre", [
+      "Mapa del Hombre · Parte 1",
+      "Mapa del Hombre · Parte 2",
+      "Mapa del Hombre · Parte 3",
+      "Mapa del Hombre · Parte 4",
+      "Mapa del Hombre · Parte 5",
+    ]),
   },
   {
     tipo: "contenido",
@@ -210,9 +230,14 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "flame",
     acento: "red",
+    imagen: "/cards/formula-de-la-seducion.avif",
     descripcion:
-      "Atracción, confianza y conexión. La fórmula para recuperar tu poder de seducción.",
-    // video: vturb("TODO-VIDEO-ID"),
+      "Atracción, comunicación y conexión. Recupera tu poder de seducción.",
+    submodulos: subs("formula-de-la-seduccion", [
+      "Secretos del Placer",
+      "El Poder de la Comunicación",
+      "Técnicas de Comunicación Efectiva",
+    ]),
   },
   {
     tipo: "especialista",
@@ -222,8 +247,9 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "message-circle",
     acento: "gold",
+    imagen: "/cards/Hablar-con-Especialista.avif",
     descripcion:
-      "Habla con nuestro especialista. Resuelve tus dudas sobre el protocolo de forma directa.",
+      "Habla con nuestro especialista y resuelve tus dudas sobre el protocolo de forma directa.",
   },
   {
     tipo: "whatsapp",
@@ -233,8 +259,8 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "whatsapp",
     acento: "gold",
-    urlWhatsapp:
-      "https://wa.me/0000000000?text=Hola%2C%20tengo%20una%20duda%20sobre%20el%20Protocolo%20HT.", // TODO: número real
+    imagen: "/cards/soporte-por-whatsapp.avif",
+    urlWhatsapp: WHATSAPP,
   },
   {
     tipo: "email",
@@ -244,12 +270,13 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "mail",
     acento: "steel",
-    email: "soporte@protocoloht.com", // TODO: email real
+    imagen: "/cards/correo-de-soporte.avif",
+    email: "soporte@protocoloht.com", // TODO: email real del cliente
     asunto: "Soporte - Protocolo HT",
   },
 ];
 
-/** Lookup por slug, para las páginas dinámicas. */
+/** Lookup por slug. */
 export function getModulo(slug: string): Modulo | undefined {
   return MODULOS.find((m) => m.slug === slug);
 }

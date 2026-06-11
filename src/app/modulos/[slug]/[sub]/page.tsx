@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/Brand";
 import { ContentBody } from "@/components/ContentBody";
+import { HtmlContent } from "@/components/HtmlContent";
 import { getModulosContenido, getSubmodulo } from "@/lib/modulos-conteudo";
 
 export function generateStaticParams() {
@@ -44,11 +45,15 @@ export default async function SubmoduloPage({
         <p className="text-[11px] font-bold uppercase tracking-widest text-ht-gold">
           {modulo.titulo}
         </p>
-        <ContentBody
-          video={submodulo.video}
-          descripcion={submodulo.descripcion}
-          pdfs={submodulo.pdfs}
-        />
+        {submodulo.html ? (
+          <HtmlContent src={submodulo.html} />
+        ) : (
+          <ContentBody
+            video={submodulo.video}
+            descripcion={submodulo.descripcion}
+            pdfs={submodulo.pdfs}
+          />
+        )}
       </div>
     </main>
   );

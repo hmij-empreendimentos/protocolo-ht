@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>H.T Protocol - Técnica de Kegel</title>
+  <style>
+    :root{
+      --bg:#f8faf9; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+      --accent:#16a34a; --accent-2:#10b981; --border:#e5e7eb;
+      --shadow:0 10px 20px rgba(0,0,0,.06),0 6px 6px rgba(0,0,0,.04);
+      --radius:20px; --maxw:760px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b1110; --card:#0f1716; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --shadow:0 10px 20px rgba(0,0,0,.5),0 6px 6px rgba(0,0,0,.35); }
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 100% -10%, rgba(16,185,129,.06), transparent 50%), radial-gradient(1000px 700px at -10% 110%, rgba(22,163,74,.05), transparent 55%), var(--bg);
+      color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    .container{max-width:var(--maxw);margin:clamp(16px,3.5vw,36px) auto;padding:clamp(14px,3vw,28px);min-height:100px}
+    .header{display:grid;gap:10px;text-align:left;margin-bottom:clamp(18px,3.5vw,28px)}
+    .badge{
+      align-self:start;display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.3px;
+      background:linear-gradient(180deg, rgba(16,185,129,.15), rgba(16,185,129,.08));
+      color:var(--accent);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;
+    }
+    h1{font-size:clamp(22px,3.8vw,32px);line-height:1.2;margin:0;letter-spacing:.2px}
+    .lead{color:var(--muted);font-size:clamp(14px,2.6vw,17px);margin:0}
+    .accordion{display:grid;gap:12px}
+    details{ background:var(--card); border:1px solid var(--border); border-radius:calc(var(--radius) - 8px); box-shadow:var(--shadow); overflow:hidden; }
+    summary{ list-style:none; cursor:pointer; padding:clamp(14px,3.3vw,20px) clamp(16px,3.5vw,22px); display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px; font-size:clamp(15px,3vw,18px);font-weight:600;color:var(--text); outline:none; }
+    summary::-webkit-details-marker{display:none}
+    summary::after{ content:""; width:20px;height:20px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .25s ease; opacity:.9; }
+    details[open] summary::after{ transform:rotate(-135deg) }
+    .panel{ padding: 0 clamp(16px,3.5vw,22px) clamp(16px,3.5vw,22px); animation: fade .25s ease; }
+    @keyframes fade{from{opacity:.6; transform:translateY(-2px)} to{opacity:1; transform:translateY(0)}}
+    .content h2{margin:16px 0 8px;font-size:1.1em;color:var(--accent)} .content h3{margin:14px 0 8px;font-size:1em;font-weight:600} .content p{margin:12px 0} .content ul{padding-left:18px;margin:10px 0} .content li{margin:6px 0}
+    .callout{ border-left:4px solid var(--accent); background:linear-gradient(180deg, rgba(16,185,129,.06), rgba(16,185,129,.03)); padding:12px 14px;border-radius:12px;margin:12px 0; }
+    .callout.warning{ border-left-color:#f59e0b; background:linear-gradient(180deg, rgba(245,158,11,.06), rgba(245,158,11,.03)); }
+    .foot{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <span class="badge">💪 Ejercicio de Suelo Pélvico</span>
+      <h1>Técnica de Kegel</h1>
+      <p class="lead">Guía paso a paso para fortalecer los músculos del suelo pélvico y mejorar el control de la eyaculación.</p>
+    </header>
+
+    <section class="accordion">
+
+      <!-- Qué es -->
+      <details open>
+        <summary>¿Qué es la Técnica de Kegel?</summary>
+        <div class="panel content">
+          <p>Los ejercicios de Kegel son una técnica diseñada para fortalecer los músculos del suelo pélvico, que sostienen los órganos pélvicos, especialmente la vejiga, el útero y el recto.</p>
+          <p>Aunque estos ejercicios se asocian frecuentemente con el tratamiento de la incontinencia urinaria y el fortalecimiento postparto, también pueden ser beneficiosos para los hombres que buscan mejorar el control de la eyaculación.</p>
+        </div>
+      </details>
+
+      <!-- Etapa 1 -->
+      <details>
+        <summary>Etapa 1 — Identificación de los Músculos</summary>
+        <div class="panel content">
+          <h2>Identificación de los Músculos del Suelo Pélvico</h2>
+          <p>En primer lugar, es esencial identificar los músculos del suelo pélvico. Una forma de hacerlo es orinando. Intenta detener el flujo de orina contrayendo los músculos del suelo pélvico.</p>
+          <p>Los músculos que has contraído son los que quieres fortalecer con los ejercicios de Kegel.</p>
+        </div>
+      </details>
+
+      <!-- Etapa 2 -->
+      <details>
+        <summary>Etapa 2 — Técnica de Contracción</summary>
+        <div class="panel content">
+          <h2>Cómo Realizar la Contracción</h2>
+          <p>Después de haber identificado los músculos del suelo pélvico, sigue los pasos siguientes:</p>
+          <ul>
+            <li>Encuentra un lugar cómodo para sentarte o acostarte</li>
+            <li>Vacía tu mente y relaja los músculos del abdomen, muslos y glúteos</li>
+            <li>Comienza contrayendo los músculos del suelo pélvico, como si quisieras detener el flujo de orina</li>
+            <li>Mantén esta contracción durante 3 a 5 segundos (o el tiempo que puedas sin esfuerzo excesivo)</li>
+            <li>Luego, relaja completamente durante 3 a 5 segundos</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Etapa 3 -->
+      <details>
+        <summary>Etapa 3 — Series y Repeticiones</summary>
+        <div class="panel content">
+          <h2>Cómo Organizar tus Series</h2>
+          <p>Comienza con una serie de 10 repeticiones, realizando las contracciones y relajaciones descritas anteriormente. A medida que ganes fuerza, puedes aumentar progresivamente el número de repeticiones y la duración de las contracciones.</p>
+        </div>
+      </details>
+
+      <!-- Etapa 4 -->
+      <details>
+        <summary>Etapa 4 — Frecuencia</summary>
+        <div class="panel content">
+          <h2>Con qué Frecuencia Practicar</h2>
+          <p>Es importante realizar estos ejercicios regularmente para obtener resultados. Intenta hacer al menos tres series de 10 repeticiones por día.</p>
+
+          <div class="callout">
+            <strong>💪 Consejo</strong><br>
+            Puedes hacer estos ejercicios en cualquier momento y lugar: sentado, acostado o incluso de pie. Nadie notará que los estás haciendo.
+          </div>
+        </div>
+      </details>
+
+      <!-- Cómo ayuda -->
+      <details>
+        <summary>¿Cómo Ayudan a Controlar la Eyaculación?</summary>
+        <div class="panel content">
+          <p>Los músculos del suelo pélvico juegan un papel crucial en el control de la eyaculación. Al fortalecerlos, puedes desarrollar un mejor control de los músculos implicados en la eyaculación. Esto puede permitirte retrasar la eyaculación, ya que controlarás mejor el reflejo eyaculatorio.</p>
+
+          <div class="callout warning">
+            <strong>⏳ Paciencia</strong><br>
+            Ten en cuenta que los resultados pueden tardar un tiempo en manifestarse, así que sé constante y paciente con tus ejercicios de Kegel.
+          </div>
+        </div>
+      </details>
+
+    </section>
+
+    <footer class="foot">
+      H.T Protocol © 2024 - Técnica de Kegel
+    </footer>
+
+  </div>
+</body>
+</html>

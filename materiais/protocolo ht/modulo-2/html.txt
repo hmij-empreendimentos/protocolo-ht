@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>H.T Protocol - Técnicas y Ejercicios</title>
+  <style>
+    :root{
+      --bg:#f8faf9; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+      --accent:#16a34a; --accent-2:#10b981; --border:#e5e7eb;
+      --shadow:0 10px 20px rgba(0,0,0,.06),0 6px 6px rgba(0,0,0,.04);
+      --radius:20px; --maxw:760px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b1110; --card:#0f1716; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --shadow:0 10px 20px rgba(0,0,0,.5),0 6px 6px rgba(0,0,0,.35); }
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 100% -10%, rgba(16,185,129,.06), transparent 50%), radial-gradient(1000px 700px at -10% 110%, rgba(22,163,74,.05), transparent 55%), var(--bg);
+      color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    .container{max-width:var(--maxw);margin:clamp(16px,3.5vw,36px) auto;padding:clamp(14px,3vw,28px);min-height:100px}
+    .header{display:grid;gap:10px;text-align:left;margin-bottom:clamp(18px,3.5vw,28px)}
+    .badge{
+      align-self:start;display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.3px;
+      background:linear-gradient(180deg, rgba(16,185,129,.15), rgba(16,185,129,.08));
+      color:var(--accent);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;
+    }
+    h1{font-size:clamp(22px,3.8vw,32px);line-height:1.2;margin:0;letter-spacing:.2px}
+    .lead{color:var(--muted);font-size:clamp(14px,2.6vw,17px);margin:0}
+    .accordion{display:grid;gap:12px}
+    details{ background:var(--card); border:1px solid var(--border); border-radius:calc(var(--radius) - 8px); box-shadow:var(--shadow); overflow:hidden; }
+    summary{ list-style:none; cursor:pointer; padding:clamp(14px,3.3vw,20px) clamp(16px,3.5vw,22px); display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px; font-size:clamp(15px,3vw,18px);font-weight:600;color:var(--text); outline:none; }
+    summary::-webkit-details-marker{display:none}
+    summary::after{ content:""; width:20px;height:20px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .25s ease; opacity:.9; }
+    details[open] summary::after{ transform:rotate(-135deg) }
+    .panel{ padding: 0 clamp(16px,3.5vw,22px) clamp(16px,3.5vw,22px); animation: fade .25s ease; }
+    @keyframes fade{from{opacity:.6; transform:translateY(-2px)} to{opacity:1; transform:translateY(0)}}
+    .content h3{margin:14px 0 8px;font-size:1em;font-weight:600} .content p{margin:12px 0} .content ul{padding-left:18px;margin:10px 0} .content li{margin:6px 0}
+    .callout{ border-left:4px solid var(--accent); background:linear-gradient(180deg, rgba(16,185,129,.06), rgba(16,185,129,.03)); padding:12px 14px;border-radius:12px;margin:12px 0; }
+    .callout.info{ border-left-color:#3b82f6; background:linear-gradient(180deg, rgba(59,130,246,.06), rgba(59,130,246,.03)); }
+    .list-check li::marker{content:"✓ "}
+    .foot{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <span class="badge">🏋️ Técnicas y Ejercicios</span>
+      <h1>H.T Protocol</h1>
+      <p class="lead">Técnicas probadas y ejercicios complementarios para mejorar el control y potenciar tu vitalidad masculina.</p>
+    </header>
+
+    <section class="accordion">
+
+      <!-- Técnicas para Controlar la Eyaculación Precoz -->
+      <details open>
+        <summary>Técnicas para Controlar la Eyaculación Precoz</summary>
+        <div class="panel content">
+
+          <div class="callout info">
+            <strong>📊 Contexto</strong><br>
+            Actualmente, la eyaculación precoz afecta a numerosos hombres en todo Brasil. La principal causa es la ansiedad, que aumenta cada año.
+          </div>
+
+          <p>Por eso te proponemos algunas técnicas para controlar mejor tu eyaculación durante las relaciones sexuales.</p>
+
+          <p><strong>No olvides que la práctica regular y la paciencia son esenciales para obtener resultados positivos.</strong> Aquí tienes algunas técnicas y ejercicios que pueden ayudarte:</p>
+
+          <h3>Técnica de la Presión</h3>
+          <p>Durante las relaciones sexuales, cuando sientas que estás a punto de eyacular, detente y pide a tu pareja que presione la base del pene durante aproximadamente 30 segundos. Esto puede retrasar la eyaculación.</p>
+
+          <h3>Técnica Start-Stop (Parar y Reanudar)</h3>
+          <p>Detén y reanuda la actividad sexual varias veces, controlando el momento en que retomas. Esta técnica permite un mejor control de la eyaculación.</p>
+
+        </div>
+      </details>
+
+      <!-- Ejercicios y Técnicas Complementarias -->
+      <details>
+        <summary>Ejercicios y Técnicas Complementarias</summary>
+        <div class="panel content">
+
+          <h3>Masturbación Controlada</h3>
+          <p>Practica la masturbación con el objetivo de prolongar el tiempo hasta la eyaculación. El énfasis está en las sensaciones y el control.</p>
+
+          <h3>Entrenamiento de la Respiración</h3>
+          <p>Aprende técnicas de respiración profunda para controlar la ansiedad y mejorar el control de la excitación.</p>
+
+          <h3>Práctica de la Masturbación por Intervalos</h3>
+          <p>Mastúrbate regularmente pero interrumpiéndote antes de la eyaculación, dejando que la excitación disminuya antes de continuar.</p>
+
+          <h3>Plena Consciencia y Meditación</h3>
+          <p>Aprende a estar presente en el momento, reducir la ansiedad y la presión que pueden contribuir a la eyaculación precoz.</p>
+
+          <h3>Ejercicios de Relajación</h3>
+          <p>Practica técnicas de relajación como el yoga o la meditación para controlar el estrés y la ansiedad, que pueden jugar un papel importante en la eyaculación precoz.</p>
+
+          <div class="callout">
+            <strong>💡 Consejo Final</strong><br>
+            La constancia es clave para el éxito. Combina múltiples técnicas para mejores resultados.
+          </div>
+
+        </div>
+      </details>
+
+    </section>
+
+    <footer class="foot">
+      H.T Protocol © 2024 - Técnicas y Ejercicios
+    </footer>
+
+  </div>
+</body>
+</html>

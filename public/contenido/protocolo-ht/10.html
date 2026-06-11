@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bono · Guía Rápida de Arranque · Protocolo HT</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Crimson+Pro:ital@1&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08080b;--bg2:#0e0e13;--card:#16161c;--gold:#d4a847;--gold2:#e8b94a;
+  --wine:#9f1239;--txt:#c8cad2;--muted:#9a9ca6;--white:#fff;--line:rgba(255,255,255,.07)
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;padding-bottom:60px}
+.wrap{max-width:780px;margin:0 auto;padding:0 18px}
+
+/* XP BAR */
+.xpbar{position:sticky;top:0;z-index:50;background:rgba(8,8,11,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0}
+.xpbar .wrap{display:flex;align-items:center;gap:14px}
+.xpbar .lbl{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);white-space:nowrap}
+.xptrack{flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.xpfill{height:100%;width:0;background:linear-gradient(90deg,#b8862f,var(--gold2));border-radius:100px;transition:width .5s ease}
+.xppct{font-family:'Anton',sans-serif;font-size:15px;color:var(--gold2);min-width:42px;text-align:right}
+
+/* HERO */
+.hero{background:radial-gradient(circle at 50% -10%,rgba(212,168,71,.18) 0%,rgba(8,8,11,0) 55%),linear-gradient(180deg,#0a0a0e 0%,var(--bg) 100%);padding:54px 0 44px;text-align:center;border-bottom:1px solid var(--line)}
+.eyebrow{display:inline-block;color:var(--gold2);font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(212,168,71,.4);background:rgba(212,168,71,.08);padding:7px 16px;border-radius:100px;margin-bottom:20px}
+.hero h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(30px,6vw,50px);line-height:1.05;text-transform:uppercase;color:var(--white);margin-bottom:8px}
+.hero h1 .au{color:var(--gold2)}
+.hero .lede{font-family:'Crimson Pro',serif;font-style:italic;font-size:clamp(16px,2.4vw,20px);color:var(--txt);max-width:560px;margin:14px auto 0}
+.divider{width:64px;height:3px;background:linear-gradient(90deg,var(--gold),var(--wine));margin:22px auto 0;border-radius:2px}
+
+/* MODULE BANNER */
+.mbanner{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,rgba(212,168,71,.1),rgba(20,20,26,1));border:1px solid rgba(212,168,71,.25);border-radius:18px;padding:24px 26px;margin:34px 0 10px}
+.mbanner .ic{font-size:42px;flex-shrink:0}
+.mbanner .tag{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold2);margin-bottom:5px}
+.mbanner h2{font-family:'Anton',sans-serif;font-weight:400;font-size:22px;text-transform:uppercase;color:var(--white);line-height:1.1;margin-bottom:6px}
+.mbanner p{font-size:14px;color:var(--muted)}
+
+.taphint{text-align:center;color:var(--muted);font-size:13px;margin:26px 0 18px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ACCORDION */
+.acc{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:13px;overflow:hidden;transition:border-color .3s}
+.acc[open]{border-color:rgba(212,168,71,.4)}
+.acc summary{list-style:none;cursor:pointer;padding:22px 24px;display:flex;align-items:center;gap:16px}
+.acc summary::-webkit-details-marker{display:none}
+.acc .num{font-family:'Anton',sans-serif;font-size:24px;color:rgba(212,168,71,.55);line-height:1;flex-shrink:0;min-width:34px}
+.acc .stitle{flex:1;font-family:'Anton',sans-serif;font-weight:400;font-size:17px;text-transform:uppercase;color:var(--white);line-height:1.2;letter-spacing:.01em}
+.acc .chev{color:var(--gold2);font-size:26px;font-weight:400;transition:transform .3s;flex-shrink:0}
+.acc[open] .chev{transform:rotate(45deg)}
+.acc .body{padding:0 24px 26px;border-top:1px solid var(--line);margin-top:-1px}
+.acc .body>*{margin-top:18px}
+.acc .body p{font-size:14.5px;color:var(--txt)}
+.acc .body b{color:var(--white)}
+.acc h4{font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold2);margin-top:22px}
+
+/* SCIENCE BOX */
+.scibox{background:rgba(212,168,71,.06);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:16px 20px}
+.scibox p{font-size:13.5px;color:var(--txt);font-style:italic}
+
+/* LOOP / FLOW */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.flow .step{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:11px 15px;font-size:13px;font-weight:600;color:var(--white)}
+.flow .arr{color:var(--gold2);font-size:18px}
+
+/* DO/DONT */
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.dd{grid-template-columns:1fr}}
+.dd .col{border-radius:12px;padding:16px 18px}
+.dd .do{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.3)}
+.dd .dont{background:rgba(159,18,57,.1);border:1px solid rgba(159,18,57,.35)}
+.dd h5{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.dd .do h5{color:#4ade80}.dd .dont h5{color:#f0a8b8}
+.dd ul{list-style:none}.dd li{font-size:13px;padding:5px 0;color:var(--txt);display:flex;gap:8px}
+.dd .do li::before{content:'✓';color:#4ade80;font-weight:800}
+.dd .dont li::before{content:'✕';color:#f0a8b8;font-weight:800}
+
+/* CHECKLIST */
+.check{background:rgba(20,20,26,.7);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.check .ct{font-family:'Anton',sans-serif;font-size:15px;text-transform:uppercase;color:var(--gold2);margin-bottom:14px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:9px 0;font-size:14px;color:var(--txt);cursor:pointer;border-bottom:1px solid var(--line)}
+.check label:last-child{border-bottom:none}
+.check input{appearance:none;width:21px;height:21px;border:2px solid rgba(212,168,71,.5);border-radius:6px;flex-shrink:0;margin-top:1px;cursor:pointer;transition:.2s;position:relative}
+.check input:checked{background:var(--gold2);border-color:var(--gold2)}
+.check input:checked::after{content:'✓';position:absolute;color:#0a0806;font-size:14px;font-weight:800;left:3px;top:-2px}
+.check input:checked+span{color:var(--muted);text-decoration:line-through}
+
+/* REFS */
+.refs{margin-top:20px}
+.refs .rt{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.refs li{font-size:12px;color:var(--muted);line-height:1.5;padding:3px 0;list-style:none;padding-left:14px;position:relative}
+.refs li::before{content:'•';color:var(--gold);position:absolute;left:0}
+
+/* COMPLETE BTN */
+.complete{text-align:center;margin:40px 0 10px}
+.cbtn{font-family:'Anton',sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:.02em;color:#0a0806;background:linear-gradient(135deg,var(--gold2) 0%,var(--gold) 45%,#b8862f 100%);border:none;padding:20px 46px;border-radius:14px;cursor:pointer;box-shadow:0 14px 40px rgba(212,168,71,.4);transition:transform .2s}
+.cbtn:active{transform:scale(.97)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-weight:700;font-size:14px;padding:16px 26px;border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.4);transition:transform .4s;z-index:99}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* DISCLAIMER */
+.disc{margin-top:36px;padding:20px 22px;border:1px solid var(--line);border-radius:14px;background:rgba(20,20,26,.5)}
+.disc p{font-size:11px;color:var(--muted);line-height:1.7}
+
+/* ===== COMPONENTES PRÁCTICOS ===== */
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;margin-top:16px;font-size:13.5px;border-radius:12px;overflow:hidden}
+.tbl th{background:rgba(212,168,71,.12);color:var(--gold2);font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.05em;padding:11px 12px;text-align:left}
+.tbl td{padding:11px 12px;border-top:1px solid var(--line);color:var(--txt);vertical-align:top}
+.tbl tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.tbl td b,.tbl th b{color:var(--white)}
+.tbl .hl{color:var(--gold2);font-weight:700}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ROUTINE DAY CARD */
+.rday{background:rgba(20,20,26,.7);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-top:14px}
+.rday .rh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rday .rtag{font-family:'Anton',sans-serif;font-size:13px;color:#0a0806;background:var(--gold2);padding:3px 11px;border-radius:7px;text-transform:uppercase}
+.rday .rname{font-family:'Anton',sans-serif;font-size:16px;color:var(--white);text-transform:uppercase}
+
+/* MEAL CARD */
+.meal{background:rgba(20,20,26,.7);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:16px 18px;margin-top:12px}
+.meal .mh{font-family:'Anton',sans-serif;font-size:15px;color:var(--gold2);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.meal .kcal{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.05);padding:3px 9px;border-radius:6px;white-space:nowrap}
+.meal ul{list-style:none}
+.meal li{font-size:13.5px;color:var(--txt);padding:4px 0;display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed rgba(255,255,255,.06)}
+.meal li:last-child{border-bottom:none}
+.meal li span{color:var(--muted);font-size:12.5px;white-space:nowrap}
+
+/* PROTOCOL STEPS */
+.proto{counter-reset:ps;margin-top:16px}
+.proto .ps{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.proto .ps:last-child{border-bottom:none}
+.proto .ps .n{counter-increment:ps;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold2),#b8862f);color:#0a0806;font-family:'Anton',sans-serif;font-size:14px;display:flex;align-items:center;justify-content:center}
+.proto .ps .n::before{content:counter(ps)}
+.proto .ps .pt{font-size:14px;color:var(--txt)}
+.proto .ps .pt b{color:var(--white)}
+
+/* TIP CALLOUT */
+.tip{display:flex;gap:12px;background:rgba(159,18,57,.1);border:1px solid rgba(159,18,57,.3);border-radius:12px;padding:14px 16px;margin-top:16px}
+.tip .ti{font-size:20px;flex-shrink:0}
+.tip p{font-size:13.5px;color:var(--txt);margin:0!important}
+.tip b{color:#f0a8b8}
+
+/* TEMPLATE / FILL-IN */
+.tpl{background:rgba(212,168,71,.05);border:1px dashed rgba(212,168,71,.4);border-radius:14px;padding:18px 20px;margin-top:16px}
+.tpl .tplh{font-family:'Anton',sans-serif;font-size:14px;color:var(--gold2);text-transform:uppercase;margin-bottom:12px}
+.tpl .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--txt)}
+.tpl .row:last-child{border-bottom:none}
+.tpl .blank{flex:1;border-bottom:1px solid rgba(212,168,71,.4);min-width:80px;margin-left:10px}
+
+/* BIG NUMBER STAT */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+@media(max-width:520px){.nums{grid-template-columns:1fr}}
+.nums .ns{background:rgba(20,20,26,.7);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+.nums .ns b{display:block;font-family:'Anton',sans-serif;font-size:26px;color:var(--gold2);line-height:1}
+.nums .ns span{display:block;font-size:11.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+
+</style>
+</head>
+
+<div class="xpbar"><div class="wrap"><span class="lbl">Bono</span><div class="xptrack"><div class="xpfill" id="xpfill"></div></div><span class="xppct" id="xppct">0%</span></div></div>
+<div class="hero"><div class="wrap"><span class="eyebrow">🎁 Protocolo HT · Bono de Arranque</span><h1>Guía Rápida <span class="au">de Arranque</span></h1><p class="lede">Todo el Protocolo HT en un plan de 7 días, día a día, con lista de compra, rutina y menús. Para empezar hoy, sin perderte.</p><div class="divider"></div></div></div>
+<div class="wrap">
+  <div class="mbanner"><span class="ic">🚀</span><div><div class="tag">Empieza hoy</div><h2>Tus primeros 7 días</h2><p>Plan día a día + lista de compra + rutina + cálculo de proteína + primera revisión.</p></div></div>
+  <p class="taphint">👇 Toca cada bloque para expandir</p>
+  <details class="acc" open><summary><span class="num">01</span><span class="stitle">El plan de 7 días, de un vistazo</span><span class="chev">+</span></summary>
+    <div class="body">
+      <p>Este bono condensa todo el Protocolo HT en una semana de arranque. <b>No tienes que hacerlo perfecto</b> — solo seguir el plan día a día.</p>
+      <div class="tblwrap"><table class="tbl"><thead><tr><th>Día</th><th>Foco</th><th>Acción principal</th></tr></thead><tbody><tr><td>1</td><td>Diagnóstico</td><td>Línea base + freno #1</td></tr><tr><td>2</td><td>Preparación</td><td>Compra de comida + horario sueño</td></tr><tr><td>3</td><td>Primer entreno</td><td>Rutina Full Body</td></tr><tr><td>4</td><td>Nutrición</td><td>Calcula proteína + 1 menú</td></tr><tr><td>5</td><td>Segundo entreno</td><td>Repite rutina, anota pesos</td></tr><tr><td>6</td><td>Recuperación</td><td>Higiene del sueño + respiración</td></tr><tr><td>7</td><td>Revisión</td><td>Tu primer check-in semanal</td></tr></tbody></table></div>
+
+    </div>
+  </details>
+
+  <details class="acc"><summary><span class="num">02</span><span class="stitle">Día 1–2 · Prepara el terreno</span><span class="chev">+</span></summary>
+    <div class="body">
+      <div class="proto"><div class="ps"><div class="n"></div><div class="pt"><b>Haz tu línea base</b> (Módulo 1): sueño, entrenos, proteína, energía.</div></div><div class="ps"><div class="n"></div><div class="pt"><b>Identifica tu freno #1</b> — el puntaje más bajo.</div></div><div class="ps"><div class="n"></div><div class="pt"><b>Fija tu horario de sueño</b> (hora de dormir y despertar).</div></div><div class="ps"><div class="n"></div><div class="pt"><b>Compra comida real</b> para la semana (lista abajo).</div></div></div>
+      <h4>🛒 Lista de compra base</h4>
+      <div class="tblwrap"><table class="tbl"><thead><tr><th>Proteína</th><th>Carbohidrato</th><th>Extras</th></tr></thead><tbody><tr><td>Huevos, pollo, atún</td><td>Avena, arroz, patata</td><td>Aceite de oliva</td></tr><tr><td>Yogur griego, lentejas</td><td>Pan integral, fruta</td><td>Frutos secos, verduras</td></tr></tbody></table></div>
+
+    </div>
+  </details>
+
+  <details class="acc"><summary><span class="num">03</span><span class="stitle">Día 3 · Tu primer entrenamiento</span><span class="chev">+</span></summary>
+    <div class="body">
+      <p>Rutina Full Body. Calienta 5 min y ejecuta. Técnica sobre peso, 1–2 reps en reserva.</p>
+      <div class="tblwrap"><table class="tbl"><thead><tr><th>Ejercicio</th><th>Series</th><th>Reps</th></tr></thead><tbody><tr><td>Sentadilla</td><td>3</td><td>10–12</td></tr><tr><td>Flexiones o press</td><td>3</td><td>8–12</td></tr><tr><td>Remo (banda/mancuerna)</td><td>3</td><td>10–12</td></tr><tr><td>Puente de glúteo</td><td>3</td><td>15</td></tr><tr><td>Plancha</td><td>3</td><td>30–45 s</td></tr></tbody></table></div>
+
+    </div>
+  </details>
+
+  <details class="acc"><summary><span class="num">04</span><span class="stitle">Día 4 · Pon la nutrición en marcha</span><span class="chev">+</span></summary>
+    <div class="body">
+      <div class="proto"><div class="ps"><div class="n"></div><div class="pt"><b>Calcula tu proteína</b>: peso × 1.6 g (Módulo 3).</div></div><div class="ps"><div class="n"></div><div class="pt"><b>Reparte</b> en 3–4 comidas (una palma por comida).</div></div><div class="ps"><div class="n"></div><div class="pt"><b>Elige 1 menú</b> de ejemplo y síguelo hoy.</div></div><div class="ps"><div class="n"></div><div class="pt"><b>Hidrátate</b>: agua en cada comida.</div></div></div>
+
+    </div>
+  </details>
+
+  <details class="acc"><summary><span class="num">05</span><span class="stitle">Día 5–6 · Repite y recupera</span><span class="chev">+</span></summary>
+    <div class="body">
+      <div class="dd"><div class="col do"><h5>Mantén</h5><ul><li>Tu horario de sueño</li><li>La proteína en cada comida</li><li>El segundo entreno (anota pesos)</li><li>El agua</li></ul></div><div class="col dont"><h5>Suelta</h5><ul><li>La perfección</li><li>La báscula diaria</li><li>Compararte con otros</li><li>El "todo o nada"</li></ul></div></div>
+      <div class="tip"><span class="ti">💡</span><p>El día 5 repites el entreno del día 3 e intentas <b>1 rep más o un poco más de peso</b>. Eso es sobrecarga progresiva en acción.</p></div>
+
+    </div>
+  </details>
+
+  <details class="acc"><summary><span class="num">06</span><span class="stitle">Día 7 · Tu primera revisión</span><span class="chev">+</span></summary>
+    <div class="body">
+      <p>Cierra la semana con tu primer check-in. Puntúa del 1 al 5 y elige tu foco para la semana 2:</p>
+      <div class="tpl"><div class="tplh">📊 Mi semana 1</div><div class="row">🔋 Energía (1-5):<span class="blank"></span></div><div class="row">💪 Fuerza (1-5):<span class="blank"></span></div><div class="row">😴 Sueño (1-5):<span class="blank"></span></div><div class="row">🧠 Ánimo (1-5):<span class="blank"></span></div><div class="row">Mi foco para la semana 2:<span class="blank"></span></div></div>
+
+    </div>
+  </details>
+
+  <details class="acc"><summary><span class="num">07</span><span class="stitle">Los 5 errores que arruinan el arranque</span><span class="chev">+</span></summary>
+    <div class="body">
+      <div class="dd"><div class="col do"><h5>Mejor así</h5><ul><li>Empezar simple y sostenible</li><li>2–3 entrenos bien hechos</li><li>Dormir como prioridad</li><li>Comida real de base</li><li>Constancia > intensidad</li></ul></div><div class="col dont"><h5>Errores comunes</h5><ul><li>Cambiar todo de golpe</li><li>Entrenar a diario sin recuperar</li><li>Sacrificar sueño</li><li>Dietas extremas</li><li>Rendirse tras un mal día</li></ul></div></div>
+      <div class="check"><div class="ct">✅ Checklist del Bono</div><label><input type="checkbox" class="cx"><span>Hice mi línea base y mi freno #1</span></label><label><input type="checkbox" class="cx"><span>Tengo comida real para la semana</span></label><label><input type="checkbox" class="cx"><span>Hice mi primer entrenamiento</span></label><label><input type="checkbox" class="cx"><span>Calculé y repartí mi proteína</span></label><label><input type="checkbox" class="cx"><span>Hice mi primera revisión del día 7</span></label><label><input type="checkbox" class="cx"><span>Entiendo que la constancia gana a la perfección</span></label></div>
+
+    </div>
+  </details>
+
+
+  <div class="refs"><div class="rt">📚 Referencias y fuentes</div><ul>
+      <li>Síntesis de los Módulos 1–6 del Protocolo HT.</li>
+      <li>Clear, J. — Atomic Habits (arranque y constancia).</li>
+      <li>Schoenfeld / ACSM — Fundamentos de entrenamiento de fuerza.</li>
+  </ul></div>
+  <div class="complete"><button class="cbtn" id="cbtn">✓ Marcar módulo como completado</button></div>
+  <div class="disc"><p>⚠️ Material exclusivamente educativo, parte del programa Protocolo HT. Las rutinas, cantidades y menús son <b>ejemplos educativos de carácter general</b>, no una prescripción individual. Las referencias citadas son reales. Este programa no promete resultados específicos ni garantizados — los avances dependen de la constancia, la genética, la alimentación y el descanso. No sustituye asesoramiento médico ni nutricional profesional. Consulta a un profesional de salud antes de iniciar cualquier rutina de ejercicio o cambio de alimentación.</p></div>
+</div>
+<div class="toast" id="toast">🎉 ¡Guía de arranque completada! A por la semana 1.</div>
+<script>(function(){var boxes=[].slice.call(document.querySelectorAll(".cx"));var fill=document.getElementById("xpfill"),pct=document.getElementById("xppct");function upd(){var n=boxes.filter(function(b){return b.checked}).length;var p=boxes.length?Math.round(n/boxes.length*100):0;fill.style.width=p+"%";pct.textContent=p+"%";}boxes.forEach(function(b){b.addEventListener("change",upd)});document.querySelectorAll(".acc").forEach(function(a){a.addEventListener("toggle",function(){if(a.open){var f=parseInt(fill.style.width)||0;if(f<8){fill.style.width="6%";pct.textContent="6%";}}})});var t=document.getElementById("toast");document.getElementById("cbtn").addEventListener("click",function(){boxes.forEach(function(b){b.checked=true});upd();t.classList.add("show");setTimeout(function(){t.classList.remove("show")},3200);});upd();})();</script>
+</body>
+</html>

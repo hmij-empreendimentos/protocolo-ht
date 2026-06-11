@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detox Premium Energía - Limón y Jengibre</title>
+  <style>
+    :root{
+      --bg:#f8faf9; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+      --accent:#16a34a; --accent-2:#10b981; --border:#e5e7eb;
+      --shadow:0 10px 20px rgba(0,0,0,.06),0 6px 6px rgba(0,0,0,.04);
+      --radius:20px; --maxw:760px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b1110; --card:#0f1716; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --shadow:0 10px 20px rgba(0,0,0,.5),0 6px 6px rgba(0,0,0,.35); }
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 100% -10%, rgba(16,185,129,.06), transparent 50%), radial-gradient(1000px 700px at -10% 110%, rgba(22,163,74,.05), transparent 55%), var(--bg);
+      color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    .container{max-width:var(--maxw);margin:clamp(16px,3.5vw,36px) auto;padding:clamp(14px,3vw,28px);min-height:100px}
+    .header{display:grid;gap:10px;text-align:left;margin-bottom:clamp(18px,3.5vw,28px)}
+    .badge{
+      align-self:start;display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.3px;
+      background:linear-gradient(180deg, rgba(16,185,129,.15), rgba(16,185,129,.08));
+      color:var(--accent);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;
+    }
+    h1{font-size:clamp(22px,3.8vw,32px);line-height:1.2;margin:0;letter-spacing:.2px}
+    .lead{color:var(--muted);font-size:clamp(14px,2.6vw,17px);margin:0}
+    .accordion{display:grid;gap:12px}
+    details{ background:var(--card); border:1px solid var(--border); border-radius:calc(var(--radius) - 8px); box-shadow:var(--shadow); overflow:hidden; }
+    summary{ list-style:none; cursor:pointer; padding:clamp(14px,3.3vw,20px) clamp(16px,3.5vw,22px); display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px; font-size:clamp(15px,3vw,18px);font-weight:600;color:var(--text); outline:none; }
+    summary::-webkit-details-marker{display:none}
+    summary::after{ content:""; width:20px;height:20px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .25s ease; opacity:.9; }
+    details[open] summary::after{ transform:rotate(-135deg) }
+    .panel{ padding: 0 clamp(16px,3.5vw,22px) clamp(16px,3.5vw,22px); animation: fade .25s ease; }
+    @keyframes fade{from{opacity:.6; transform:translateY(-2px)} to{opacity:1; transform:translateY(0)}}
+    .content h2{margin:16px 0 8px;font-size:1.1em;color:var(--accent)} .content h3{margin:14px 0 8px;font-size:1em;font-weight:600} .content p{margin:12px 0} .content ul{padding-left:18px;margin:10px 0} .content li{margin:6px 0} .content ol{padding-left:20px;margin:10px 0}
+    .muted{color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    @media (max-width:820px){.grid-3{grid-template-columns:1fr 1fr}}
+    @media (max-width:680px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    .card{border:1px solid var(--border);background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+    .callout{ border-left:4px solid var(--accent); background:linear-gradient(180deg, rgba(16,185,129,.06), rgba(16,185,129,.03)); padding:12px 14px;border-radius:12px;margin:12px 0; }
+    .callout.warning{ border-left-color:#f59e0b; background:linear-gradient(180deg, rgba(245,158,11,.06), rgba(245,158,11,.03)); }
+    .callout.danger{ border-left-color:#ef4444; background:linear-gradient(180deg, rgba(239,68,68,.06), rgba(239,68,68,.03)); }
+    .callout.info{ border-left-color:#3b82f6; background:linear-gradient(180deg, rgba(59,130,246,.06), rgba(59,130,246,.03)); }
+    .list-check li::marker{content:"✓ "}
+    .foot{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <header class="header">
+      <span class="badge">🍋 Bebida Detox Natural</span>
+      <h1>Detox Premium Energía con Limón y Jengibre</h1>
+      <p class="lead">Bebida natural revitalizante que acelera tu metabolismo, mejora la digestión y te llena de energía para todo el día.</p>
+    </header>
+
+    <section class="accordion">
+      
+      <!-- Beneficios -->
+      <details open>
+        <summary>Beneficios de la Bebida</summary>
+        <div class="panel content">
+          
+          <div class="grid-2">
+            
+            <div class="card">
+              <h4>🍋 Limón</h4>
+              <p class="muted">Apoya la desintoxicación y mejora la digestión del organismo.</p>
+            </div>
+            
+            <div class="card">
+              <h4>🫚 Jengibre</h4>
+              <p class="muted">Regula el metabolismo, actúa como antiinflamatorio y reduce el apetito.</p>
+            </div>
+            
+            <div class="card">
+              <h4>🌿 Menta</h4>
+              <p class="muted">Proporciona frescura y calma el sistema digestivo.</p>
+            </div>
+            
+            <div class="card">
+              <h4>🍂 Canela (Opcional)</h4>
+              <p class="muted">Estimula el metabolismo y aporta un sabor especial.</p>
+            </div>
+            
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Ingredientes -->
+      <details>
+        <summary>Ingredientes</summary>
+        <div class="panel content">
+          <ul class="list-check">
+            <li><strong>1 litro de agua mineral o filtrada</strong> (preferiblemente tibia)</li>
+            <li><strong>Jugo de un limón fresco</strong> (si es posible de cultivo orgánico)</li>
+            <li><strong>Un trozo de jengibre fresco</strong> (aprox. 2-3 cm), pelado y rallado</li>
+            <li><strong>5-6 hojas de menta fresca</strong></li>
+            <li><strong>1 cucharadita de miel orgánica o stevia</strong> (opcional)</li>
+            <li><strong>Una pizca de canela</strong> (opcional, para un sabor refinado y beneficios adicionales)</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Método de Preparación -->
+      <details>
+        <summary>Método de Preparación</summary>
+        <div class="panel content">
+          
+          <h3>Paso a Paso:</h3>
+          
+          <ol>
+            <li><strong>Calentar el agua:</strong> Calentar el agua hasta que esté tibia – no hervirla para mantener los nutrientes.</li>
+            <li><strong>Agregar los ingredientes:</strong> Añadir el jugo de limón, el jengibre rallado y las hojas de menta al agua.</li>
+            <li><strong>Dejar reposar:</strong> Dejar reposar la mezcla durante 15-20 minutos para intensificar el sabor y los efectos.</li>
+            <li><strong>Endulzar si se desea:</strong> Después del reposo, se puede agregar miel o stevia para refinar el sabor.</li>
+            <li><strong>Servir elegantemente:</strong> Opcional colar y servir frío. Para una presentación especial, agregar cubitos de hielo y una rodaja de limón.</li>
+          </ol>
+
+          <div class="callout info">
+            <strong>💡 Consejo</strong><br>
+            No hiervas el agua, mantenla tibia para preservar todas las vitaminas y propiedades de los ingredientes.
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Consejos para Resultados Máximos -->
+      <details>
+        <summary>Consejos para Resultados Máximos</summary>
+        <div class="panel content">
+          
+          <h3>Cómo Obtener los Mejores Resultados:</h3>
+
+          <div class="callout warning">
+            <strong>🌅 Empieza el día con energía</strong><br>
+            Bebe un vaso directamente después de levantarte, antes del desayuno, para acelerar el metabolismo.
+          </div>
+
+          <h4>Distribuye a lo largo del día:</h4>
+          <p>Sustituye bebidas calóricas por esta agua detox para mantenerte hidratado y apoyar la pérdida de peso.</p>
+
+          <h4>Combina con un estilo de vida saludable:</h4>
+          <p>Esta bebida funciona mejor en combinación con una alimentación equilibrada y ejercicio regular.</p>
+
+          <div class="callout">
+            <strong>🔄 Constancia</strong><br>
+            Para ver resultados reales, consume esta bebida diariamente durante al menos 2 semanas.
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Información Adicional -->
+      <details>
+        <summary>Información Adicional y Variaciones</summary>
+        <div class="panel content">
+          
+          <h3>Variaciones de la Receta:</h3>
+
+          <ul>
+            <li><strong>Versión fría de verano:</strong> Prepara la bebida y refrigérala durante la noche para un efecto refrescante.</li>
+            <li><strong>Extra detox:</strong> Agrega una cucharadita de semillas de chía para más fibra y omega-3.</li>
+            <li><strong>Boost de vitamina C:</strong> Añade unas rodajas de naranja junto con el limón.</li>
+            <li><strong>Toque picante:</strong> Incrementa la cantidad de jengibre para un efecto termogénico más intenso.</li>
+          </ul>
+
+          <h3>¿Cuándo tomar esta bebida?</h3>
+          <ul class="list-check">
+            <li>Por la mañana en ayunas (efecto detox máximo)</li>
+            <li>Antes de las comidas principales (reduce el apetito)</li>
+            <li>Durante el día como sustituto de refrescos</li>
+            <li>Después del ejercicio (rehidratación natural)</li>
+          </ul>
+
+        </div>
+      </details>
+
+      <!-- Advertencias -->
+      <details>
+        <summary>Advertencias y Contraindicaciones</summary>
+        <div class="panel content">
+          
+          <div class="callout danger">
+            <strong>⚠️ Importante</strong><br>
+            Esta bebida es un complemento natural para un estilo de vida saludable, no un sustituto de comidas.
+          </div>
+
+          <h3>Consulta con tu médico si:</h3>
+          <ul>
+            <li>Tienes problemas gastrointestinales crónicos</li>
+            <li>Estás embarazada o en período de lactancia</li>
+            <li>Tomas medicamentos anticoagulantes (el jengibre puede interactuar)</li>
+            <li>Tienes alergia a alguno de los ingredientes</li>
+          </ul>
+
+          <h3>Efectos Secundarios Posibles:</h3>
+          <p class="muted">En personas sensibles, el jengibre puede causar acidez estomacal leve. Si experimentas molestias, reduce la cantidad de jengibre o suspende el consumo.</p>
+
+        </div>
+      </details>
+
+    </section>
+
+    <footer class="foot">
+      Detox Premium Energía © 2024 - Salud Natural
+    </footer>
+
+  </div>
+</body>
+</html>

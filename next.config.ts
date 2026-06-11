@@ -10,7 +10,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
   "connect-src 'self' https://scripts.converteai.net https://*.converteai.net https://vitals.vercel-insights.com",
-  "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://scripts.converteai.net https://*.converteai.net",
+  "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://scripts.converteai.net https://*.converteai.net https://soporte-ht.netlify.app",
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",

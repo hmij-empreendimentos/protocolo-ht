@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Módulo 04 — Mapa del H.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+    :root {
+      --red: #c0122a;
+      --red-dark: #8a0d1e;
+      --red-glow: rgba(192,18,42,0.25);
+      --red-soft: rgba(192,18,42,0.08);
+      --bg: #080808;
+      --bg2: #0d0d0d;
+      --bg3: #131313;
+      --bg4: #181818;
+      --border: rgba(255,255,255,0.06);
+      --border-red: rgba(192,18,42,0.4);
+      --text: #e8e2d8;
+      --text-muted: #7a7470;
+      --text-dim: #3d3830;
+      --gold: #c8922a;
+      --gold-glow: rgba(200,146,42,0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* XP BAR */
+    .xp-bar-wrap {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .xp-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      flex-shrink: 0; white-space: nowrap;
+    }
+    .xp-track { flex: 1; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+    .xp-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--red-dark), var(--red));
+      border-radius: 2px;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .xp-pct {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; color: var(--red);
+      flex-shrink: 0; min-width: 2.5rem; text-align: right;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative; background: var(--bg2);
+      padding: 2.5rem 1.25rem 2rem;
+      overflow: hidden; border-bottom: 1px solid var(--border);
+    }
+    .hero-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(192,18,42,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,18,42,0.04) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(192,18,42,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--red-soft);
+      border: 1px solid var(--border-red);
+      border-radius: 20px;
+      padding: 0.3rem 0.75rem;
+      font-size: 10px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 1rem;
+    }
+    .hero-badge-icon { font-size: 0.85rem; line-height: 1; }
+    .hero-cap-label {
+      font-size: 11px; color: var(--text-dim);
+      letter-spacing: 3px; text-transform: uppercase;
+      display: block; margin-bottom: 0.3rem;
+      position: relative;
+    }
+    .hero-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.7rem; line-height: 0.95;
+      letter-spacing: 1px; position: relative;
+    }
+    .hero-titulo .white { color: #f5f0e8; }
+    .hero-titulo .red { color: var(--red); text-shadow: 0 0 20px var(--red-glow); }
+    .hero-sub {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic; font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem; line-height: 1.5;
+      position: relative;
+    }
+    .hero-divider {
+      width: 40px; height: 2px;
+      background: var(--red);
+      margin: 1rem 0;
+      box-shadow: 0 0 8px var(--red-glow);
+      position: relative;
+    }
+
+    /* MODULE BANNER */
+    .mod-banner {
+      margin: 1.5rem 1.25rem 0;
+      background: linear-gradient(135deg, #1a0a0d, #120608);
+      border: 1px solid var(--border-red);
+      border-radius: 14px;
+      padding: 1.1rem;
+      position: relative; overflow: hidden;
+    }
+    .mod-banner::before {
+      content: ''; position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(192,18,42,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mod-banner-top { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .mod-banner-icon { font-size: 2.5rem; flex-shrink: 0; line-height: 1; }
+    .mod-banner-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      display: block; margin-bottom: 0.15rem;
+    }
+    .mod-banner-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; color: #f5f0e8;
+      line-height: 1.05; letter-spacing: 0.5px;
+    }
+    .mod-banner-desc {
+      font-size: 13px; color: #908a82;
+      line-height: 1.6; position: relative;
+    }
+
+    /* TAP HINT */
+    .tap-hint {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 1.25rem 1.25rem 0.5rem;
+      font-size: 11px; color: var(--text-dim);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .tap-hint-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--red); animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ACCORDION */
+    .acc-wrap { padding: 0.5rem 1.25rem 3rem; }
+    .acc-item {
+      margin-bottom: 0.6rem; border-radius: 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .acc-item.open {
+      border-color: var(--border-red);
+      box-shadow: 0 0 20px rgba(192,18,42,0.08), inset 0 0 30px rgba(192,18,42,0.03);
+    }
+    .acc-item.completed { border-color: rgba(100,180,100,0.2); }
+
+    .acc-trigger {
+      width: 100%; background: none; border: none;
+      padding: 1rem;
+      display: flex; align-items: center; gap: 0.85rem;
+      cursor: pointer; text-align: left;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .acc-trigger:active { opacity: 0.85; }
+
+    .acc-icon-wrap {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(192,18,42,0.1);
+      border: 1px solid rgba(192,18,42,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .acc-item.open .acc-icon-wrap {
+      background: rgba(192,18,42,0.2);
+      border-color: rgba(192,18,42,0.5);
+      box-shadow: 0 0 10px rgba(192,18,42,0.2);
+    }
+    .acc-item.completed .acc-icon-wrap {
+      background: rgba(80,180,80,0.1);
+      border-color: rgba(80,180,80,0.3);
+    }
+
+    .acc-titles { flex: 1; min-width: 0; }
+    .acc-section-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--text-dim);
+      display: block; margin-bottom: 0.15rem;
+    }
+    .acc-item.open .acc-section-label { color: var(--red); }
+    .acc-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem; color: #c8c2b8;
+      line-height: 1.1; letter-spacing: 0.5px;
+      white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .acc-item.open .acc-titulo { color: #f5f0e8; }
+
+    .acc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0; }
+    .acc-arrow-btn {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s, background 0.2s;
+    }
+    .acc-item.open .acc-arrow-btn {
+      transform: rotate(180deg);
+      border-color: var(--red);
+      background: rgba(192,18,42,0.1);
+    }
+    .acc-arrow-btn svg {
+      width: 10px; height: 10px; stroke: #5a5550;
+      fill: none; stroke-width: 2.5;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+    .acc-item.open .acc-arrow-btn svg { stroke: var(--red); }
+    .acc-check { font-size: 14px; opacity: 0; transition: opacity 0.3s; }
+    .acc-item.completed .acc-check { opacity: 1; }
+
+    .acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .acc-body-inner {
+      padding: 0 1rem 1.25rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .acc-body p {
+      color: #9a9490;
+      font-size: 14.5px; line-height: 1.8;
+      margin-bottom: 0.9rem; padding-top: 0.5rem;
+    }
+    .acc-body p:first-child { padding-top: 1rem; }
+    .acc-body em { color: #c0bab2; font-style: italic; }
+    .acc-body strong { color: #e8e2d8; font-weight: 600; }
+
+    /* INFO BOX */
+    .info-box {
+      background: linear-gradient(135deg, #16100e, #110c0a);
+      border-left: 3px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1rem; margin: 1rem 0;
+      position: relative; overflow: hidden;
+    }
+    .info-box p { font-size: 13.5px; color: #b0aaa2; margin: 0; line-height: 1.7; padding: 0; }
+
+    /* WARN BOX */
+    .warn-box {
+      background: rgba(200,146,42,0.06);
+      border: 1px solid rgba(200,146,42,0.2);
+      border-radius: 10px; padding: 0.9rem 1rem;
+      margin: 1rem 0; display: flex; gap: 0.75rem;
+      align-items: flex-start;
+    }
+    .warn-box-icon { font-size: 1.2rem; flex-shrink: 0; line-height: 1.3; }
+    .warn-box p { font-size: 13px; color: #a09080; margin: 0; line-height: 1.65; padding: 0; }
+    .warn-box strong { color: #c8a060; }
+
+    /* QUOTE */
+    .quote {
+      background: var(--bg4); border-radius: 10px;
+      border-left: 3px solid #444;
+      padding: 1rem; margin: 1.1rem 0;
+      position: relative;
+    }
+    .quote::before {
+      content: '"'; position: absolute;
+      top: -0.5rem; left: 0.75rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 3rem; color: rgba(255,255,255,0.05);
+      line-height: 1;
+    }
+    .quote-text {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic; font-size: 1.05rem;
+      color: #888280; line-height: 1.6;
+    }
+    .quote-cite {
+      display: block; margin-top: 0.5rem;
+      font-size: 10px; font-style: normal;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600; color: var(--red);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    /* DO/DONT */
+    .dodont-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 0.6rem; margin: 1rem 0;
+    }
+    .dodont-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 0.95rem;
+    }
+    .dodont-do { border-left: 3px solid #4a9d5e; }
+    .dodont-dont { border-left: 3px solid var(--red); }
+    .dodont-label {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .dodont-do .dodont-label { color: #4a9d5e; }
+    .dodont-dont .dodont-label { color: var(--red); }
+    .dodont-list { list-style: none; padding: 0; margin: 0; }
+    .dodont-list li {
+      font-size: 13px; color: #807a72;
+      line-height: 1.55; padding: 0.3rem 0;
+      display: flex; gap: 0.5rem; align-items: flex-start;
+    }
+    .dodont-list li::before {
+      flex-shrink: 0; font-size: 11px; margin-top: 2px;
+    }
+    .dodont-do .dodont-list li::before { content: '✓'; color: #4a9d5e; font-weight: 700; }
+    .dodont-dont .dodont-list li::before { content: '✕'; color: var(--red); font-weight: 700; }
+
+    /* SOLUCION CARDS - luz azul */
+    .solucion-card {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin: 0.55rem 0;
+      display: flex; gap: 0.85rem;
+      align-items: flex-start;
+    }
+    .solucion-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--red);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+      text-shadow: 0 0 8px var(--red-glow);
+    }
+    .solucion-info { flex: 1; }
+    .solucion-titulo {
+      font-weight: 600; font-size: 13.5px;
+      color: #e8e2d8; margin-bottom: 0.3rem;
+      letter-spacing: 0.3px;
+    }
+    .solucion-desc {
+      font-size: 12.5px; color: #807a72;
+      line-height: 1.6;
+    }
+    .solucion-desc strong { color: #c0bab2; }
+
+    /* TECNICA CARDS */
+    .tecnica-card {
+      background: linear-gradient(135deg, #131313, #0d0d0d);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 0.85rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .tecnica-card.t1 { border-left: 3px solid var(--red); }
+    .tecnica-card.t2 { border-left: 3px solid var(--gold); }
+    .tecnica-card.t3 { border-left: 3px solid var(--red); }
+    .tecnica-card.t4 { border-left: 3px solid var(--gold); }
+
+    .tecnica-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tecnica-emoji {
+      font-size: 1.7rem;
+      flex-shrink: 0;
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: rgba(192,18,42,0.08);
+      border: 1px solid rgba(192,18,42,0.15);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tecnica-card.t2 .tecnica-emoji,
+    .tecnica-card.t4 .tecnica-emoji {
+      background: rgba(200,146,42,0.08);
+      border-color: rgba(200,146,42,0.2);
+    }
+    .tecnica-info { flex: 1; }
+    .tecnica-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.1rem;
+    }
+    .tecnica-card.t1 .tecnica-tag,
+    .tecnica-card.t3 .tecnica-tag { color: var(--red); }
+    .tecnica-card.t2 .tecnica-tag,
+    .tecnica-card.t4 .tecnica-tag { color: var(--gold); }
+    .tecnica-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.25rem; color: #f0ebe3;
+      letter-spacing: 0.5px; line-height: 1.05;
+    }
+    .tecnica-intro {
+      font-size: 13px; color: #908a82;
+      line-height: 1.65;
+      margin-bottom: 0.5rem;
+    }
+    .tecnica-pasos {
+      list-style: none; padding: 0; margin: 0;
+      counter-reset: paso-num;
+    }
+    .tecnica-pasos li {
+      counter-increment: paso-num;
+      font-size: 12.5px;
+      color: #b0aaa2;
+      line-height: 1.6;
+      padding: 0.3rem 0 0.3rem 1.8rem;
+      position: relative;
+    }
+    .tecnica-pasos li::before {
+      content: counter(paso-num);
+      position: absolute;
+      left: 0; top: 0.3rem;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--red);
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .tecnica-card.t2 .tecnica-pasos li::before,
+    .tecnica-card.t4 .tecnica-pasos li::before {
+      background: var(--gold);
+    }
+    .tecnica-pasos li strong { color: #e0dbd2; }
+
+    /* RUTINA STEPS - 6 pasos */
+    .rutina-wrap {
+      background: linear-gradient(135deg, #1a0a0d, #120608);
+      border: 1px solid var(--border-red);
+      border-radius: 14px;
+      padding: 1.25rem 1rem;
+      margin: 1.25rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .rutina-wrap::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at top, rgba(192,18,42,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .rutina-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: #f5f0e8;
+      text-align: center;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .rutina-step {
+      position: relative;
+      padding: 0 0 1rem 2.75rem;
+      margin-left: 0.5rem;
+      border-left: 2px solid rgba(192,18,42,0.25);
+    }
+    .rutina-step:last-child { border-left-color: transparent; padding-bottom: 0; }
+    .rutina-step-num {
+      position: absolute; left: -19px; top: -2px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--red); color: var(--red);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 12px var(--red-glow);
+    }
+    .rutina-step-titulo {
+      font-weight: 600;
+      font-size: 14px;
+      color: #f0ebe3;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.3px;
+    }
+    .rutina-step-desc {
+      font-size: 13px;
+      color: #908a82;
+      line-height: 1.65;
+      margin-bottom: 0.45rem;
+    }
+    .rutina-step-tiempo {
+      display: inline-block;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(200,146,42,0.1);
+      border: 1px solid rgba(200,146,42,0.2);
+      border-radius: 12px;
+      padding: 0.25rem 0.6rem;
+    }
+
+    /* CHECKLIST */
+    .checklist {
+      background: linear-gradient(135deg, #0d0d0d, #0a0a0a);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem; margin: 1rem 0;
+    }
+    .checklist-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; color: #f0ebe3;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.85rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .checklist-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.55rem 0.5rem; border-radius: 8px;
+      cursor: pointer; transition: background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .checklist-item:active { background: rgba(255,255,255,0.02); }
+    .checklist-checkbox {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 1.5px solid #3a3530; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .checklist-checkbox svg {
+      width: 12px; height: 12px; stroke: #fff;
+      fill: none; stroke-width: 3;
+      stroke-linecap: round; stroke-linejoin: round;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .checklist-item.checked .checklist-checkbox {
+      background: var(--red); border-color: var(--red);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .checklist-item.checked .checklist-checkbox svg { opacity: 1; }
+    .checklist-text {
+      font-size: 13.5px; color: #b0aaa2;
+      line-height: 1.5; flex: 1;
+      transition: color 0.2s, text-decoration 0.2s;
+    }
+    .checklist-item.checked .checklist-text {
+      color: #4a4540; text-decoration: line-through;
+    }
+
+    /* REFS */
+    .ref-box {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem;
+    }
+    .ref-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 0.75rem;
+    }
+    .ref-item {
+      font-size: 11.5px; color: #3d3a36; line-height: 1.65;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .ref-item:last-child { border-bottom: none; }
+
+    .disclaimer {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 10px; padding: 0.9rem;
+      margin-top: 1.75rem;
+      font-size: 11px; color: #302d2a;
+      line-height: 1.65;
+    }
+    .disclaimer strong { color: #484340; }
+
+    /* BOTÃO */
+    .complete-wrap {
+      margin-top: 2rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .complete-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red-dark), var(--red));
+      color: #fff;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 1rem; border: none;
+      border-radius: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem;
+      box-shadow: 0 4px 20px rgba(192,18,42,0.3);
+      transition: opacity 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .complete-btn:active { transform: scale(0.97); opacity: 0.9; }
+    .complete-btn .btn-icon { font-size: 1.1rem; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem;
+      left: 50%; transform: translateX(-50%) translateY(4rem);
+      background: #1a3a1a;
+      border: 1px solid rgba(80,180,80,0.3);
+      border-radius: 20px; padding: 0.65rem 1.25rem;
+      font-size: 13px; font-weight: 600; color: #80d880;
+      display: flex; align-items: center; gap: 0.5rem;
+      white-space: nowrap; opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+      z-index: 999; pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero { animation: fadeUp 0.5s ease both; }
+    .mod-banner { animation: fadeUp 0.5s 0.15s ease both; }
+    .acc-item:nth-child(1) { animation: fadeUp 0.4s 0.2s ease both; }
+    .acc-item:nth-child(2) { animation: fadeUp 0.4s 0.28s ease both; }
+    .acc-item:nth-child(3) { animation: fadeUp 0.4s 0.36s ease both; }
+    .acc-item:nth-child(4) { animation: fadeUp 0.4s 0.44s ease both; }
+    .acc-item:nth-child(5) { animation: fadeUp 0.4s 0.52s ease both; }
+    .acc-item:nth-child(6) { animation: fadeUp 0.4s 0.6s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- XP BAR -->
+<div class="xp-bar-wrap">
+  <span class="xp-label">Mód. 4 / 5 · Mapa del H.</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+  <span class="xp-pct" id="xpPct">0%</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-icon">🌙</span>
+    Módulo 04 · Mapa del H.
+  </div>
+  <span class="hero-cap-label">Guía educativa sobre el sueño masculino</span>
+  <h1 class="hero-titulo">
+    <span class="white">El Protocolo</span><br>
+    <span class="red">Nocturno</span>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">La rutina educativa de las últimas dos horas — lo que la ciencia del sueño sugiere para preparar el cuerpo y la mente al descanso</p>
+</div>
+
+<!-- MODULE BANNER -->
+<div class="mod-banner">
+  <div class="mod-banner-top">
+    <div class="mod-banner-icon">🌙</div>
+    <div>
+      <span class="mod-banner-tag">Módulo 04 — Rutina nocturna</span>
+      <div class="mod-banner-titulo">Cómo cerrar el día con intención</div>
+    </div>
+  </div>
+  <p class="mod-banner-desc">El cuerpo no pasa de actividad total a descanso total como un interruptor. La transición es gradual — y se puede acompañar.</p>
+</div>
+
+<!-- TAP HINT -->
+<div class="tap-hint">
+  <div class="tap-hint-dot"></div>
+  Toca para expandir cada sección
+  <div class="tap-hint-dot"></div>
+</div>
+
+<!-- ACCORDION -->
+<div class="acc-wrap">
+
+  <!-- S1 - LAS ULTIMAS 2 HORAS -->
+  <div class="acc-item" id="s1">
+    <button class="acc-trigger" onclick="toggle('s1')">
+      <div class="acc-icon-wrap">⏳</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">La ventana crítica</span>
+        <div class="acc-titulo">Las últimas 2 horas del día</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s1">
+      <div class="acc-body-inner">
+        <p>Las <strong>2 horas anteriores al sueño</strong> son la ventana donde más se decide la calidad del descanso nocturno. Lo que ocurre durante ese período tiene impacto desproporcionado: actividades estimulantes mantienen al cuerpo en modo de alerta, mientras que actividades calmas le indican al sistema nervioso que el día está cerrando.</p>
+        <p>Matthew Walker, profesor de UC Berkeley, ha descrito en <em>Why We Sleep</em> (2017) cómo el cuerpo necesita una <strong>transición gradual</strong> entre estados. No es posible pasar de un día intenso a un sueño profundo en cinco minutos. La transición se construye en los detalles de la última hora y media.</p>
+
+        <div class="quote">
+          <div class="quote-text">"El sueño no es algo que enciendes — es algo que invitas. Y la invitación empieza horas antes de acostarte."</div>
+          <cite class="quote-cite">— Investigación sobre rutinas pre-sueño</cite>
+        </div>
+
+        <p>Lo que la investigación documenta como apoyo a una buena transición al sueño:</p>
+
+        <div class="dodont-grid">
+          <div class="dodont-card dodont-do">
+            <div class="dodont-label">✓ Apoya la transición</div>
+            <ul class="dodont-list">
+              <li>Bajar la intensidad de las luces — usar iluminación tenue y cálida.</li>
+              <li>Reducir actividades cognitivamente exigentes (trabajo, decisiones importantes).</li>
+              <li>Bajar la temperatura del ambiente — el cuerpo se prepara mejor para dormir en un entorno fresco.</li>
+              <li>Actividades calmas: lectura física, conversación tranquila, estiramientos suaves.</li>
+              <li>Preparar el día siguiente — reduce la actividad mental de "cosas por resolver".</li>
+            </ul>
+          </div>
+          <div class="dodont-card dodont-dont">
+            <div class="dodont-label">✕ Dificulta la transición</div>
+            <ul class="dodont-list">
+              <li>Revisar correo o mensajes de trabajo en las últimas horas.</li>
+              <li>Ver noticias o contenido emocionalmente activador.</li>
+              <li>Sostener conversaciones difíciles o discusiones intensas.</li>
+              <li>Ejercicio muy intenso (ya cubierto en el Módulo 02).</li>
+              <li>Cenas pesadas (ya cubierto en el Módulo 03).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>La idea central:</strong> las últimas 2 horas funcionan como una "puerta de entrada" al sueño. No se trata de hacer todo perfecto cada noche — se trata de no <em>contradecir</em> activamente la transición natural que el cuerpo intenta hacer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 - LUZ AZUL -->
+  <div class="acc-item" id="s2">
+    <button class="acc-trigger" onclick="toggle('s2')">
+      <div class="acc-icon-wrap">📱</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Luz de pantallas</span>
+        <div class="acc-titulo">Por qué la luz azul es problemática</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s2">
+      <div class="acc-body-inner">
+        <p>La luz emitida por celulares, computadoras, tablets y televisores contiene una proporción significativa de <strong>luz de longitud de onda corta</strong> — la llamada "luz azul". Investigación desarrollada en el Brigham and Women's Hospital, afiliado a la Harvard Medical School, documenta que la exposición a esta luz en horas nocturnas <strong>reduce significativamente la señal natural de descanso</strong> que el cuerpo prepara en ese horario.</p>
+        <p>Charles Czeisler y su equipo, en estudios publicados en <em>The Journal of Clinical Endocrinology & Metabolism</em> (2011), midieron el efecto: <strong>la exposición a luz brillante en la noche puede retrasar el reloj biológico interno de manera mensurable</strong>. El cerebro interpreta esa luz como una extensión del día, postergando la señal de descanso.</p>
+
+        <div class="quote">
+          <div class="quote-text">"La exposición a la luz de pantallas en las horas previas a dormir es uno de los disruptores más comunes y subestimados del sueño moderno."</div>
+          <cite class="quote-cite">— Investigación en Harvard Medical School</cite>
+        </div>
+
+        <p>Por qué la luz de pantallas afecta el sueño:</p>
+
+        <div class="solucion-card">
+          <div class="solucion-num">01</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">El cerebro interpreta luz brillante como "día"</div>
+            <div class="solucion-desc">El sistema circadiano usa la luz como referencia principal para regular el ciclo de alerta y descanso. Luz brillante en la noche envía la señal contraria a la que el cuerpo necesita.</div>
+          </div>
+        </div>
+
+        <div class="solucion-card">
+          <div class="solucion-num">02</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Retrasa el inicio natural del sueño</div>
+            <div class="solucion-desc">Cuando la señal de descanso se retrasa, el sueño tarda más en llegar — aunque la persona se sienta cansada.</div>
+          </div>
+        </div>
+
+        <div class="solucion-card">
+          <div class="solucion-num">03</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Mantiene el sistema en modo de alerta</div>
+            <div class="solucion-desc">No solo la luz: el <em>contenido</em> de pantallas (redes sociales, noticias, conversaciones) mantiene el sistema cognitivo activo, dificultando la desaceleración necesaria.</div>
+          </div>
+        </div>
+
+        <div class="solucion-card">
+          <div class="solucion-num">04</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Reduce el sueño profundo posterior</div>
+            <div class="solucion-desc">Estudios documentan que la exposición a luz de pantallas antes de dormir se asocia con menor proporción de sueño profundo (fase N3) en la noche siguiente.</div>
+          </div>
+        </div>
+
+        <p>Estrategias educativas para reducir el impacto:</p>
+
+        <div class="solucion-card">
+          <div class="solucion-num">A</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Lo ideal — sin pantallas 1 a 2 horas antes</div>
+            <div class="solucion-desc">La estrategia más efectiva, según la literatura. Un libro físico, una conversación, un podcast con los ojos cerrados son alternativas que no involucran exposición lumínica de pantalla.</div>
+          </div>
+        </div>
+
+        <div class="solucion-card">
+          <div class="solucion-num">B</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Si necesitas usar pantallas — filtros de pantalla</div>
+            <div class="solucion-desc">Activa "Night Shift" (iOS), "Filtro de luz azul" (Android) o configuraciones equivalentes en computadora. Reducen — aunque no eliminan — la fracción de luz azul.</div>
+          </div>
+        </div>
+
+        <div class="solucion-card">
+          <div class="solucion-num">C</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Gafas con filtro ámbar</div>
+            <div class="solucion-desc">Las gafas con lentes amarillas o ámbar bloquean parte significativa de la luz azul. Pueden ser útiles para quienes deben mantener uso de pantallas en horas nocturnas por trabajo.</div>
+          </div>
+        </div>
+
+        <div class="solucion-card">
+          <div class="solucion-num">D</div>
+          <div class="solucion-info">
+            <div class="solucion-titulo">Iluminación cálida del hogar</div>
+            <div class="solucion-desc">Bombillas con temperatura de color cálida (alrededor de 2700K o menos) en lugar de luz blanca/fría. Crea un ambiente nocturno que apoya la transición — no la contradice.</div>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> el modo nocturno de pantallas reduce parcialmente la luz azul, pero <em>no la elimina</em>. Además, el contenido de pantallas (redes sociales, mensajes de trabajo, noticias) sigue activando el sistema cognitivo. La estrategia más efectiva sigue siendo reducir el uso de pantallas en las horas previas al sueño.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 - TECNICAS DE RELAJACION -->
+  <div class="acc-item" id="s3">
+    <button class="acc-trigger" onclick="toggle('s3')">
+      <div class="acc-icon-wrap">🫁</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Técnicas educativas</span>
+        <div class="acc-titulo">4 prácticas de relajación</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s3">
+      <div class="acc-body-inner">
+        <p>El sistema nervioso humano tiene dos ramas principales: una asociada con <em>activación</em> (la respuesta de alerta y acción) y otra asociada con <em>descanso</em> (el sistema parasimpático). Para dormir bien, el cuerpo necesita transicionar al sistema de descanso. Las técnicas a continuación son herramientas educativas que la investigación sobre relajación documenta como útiles para apoyar esa transición.</p>
+
+        <p>Cuatro técnicas con buena base académica:</p>
+
+        <!-- TECNICA 1 - 4-7-8 -->
+        <div class="tecnica-card t1">
+          <div class="tecnica-header">
+            <div class="tecnica-emoji">🫁</div>
+            <div class="tecnica-info">
+              <div class="tecnica-tag">Técnica 01 · Respiración</div>
+              <div class="tecnica-titulo">Respiración 4-7-8</div>
+            </div>
+          </div>
+          <div class="tecnica-intro">Técnica difundida por el Dr. Andrew Weil, médico y profesor de la University of Arizona. Es una práctica de respiración diafragmática que utiliza patrones de inhalación, retención y exhalación para apoyar la transición al estado de descanso.</div>
+          <ol class="tecnica-pasos">
+            <li>Siéntate o acuéstate cómodamente. Exhala completamente por la boca.</li>
+            <li>Inhala por la nariz contando hasta <strong>4</strong>.</li>
+            <li>Mantén el aire contando hasta <strong>7</strong>.</li>
+            <li>Exhala lentamente por la boca contando hasta <strong>8</strong>.</li>
+            <li>Repite el ciclo completo entre 3 y 4 veces.</li>
+          </ol>
+        </div>
+
+        <!-- TECNICA 2 - RELAJACION MUSCULAR PROGRESIVA -->
+        <div class="tecnica-card t2">
+          <div class="tecnica-header">
+            <div class="tecnica-emoji">💪</div>
+            <div class="tecnica-info">
+              <div class="tecnica-tag">Técnica 02 · Cuerpo</div>
+              <div class="tecnica-titulo">Relajación Muscular Progresiva</div>
+            </div>
+          </div>
+          <div class="tecnica-intro">Técnica desarrollada por Edmund Jacobson en la University of Chicago en la década de 1930. Consiste en tensar y relajar grupos musculares específicos para entrenar al cuerpo a reconocer la diferencia entre tensión y relajación.</div>
+          <ol class="tecnica-pasos">
+            <li>Acuéstate boca arriba en un lugar cómodo, cierra los ojos.</li>
+            <li>Empieza por los pies: tensa durante <strong>5 segundos</strong>, luego suelta durante <strong>10 segundos</strong>.</li>
+            <li>Sube progresivamente: pantorrillas, muslos, abdomen, pecho, brazos, manos, cuello y rostro.</li>
+            <li>Al terminar, permanece quieto durante <strong>2 minutos</strong>, observando la sensación de relajación.</li>
+          </ol>
+        </div>
+
+        <!-- TECNICA 3 - BRAIN DUMP -->
+        <div class="tecnica-card t3">
+          <div class="tecnica-header">
+            <div class="tecnica-emoji">📝</div>
+            <div class="tecnica-info">
+              <div class="tecnica-tag">Técnica 03 · Mente</div>
+              <div class="tecnica-titulo">Brain Dump (Vaciado Mental)</div>
+            </div>
+          </div>
+          <div class="tecnica-intro">Práctica respaldada por la investigación de James Pennebaker, profesor de psicología en la University of Texas at Austin, sobre el efecto del escribir como herramienta para reducir la rumiación mental — los pensamientos repetitivos que dificultan conciliar el sueño.</div>
+          <ol class="tecnica-pasos">
+            <li>Toma una hoja de papel y un bolígrafo — no el celular.</li>
+            <li>Escribe todo lo que esté en tu cabeza: tareas pendientes, preocupaciones, ideas.</li>
+            <li>No organices ni priorices — simplemente vacía.</li>
+            <li>Cuando termines, cierra el cuaderno. La información ya no está dando vueltas en tu mente — está registrada.</li>
+          </ol>
+        </div>
+
+        <!-- TECNICA 4 - BODY SCAN -->
+        <div class="tecnica-card t4">
+          <div class="tecnica-header">
+            <div class="tecnica-emoji">🧘</div>
+            <div class="tecnica-info">
+              <div class="tecnica-tag">Técnica 04 · Atención</div>
+              <div class="tecnica-titulo">Body Scan (Escaneo Corporal)</div>
+            </div>
+          </div>
+          <div class="tecnica-intro">Práctica documentada en programas de reducción de estrés basados en atención plena, como el MBSR desarrollado por Jon Kabat-Zinn en la University of Massachusetts Medical School. Lleva la atención al cuerpo y aleja la mente de pensamientos rumiantes.</div>
+          <ol class="tecnica-pasos">
+            <li>Acuéstate, cierra los ojos, respira profundo <strong>3 veces</strong>.</li>
+            <li>Lleva la atención a los pies. Nota las sensaciones presentes sin juzgarlas.</li>
+            <li>Sube lentamente: tobillos, pantorrillas, rodillas, muslos... hasta llegar a la cabeza.</li>
+            <li>Dedica entre <strong>5 y 10 minutos</strong> al recorrido completo.</li>
+          </ol>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Sugerencia educativa:</strong> no es necesario practicar las cuatro técnicas. Elige una o dos que te resulten naturales y úsalas con consistencia. La respiración 4-7-8 es frecuentemente recomendada como primer punto de partida por su simplicidad.</p>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> si durante cualquier técnica de respiración experimentas mareo, ansiedad o incomodidad, suspende la práctica de inmediato y respira con normalidad. Personas con condiciones cardíacas, respiratorias, embarazo o cualquier otra condición particular deben consultar a un profesional de salud antes de adoptar prácticas regulares de respiración o relajación.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 - PROTOCOLO COMPLETO -->
+  <div class="acc-item" id="s4">
+    <button class="acc-trigger" onclick="toggle('s4')">
+      <div class="acc-icon-wrap">📋</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Protocolo completo</span>
+        <div class="acc-titulo">Rutina nocturna paso a paso</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s4">
+      <div class="acc-body-inner">
+        <p>El protocolo a continuación es un <strong>marco educativo</strong> que integra todo lo visto en los módulos anteriores. No es una prescripción — es una guía que puedes adaptar a tu horario, contexto y preferencias.</p>
+
+        <div class="rutina-wrap">
+          <div class="rutina-titulo">🌙 Protocolo Nocturno · 6 pasos</div>
+
+          <div class="rutina-step">
+            <div class="rutina-step-num">1</div>
+            <div class="rutina-step-titulo">Cierre del día</div>
+            <div class="rutina-step-desc">Revisa tu agenda del día siguiente. Prepara la ropa. Si tienes pensamientos dando vueltas, haz un brain dump rápido. Esto cierra mentalmente el día.</div>
+            <span class="rutina-step-tiempo">⏱ 2h antes · 10 min</span>
+          </div>
+
+          <div class="rutina-step">
+            <div class="rutina-step-num">2</div>
+            <div class="rutina-step-titulo">Bajar luces y desconexión digital</div>
+            <div class="rutina-step-desc">Enciende iluminación cálida y tenue. Deja el celular en modo no molestar o en otra habitación. A partir de aquí, idealmente, sin pantallas.</div>
+            <span class="rutina-step-tiempo">⏱ 1.5h antes</span>
+          </div>
+
+          <div class="rutina-step">
+            <div class="rutina-step-num">3</div>
+            <div class="rutina-step-titulo">Actividad calmante</div>
+            <div class="rutina-step-desc">Lectura física, conversación tranquila, música suave, estiramientos. Cualquier actividad que el sistema nervioso reconozca como "no urgente".</div>
+            <span class="rutina-step-tiempo">⏱ 1.5 a 1h antes · 30–45 min</span>
+          </div>
+
+          <div class="rutina-step">
+            <div class="rutina-step-num">4</div>
+            <div class="rutina-step-titulo">Higiene y preparación</div>
+            <div class="rutina-step-desc">Ducha tibia (no muy caliente), cepillado de dientes y cuidados personales habituales. Una ducha tibia produce una caída posterior de temperatura corporal que apoya la entrada al sueño.</div>
+            <span class="rutina-step-tiempo">⏱ 45–30 min antes · 15 min</span>
+          </div>
+
+          <div class="rutina-step">
+            <div class="rutina-step-num">5</div>
+            <div class="rutina-step-titulo">Snack ligero (opcional)</div>
+            <div class="rutina-step-desc">Si tienes hambre genuina, un snack ligero según preferencia personal. Si no tienes hambre, sáltate este paso. (Más detalles en el Módulo 03.)</div>
+            <span class="rutina-step-tiempo">⏱ 30 min antes · 5 min</span>
+          </div>
+
+          <div class="rutina-step">
+            <div class="rutina-step-num">6</div>
+            <div class="rutina-step-titulo">En la cama: técnica de relajación</div>
+            <div class="rutina-step-desc">Ya acostado, aplica una técnica corta — 4 ciclos de respiración 4-7-8 o un body scan breve. Es la señal final que el cuerpo asocia con "hora de dormir".</div>
+            <span class="rutina-step-tiempo">⏱ en la cama · 5–10 min</span>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <p><strong>El principio detrás del protocolo:</strong> no necesitas ejecutar los 6 pasos perfectamente cada noche. Lo que importa es la <em>consistencia general</em>. Si haces los pasos 2, 3 y 6 de forma estable, ya construyes una base sólida. Tu cerebro empieza a asociar esa secuencia con "es hora de descansar".</p>
+        </div>
+
+        <div class="info-box">
+          <p><strong>Si esto parece mucho:</strong> empieza solo con tres cambios — luces más bajas, sin pantallas durante 1 hora antes de dormir, y respiración 4-7-8 en la cama. Solo estos tres son suficientes para notar diferencia con la consistencia.</p>
+        </div>
+
+        <div class="checklist">
+          <div class="checklist-titulo">🌙 Mi protocolo nocturno</div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Definí mi hora ideal de acostarme</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Identifiqué qué actividades activantes hago en las últimas 2 horas</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Tengo un plan para reducir el uso de pantallas 1h antes</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Elegí una técnica de relajación para probar esta semana</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Adapté el protocolo a mi contexto real</div>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="checklist-checkbox"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
+            <div class="checklist-text">Acepto que la consistencia importa más que la perfección</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 - REGLAS PRACTICAS -->
+  <div class="acc-item" id="s5">
+    <button class="acc-trigger" onclick="toggle('s5')">
+      <div class="acc-icon-wrap">⚖️</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Reglas prácticas</span>
+        <div class="acc-titulo">Hazlo / no lo hagas</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s5">
+      <div class="acc-body-inner">
+        <p>Resumen práctico de lo que la investigación sugiere para construir un protocolo nocturno sostenible.</p>
+
+        <div class="dodont-grid">
+          <div class="dodont-card dodont-do">
+            <div class="dodont-label">✓ Hazlo</div>
+            <ul class="dodont-list">
+              <li>Empieza simple — uno o dos cambios, no seis a la vez.</li>
+              <li>Mantén horarios razonablemente consistentes día tras día.</li>
+              <li>Reduce iluminación intensa en las horas previas al sueño.</li>
+              <li>Elige una técnica de relajación y úsala con frecuencia.</li>
+              <li>Adapta el protocolo a tu realidad — no fuerces tu vida al protocolo.</li>
+            </ul>
+          </div>
+          <div class="dodont-card dodont-dont">
+            <div class="dodont-label">✕ No lo hagas</div>
+            <ul class="dodont-list">
+              <li>No esperes resultados inmediatos — la consistencia se construye en semanas.</li>
+              <li>No abandones todo si una noche sale mal.</li>
+              <li>No conviertas el protocolo en otra fuente de estrés ni autoexigencia.</li>
+              <li>No compares tu progreso con el de otros — cada persona tiene su ritmo.</li>
+              <li>No ignores señales persistentes — si tu sueño no mejora con cambios consistentes, busca orientación profesional.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="warn-box">
+          <div class="warn-box-icon">⚠️</div>
+          <p><strong>Importante:</strong> si experimentas dificultades persistentes para conciliar el sueño, despertares frecuentes, somnolencia diurna severa o cualquier otra alteración del sueño que afecte tu vida cotidiana, este material educativo no sustituye una evaluación profesional. Condiciones como insomnio crónico, apnea del sueño u otras alteraciones requieren atención médica calificada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6 REFS -->
+  <div class="acc-item" id="s6">
+    <button class="acc-trigger" onclick="toggle('s6')">
+      <div class="acc-icon-wrap">📚</div>
+      <div class="acc-titles">
+        <span class="acc-section-label">Fuentes</span>
+        <div class="acc-titulo">Referencias bibliográficas</div>
+      </div>
+      <div class="acc-right">
+        <div class="acc-arrow-btn"><svg viewBox="0 0 12 12"><polyline points="2,4 6,8 10,4"/></svg></div>
+        <span class="acc-check">✅</span>
+      </div>
+    </button>
+    <div class="acc-body" id="body-s6">
+      <div class="acc-body-inner">
+        <div class="ref-box">
+          <div class="ref-label">Referencias de este módulo</div>
+          <div class="ref-item">Walker, M. (2017). <em>Why We Sleep: Unlocking the Power of Sleep and Dreams.</em> Scribner. Center for Human Sleep Science, UC Berkeley.</div>
+          <div class="ref-item">Gooley, J. J., Chamberlain, K., Smith, K. A., et al. (2011). Exposure to room light before bedtime suppresses melatonin onset and shortens melatonin duration in humans. <em>The Journal of Clinical Endocrinology & Metabolism,</em> 96(3), E463–E472. Brigham and Women's Hospital, Harvard Medical School.</div>
+          <div class="ref-item">Chang, A. M., Aeschbach, D., Duffy, J. F., & Czeisler, C. A. (2015). Evening use of light-emitting eReaders negatively affects sleep, circadian timing, and next-morning alertness. <em>Proceedings of the National Academy of Sciences,</em> 112(4), 1232–1237. Harvard Medical School.</div>
+          <div class="ref-item">Weil, A. (n.d.). <em>The 4-7-8 Breathing Technique.</em> Andrew Weil Center for Integrative Medicine, University of Arizona.</div>
+          <div class="ref-item">Jacobson, E. (1938). <em>Progressive Relaxation.</em> University of Chicago Press. Texto fundacional sobre la técnica.</div>
+          <div class="ref-item">Pennebaker, J. W. (1997). Writing about emotional experiences as a therapeutic process. <em>Psychological Science,</em> 8(3), 162–166. University of Texas at Austin.</div>
+          <div class="ref-item">Kabat-Zinn, J. (1990). <em>Full Catastrophe Living: Using the Wisdom of Your Body and Mind to Face Stress, Pain, and Illness.</em> Delacorte. University of Massachusetts Medical School.</div>
+          <div class="ref-item">Haghayegh, S., Khoshnevis, S., Smolensky, M. H., et al. (2019). Before-bedtime passive body heating by warm shower or bath to improve sleep: A systematic review. <em>Sleep Medicine Reviews,</em> 46, 124–135. University of Texas at Austin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>⚠️ Aviso:</strong> Material exclusivamente educativo, parte del programa Mapa del H. Las referencias citadas son reales y verificables. Este programa no promete resultados específicos ni garantizados — los avances dependen de la constancia individual y de múltiples factores personales. No sustituye asesoramiento médico, psicológico ni profesional. Las técnicas de respiración y relajación descritas son educativas; personas con condiciones de salud específicas (cardíacas, respiratorias, embarazo u otras) deben consultar a un profesional calificado antes de adoptar prácticas regulares. Si experimentas alteraciones persistentes del sueño, consulta con un profesional de salud.
+  </div>
+
+  <!-- BOTÃO -->
+  <div class="complete-wrap">
+    <button class="complete-btn" onclick="completarCap()">
+      <span class="btn-icon">⚡</span>
+      Marcar módulo como completado
+    </button>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">🏆 ¡Módulo 4 completado!</div>
+
+<script>
+  var openItems = {};
+  var completed = {};
+  var totalSections = 6;
+
+  function toggle(id) {
+    var item = document.getElementById(id);
+    var body = document.getElementById('body-' + id);
+    var isOpen = openItems[id];
+    if (isOpen) {
+      body.style.maxHeight = '0px';
+      item.classList.remove('open');
+      openItems[id] = false;
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      item.classList.add('open');
+      openItems[id] = true;
+      if (!completed[id]) {
+        setTimeout(function() { markRead(id); }, 1800);
+      }
+    }
+    updateXP();
+  }
+
+  function markRead(id) {
+    if (completed[id]) return;
+    completed[id] = true;
+    document.getElementById(id).classList.add('completed');
+    updateXP();
+  }
+
+  function updateXP() {
+    var count = Object.keys(completed).length;
+    var pct = Math.round((count / totalSections) * 100);
+    document.getElementById('xpFill').style.width = pct + '%';
+    document.getElementById('xpPct').textContent = pct + '%';
+  }
+
+  function completarCap() {
+    for (var i = 1; i <= totalSections; i++) {
+      completed['s' + i] = true;
+      document.getElementById('s' + i).classList.add('completed');
+    }
+    document.getElementById('xpFill').style.width = '100%';
+    document.getElementById('xpPct').textContent = '100%';
+    var toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 3000);
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+
+  setTimeout(function() {
+    document.getElementById('xpFill').style.width = '0%';
+  }, 100);
+</script>
+
+</body>
+</html>

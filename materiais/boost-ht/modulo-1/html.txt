@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Power Premium Prostata - Receta Natural</title>
+  <style>
+    :root{
+      --bg:#f8faf9; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+      --accent:#16a34a; --accent-2:#10b981; --border:#e5e7eb;
+      --shadow:0 10px 20px rgba(0,0,0,.06),0 6px 6px rgba(0,0,0,.04);
+      --radius:20px; --maxw:760px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b1110; --card:#0f1716; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --shadow:0 10px 20px rgba(0,0,0,.5),0 6px 6px rgba(0,0,0,.35); }
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 100% -10%, rgba(16,185,129,.06), transparent 50%), radial-gradient(1000px 700px at -10% 110%, rgba(22,163,74,.05), transparent 55%), var(--bg);
+      color:var(--text); line-height:1.65; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    .container{max-width:var(--maxw);margin:clamp(16px,3.5vw,36px) auto;padding:clamp(14px,3vw,28px);min-height:100px}
+    .header{display:grid;gap:10px;text-align:left;margin-bottom:clamp(18px,3.5vw,28px)}
+    .badge{
+      align-self:start;display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.3px;
+      background:linear-gradient(180deg, rgba(16,185,129,.15), rgba(16,185,129,.08));
+      color:var(--accent);border:1px solid rgba(16,185,129,.25);padding:6px 10px;border-radius:999px;
+    }
+    h1{font-size:clamp(22px,3.8vw,32px);line-height:1.2;margin:0;letter-spacing:.2px}
+    .lead{color:var(--muted);font-size:clamp(14px,2.6vw,17px);margin:0}
+    .accordion{display:grid;gap:12px}
+    details{ background:var(--card); border:1px solid var(--border); border-radius:calc(var(--radius) - 8px); box-shadow:var(--shadow); overflow:hidden; }
+    summary{ list-style:none; cursor:pointer; padding:clamp(14px,3.3vw,20px) clamp(16px,3.5vw,22px); display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px; font-size:clamp(15px,3vw,18px);font-weight:600;color:var(--text); outline:none; }
+    summary::-webkit-details-marker{display:none}
+    summary::after{ content:""; width:20px;height:20px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .25s ease; opacity:.9; }
+    details[open] summary::after{ transform:rotate(-135deg) }
+    .panel{ padding: 0 clamp(16px,3.5vw,22px) clamp(16px,3.5vw,22px); animation: fade .25s ease; }
+    @keyframes fade{from{opacity:.6; transform:translateY(-2px)} to{opacity:1; transform:translateY(0)}}
+    .content h2{margin:16px 0 8px;font-size:1.1em;color:var(--accent)} .content h3{margin:14px 0 8px;font-size:1em;font-weight:600} .content p{margin:12px 0} .content ul{padding-left:18px;margin:10px 0} .content li{margin:6px 0} .content ol{padding-left:20px;margin:10px 0}
+    .muted{color:var(--muted)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    @media (max-width:820px){.grid-3{grid-template-columns:1fr 1fr}}
+    @media (max-width:680px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    .card{border:1px solid var(--border);background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+    .callout{ border-left:4px solid var(--accent); background:linear-gradient(180deg, rgba(16,185,129,.06), rgba(16,185,129,.03)); padding:12px 14px;border-radius:12px;margin:12px 0; }
+    .callout.warning{ border-left-color:#f59e0b; background:linear-gradient(180deg, rgba(245,158,11,.06), rgba(245,158,11,.03)); }
+    .callout.danger{ border-left-color:#ef4444; background:linear-gradient(180deg, rgba(239,68,68,.06), rgba(239,68,68,.03)); }
+    .callout.info{ border-left-color:#3b82f6; background:linear-gradient(180deg, rgba(59,130,246,.06), rgba(59,130,246,.03)); }
+    .list-check li::marker{content:"✓ "}
+    .foot{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <header class="header">
+      <span class="badge">🍵 Salud de la Próstata</span>
+      <h1>Power Premium Prostata</h1>
+      <p class="lead">Bebida natural rica en antioxidantes y nutrientes esenciales para promover la salud de la próstata y el bienestar masculino.</p>
+    </header>
+
+    <section class="accordion">
+      
+      <!-- Ingredientes -->
+      <details open>
+        <summary>Ingredientes</summary>
+        <div class="panel content">
+          <ul class="list-check">
+            <li><strong>200 ml de jugo de tomate fresco</strong> (rico en licopeno, un potente antioxidante que beneficia la salud de la próstata)</li>
+            <li><strong>1 cucharadita de cúrcuma</strong> (antiinflamatorio natural, contiene curcumina)</li>
+            <li><strong>1 cucharadita de jengibre rallado</strong> (promueve la circulación sanguínea y reduce la inflamación)</li>
+            <li><strong>1 cucharada de semillas de calabaza</strong> (fuente de zinc, importante para el equilibrio hormonal masculino)</li>
+            <li><strong>200 ml de té verde frío</strong> (rico en catequinas antioxidantes)</li>
+            <li><strong>1 cucharadita de miel pura</strong> (opcional, para endulzar)</li>
+            <li><strong>Jugo de medio limón</strong> (fuente de vitamina C, fortalece el sistema inmunológico y mejora la absorción de nutrientes)</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Preparación -->
+      <details>
+        <summary>Preparación</summary>
+        <div class="panel content">
+          <ol>
+            <li>Mezcla el jugo de tomate junto con las semillas de calabaza y el jengibre en una licuadora hasta obtener una mezcla homogénea.</li>
+            <li><strong>Opcional:</strong> Filtra la mezcla para eliminar trozos grandes.</li>
+            <li>Agrega el té verde frío, la cúrcuma, el jugo de limón y la miel. Mezcla bien.</li>
+            <li>Sirve con cubitos de hielo si lo deseas y bebe inmediatamente para aprovechar todos los nutrientes frescos de manera óptima.</li>
+          </ol>
+          
+          <div class="callout info">
+            <strong>💡 Consejo</strong><br>
+            Para mejores resultados, prepara la bebida fresca cada día y consúmela inmediatamente después de la preparación.
+          </div>
+        </div>
+      </details>
+
+      <!-- Recomendaciones de Consumo -->
+      <details>
+        <summary>Recomendaciones de Consumo</summary>
+        <div class="panel content">
+          
+          <h3>Cómo Consumir</h3>
+          <ul>
+            <li>Bebe un vaso diariamente, idealmente por la mañana o como refrigerio por la tarde.</li>
+            <li>Para obtener resultados óptimos, integra esta bebida en tu rutina diaria durante al menos 30 días.</li>
+          </ul>
+
+          <div class="callout warning">
+            <strong>⏰ Consistencia</strong><br>
+            La regularidad es clave. Consume la bebida todos los días durante al menos un mes para notar los beneficios.
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Beneficios -->
+      <details>
+        <summary>Beneficios del Power Premium</summary>
+        <div class="panel content">
+          
+          <h3>Principales Beneficios:</h3>
+          
+          <div class="grid-2">
+            <div class="card">
+              <h4>🔥 Reduce la Inflamación</h4>
+              <p class="muted">Promueve la salud de las vías urinarias y reduce la inflamación prostática.</p>
+            </div>
+            
+            <div class="card">
+              <h4>💪 Fortalece el Sistema Inmune</h4>
+              <p class="muted">Rico en vitaminas y antioxidantes que fortalecen tus defensas naturales.</p>
+            </div>
+            
+            <div class="card">
+              <h4>⚖️ Equilibrio Hormonal</h4>
+              <p class="muted">Apoya el equilibrio hormonal masculino y reduce el riesgo de hiperplasia prostática benigna (HPB).</p>
+            </div>
+            
+            <div class="card">
+              <h4>🛡️ Protección Antioxidante</h4>
+              <p class="muted">El licopeno y las catequinas protegen las células del daño oxidativo.</p>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>🌿 100% Natural</strong><br>
+            Todos los ingredientes son naturales y científicamente respaldados para la salud de la próstata.
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Información Adicional -->
+      <details>
+        <summary>Información Adicional sobre los Ingredientes</summary>
+        <div class="panel content">
+          
+          <h3>Por qué estos ingredientes son efectivos:</h3>
+
+          <h4>🍅 Licopeno (Tomate)</h4>
+          <p>El licopeno es un carotenoide con propiedades antioxidantes comprobadas. Estudios sugieren que puede reducir el riesgo de problemas prostáticos y promover la salud celular.</p>
+
+          <h4>🌿 Cúrcuma (Curcumina)</h4>
+          <p>La curcumina es un potente antiinflamatorio natural que ayuda a reducir la inflamación en todo el cuerpo, incluyendo la próstata.</p>
+
+          <h4>🫚 Jengibre</h4>
+          <p>Mejora la circulación sanguínea y tiene propiedades antiinflamatorias que complementan los efectos de la cúrcuma.</p>
+
+          <h4>🎃 Semillas de Calabaza</h4>
+          <p>Ricas en zinc, un mineral esencial para la salud de la próstata y el equilibrio hormonal masculino. También contienen fitosteroles beneficiosos.</p>
+
+          <h4>🍵 Té Verde</h4>
+          <p>Contiene catequinas, poderosos antioxidantes que protegen las células y apoyan la salud general.</p>
+
+          <h4>🍋 Limón</h4>
+          <p>La vitamina C mejora la absorción de hierro y zinc, además de fortalecer el sistema inmunológico.</p>
+
+        </div>
+      </details>
+
+      <!-- Advertencias y Precauciones -->
+      <details>
+        <summary>Advertencias y Precauciones</summary>
+        <div class="panel content">
+          
+          <div class="callout danger">
+            <strong>⚠️ Importante</strong><br>
+            Esta bebida es un complemento natural y no sustituye el tratamiento médico profesional.
+          </div>
+
+          <h3>Consulta con tu médico si:</h3>
+          <ul>
+            <li>Tienes síntomas urinarios persistentes</li>
+            <li>Estás tomando medicamentos para la próstata</li>
+            <li>Tienes condiciones médicas preexistentes</li>
+            <li>Estás bajo tratamiento anticoagulante (el jengibre y la cúrcuma pueden interactuar)</li>
+          </ul>
+
+          <h3>Efectos Secundarios Posibles:</h3>
+          <p class="muted">En general es bien tolerado, pero algunas personas pueden experimentar molestias digestivas leves debido al jengibre o la cúrcuma.</p>
+
+        </div>
+      </details>
+
+    </section>
+
+    <footer class="foot">
+      Power Premium Prostata © 2024 - Salud Natural Masculina
+    </footer>
+
+  </div>
+</body>
+</html>
