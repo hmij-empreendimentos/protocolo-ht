@@ -1,0 +1,27 @@
+{
+  "name": "Protocolo HT",
+  "short_name": "Protocolo HT",
+  "description": "Tu protocolo masculino completo. Accede a tus módulos, sigue tu progreso y transforma tu rendimiento.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0c0f",
+  "theme_color": "#0c0c0f",
+  "lang": "es",
+  "categories": ["health", "lifestyle", "education"],
+  "icons": [
+    {
+      "src": "/logo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================================
+   PROTOCOLO HT — Identidad visual: oscuro + dorado premium
+   Estilo "club exclusivo masculino" (referencia Netflix/Duolingo)
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-sans);
+
+  /* Paleta de marca Protocolo HT */
+  --color-ht-bg: var(--ht-bg);
+  --color-ht-bg-soft: var(--ht-bg-soft);
+  --color-ht-surface: var(--ht-surface);
+  --color-ht-surface-2: var(--ht-surface-2);
+  --color-ht-gold: var(--ht-gold);
+  --color-ht-gold-soft: var(--ht-gold-soft);
+  --color-ht-gold-deep: var(--ht-gold-deep);
+  --color-ht-red: var(--ht-red);
+  --color-ht-text: var(--ht-text);
+  --color-ht-muted: var(--ht-muted);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  /* Fondos oscuros (grafito / negro) */
+  --ht-bg: #0c0c0f;
+  --ht-bg-soft: #131318;
+  --ht-surface: #1a1a20;
+  --ht-surface-2: #23232b;
+
+  /* Dorado premium */
+  --ht-gold: #d4af37;
+  --ht-gold-soft: #e8cd6b;
+  --ht-gold-deep: #a8801f;
+
+  /* Rojo de apoyo (alertas / acentos energéticos) */
+  --ht-red: #c0392b;
+
+  --ht-text: #f5f3ec;
+  --ht-muted: #9a988f;
+
+  /* Mapeo a tokens genéricos */
+  --background: var(--ht-bg);
+  --foreground: var(--ht-text);
+  --card: var(--ht-surface);
+  --card-foreground: var(--ht-text);
+  --primary: var(--ht-gold);
+  --primary-foreground: #1a1305;
+  --muted: var(--ht-surface-2);
+  --muted-foreground: var(--ht-muted);
+  --border: #2c2c34;
+  --ring: var(--ht-gold);
+
+  --radius: 0.9rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    font-size: 16px;
+    /* elimina el delay de 300ms en tap móvil */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    /* safe-area (notch / home indicator de iOS) */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    /* textura sutil: brillo dorado muy tenue arriba */
+    background-image:
+      radial-gradient(120% 60% at 50% -10%, rgba(212, 175, 55, 0.08), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  /* Respeta a quien prefiere menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Texto con degradado dorado (para títulos/logo) */
+  .text-gold-gradient {
+    background: linear-gradient(180deg, var(--ht-gold-soft), var(--ht-gold-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Resplandor dorado para tarjetas / botones destacados */
+  .glow-gold {
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, 0.35),
+      0 8px 30px -10px rgba(212, 175, 55, 0.4);
+  }
+}
