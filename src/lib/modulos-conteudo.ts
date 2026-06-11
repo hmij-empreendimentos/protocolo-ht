@@ -15,12 +15,23 @@
  * Para editar títulos de submódulos: cambia el texto en los arreglos `subs(...)`.
  */
 
+// Cuenta Vturb de la marca (Honey Trick Protocol).
+const VTURB_ACCOUNT_ID = "58f4d3f5-7980-4750-ad6e-01a7b12b47b1";
+
 export type VturbVideo = {
   provider: "vturb";
   accountId: string;
   videoId: string;
   aspectRatio?: "9:16" | "16:9" | "1:1";
 };
+
+/** Helper: arma un VturbVideo con el accountId de la marca. */
+export function vturb(
+  videoId: string,
+  aspectRatio: VturbVideo["aspectRatio"] = "9:16",
+): VturbVideo {
+  return { provider: "vturb", accountId: VTURB_ACCOUNT_ID, videoId, aspectRatio };
+}
 
 export type YouTubeVideo = {
   provider: "youtube";
@@ -136,7 +147,8 @@ export const MODULOS: Modulo[] = [
     acento: "gold",
     imagen: "/cards/comienza-por-aqui.avif",
     descripcion:
-      "Bienvenido al Protocolo HT. Empieza por aquí para entender cómo aprovechar cada módulo y avanzar paso a paso.",
+      "Bienvenido al Protocolo HT. Mira este video antes de comenzar: te explica cómo aprovechar cada módulo y avanzar paso a paso.",
+    video: vturb("69dd256fccd7dd53186249a9"),
   },
   {
     tipo: "contenido",
