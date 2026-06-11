@@ -4,25 +4,51 @@ import { LogoMark } from "@/components/Brand";
 import { ModuloCard } from "@/components/ModuloCard";
 import { Greeting } from "@/components/home/Greeting";
 import { ContinueCard } from "@/components/home/ContinueCard";
+import { LevelBadge } from "@/components/home/LevelBadge";
+import { StreakCard } from "@/components/home/StreakCard";
+import { DailyGoals } from "@/components/home/DailyGoals";
+import { AvisoBanner } from "@/components/home/AvisoBanner";
+import { NewsFeed } from "@/components/home/NewsFeed";
+import { DailyTip } from "@/components/home/DailyTip";
+import { Testimonials } from "@/components/home/Testimonials";
 import { MODULOS } from "@/lib/modulos-conteudo";
 
 export default function Home() {
-  // En la home destacamos los módulos de contenido + especialista.
-  // WhatsApp y correo viven en /modulos y en la barra inferior.
   const destacados = MODULOS.filter(
     (m) => m.tipo === "contenido" || m.tipo === "especialista",
   );
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col">
-      <header className="px-5 pt-6 pb-2">
+      <header className="flex items-center justify-between gap-2 px-5 pt-6 pb-2">
         <LogoMark />
+        <LevelBadge />
       </header>
 
       <div className="flex flex-col gap-6 px-5 pt-4 pb-8">
         <Greeting />
 
+        <AvisoBanner />
+
+        <div className="anim-rise">
+          <StreakCard />
+        </div>
+
+        <div className="anim-rise">
+          <DailyGoals />
+        </div>
+
         <ContinueCard />
+
+        <div className="anim-rise">
+          <NewsFeed />
+        </div>
+
+        <DailyTip />
+
+        <div className="anim-rise">
+          <Testimonials />
+        </div>
 
         <section>
           <div className="mb-3 flex items-center justify-between">

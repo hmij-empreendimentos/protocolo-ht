@@ -12,6 +12,8 @@ import {
   Trophy,
   Dumbbell,
   Heart,
+  Droplet,
+  Moon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -44,6 +46,8 @@ const LUCIDE_MAP: Record<string, LucideIcon> = {
   trophy: Trophy,
   dumbbell: Dumbbell,
   heart: Heart,
+  droplet: Droplet,
+  moon: Moon,
 };
 
 /** Renderiza un ícono por su clave string. Soporta WhatsApp y todo Lucide del mapa. */

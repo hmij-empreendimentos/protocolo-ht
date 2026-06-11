@@ -29,6 +29,7 @@
   --color-ht-gold-soft: var(--ht-gold-soft);
   --color-ht-gold-deep: var(--ht-gold-deep);
   --color-ht-red: var(--ht-red);
+  --color-ht-green: var(--ht-green);
   --color-ht-text: var(--ht-text);
   --color-ht-muted: var(--ht-muted);
 
@@ -54,6 +55,9 @@
 
   /* Rojo de apoyo (alertas / acentos energéticos) */
   --ht-red: #c0392b;
+
+  /* Verde de éxito (metas cumplidas, energía estilo app de apuestas) */
+  --ht-green: #34d07f;
 
   --ht-text: #f5f3ec;
   --ht-muted: #9a988f;
@@ -124,5 +128,78 @@
     box-shadow:
       0 0 0 1px rgba(212, 175, 55, 0.35),
       0 8px 30px -10px rgba(212, 175, 55, 0.4);
+  }
+
+  .glow-green {
+    box-shadow:
+      0 0 0 1px rgba(52, 208, 127, 0.4),
+      0 8px 26px -10px rgba(52, 208, 127, 0.45);
+  }
+
+  /* Tarjeta premium: superficie con borde sutil y profundidad */
+  .card-premium {
+    background-image: linear-gradient(
+      160deg,
+      var(--ht-surface) 0%,
+      var(--ht-bg-soft) 100%
+    );
+    border: 1px solid color-mix(in srgb, var(--ht-gold) 14%, transparent);
+    box-shadow: 0 10px 34px -18px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Oculta la barra de scroll (carruseles horizontales) */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Animaciones de entrada y vida */
+  .anim-rise {
+    animation: ht-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .anim-flame {
+    animation: ht-flame 1.8s ease-in-out infinite;
+    transform-origin: 50% 80%;
+  }
+
+  .anim-pop {
+    animation: ht-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}
+
+@keyframes ht-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ht-flame {
+  0%, 100% {
+    transform: scale(1) rotate(-2deg);
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+  }
+  50% {
+    transform: scale(1.12) rotate(2deg);
+    filter: drop-shadow(0 0 12px rgba(232, 153, 43, 0.75));
+  }
+}
+
+@keyframes ht-pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
