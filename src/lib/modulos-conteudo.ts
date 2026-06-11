@@ -145,7 +145,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "flag",
     acento: "gold",
-    imagen: "/cards/comienza-por-aqui.avif",
+    imagen: "/cards/comienza-por-aqui.png",
     descripcion:
       "Bienvenido al Protocolo HT. Mira este video antes de comenzar: te explica cómo aprovechar cada módulo y avanzar paso a paso.",
     video: vturb("69dd256fccd7dd53186249a9"),
@@ -158,7 +158,7 @@ export const MODULOS: Modulo[] = [
     badge: "principal",
     icono: "flame",
     acento: "gold",
-    imagen: "/cards/protocolo-ht.avif",
+    imagen: "/cards/protocolo-ht.png",
     descripcion:
       "Tu protocolo completo paso a paso: recetas, técnicas, entrenamiento, nutrición, descanso y seguimiento.",
     submodulos: subs("protocolo-ht", [
@@ -182,7 +182,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "gauge",
     acento: "red",
-    imagen: "/cards/modo-acelerado.avif",
+    imagen: "/cards/modo-acelerado.png",
     descripcion:
       "El camino rápido para ver resultados antes, sin saltarte lo esencial del protocolo.",
     submodulos: subs("modo-acelerado", [
@@ -202,7 +202,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "trending-up",
     acento: "red",
-    imagen: "/cards/boost-ht.avif",
+    imagen: "/cards/boost-ht.png",
     descripcion:
       "Potencia tus resultados: próstata, energía, nutrición inteligente, sueño y cuidado capilar.",
     submodulos: subs("boost-ht", [
@@ -223,7 +223,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "shield",
     acento: "steel",
-    imagen: "/cards/codigo-del-hombre.avif",
+    imagen: "/cards/codigo-del-hombre.png",
     descripcion:
       "El mapa del hombre: mentalidad, disciplina y postura para sostener tus resultados.",
     submodulos: subs("codigo-del-hombre", [
@@ -242,7 +242,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "flame",
     acento: "red",
-    imagen: "/cards/formula-de-la-seducion.avif",
+    imagen: "/cards/formula-de-la-seduccion.png",
     descripcion:
       "Atracción, comunicación y conexión. Recupera tu poder de seducción.",
     submodulos: subs("formula-de-la-seduccion", [
@@ -259,7 +259,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "message-circle",
     acento: "gold",
-    imagen: "/cards/Hablar-con-Especialista.avif",
+    imagen: "/cards/hablar-con-especialista.png",
     descripcion:
       "Habla con nuestro especialista y resuelve tus dudas sobre el protocolo de forma directa.",
   },
@@ -271,7 +271,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "whatsapp",
     acento: "gold",
-    imagen: "/cards/soporte-por-whatsapp.avif",
+    imagen: "/cards/soporte-whatsapp.png",
     urlWhatsapp: WHATSAPP,
   },
   {
@@ -282,7 +282,7 @@ export const MODULOS: Modulo[] = [
     badge: "bonus",
     icono: "mail",
     acento: "steel",
-    imagen: "/cards/correo-de-soporte.avif",
+    imagen: "/cards/correo-soporte.png",
     email: "soporte@protocoloht.com", // TODO: email real del cliente
     asunto: "Soporte - Protocolo HT",
   },
