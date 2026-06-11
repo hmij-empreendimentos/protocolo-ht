@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -119,6 +120,7 @@ function ModuloRow({ modulo }: { modulo: Modulo }) {
   const href = getHref(modulo);
   const isExternal = modulo.tipo === "whatsapp" || modulo.tipo === "email";
   const isPrincipal = modulo.badge === "principal";
+  const imagen = "imagen" in modulo ? modulo.imagen : undefined;
 
   const content = (
     <>
@@ -128,10 +130,20 @@ function ModuloRow({ modulo }: { modulo: Modulo }) {
           (isPrincipal ? "ring-ht-gold/50" : "ring-border")
         }
       >
-        <ModuleIcon
-          name={modulo.icono}
-          className={isPrincipal ? "size-7 text-ht-gold" : "size-7 text-ht-muted"}
-        />
+        {imagen ? (
+          <Image
+            src={imagen}
+            alt={modulo.titulo}
+            fill
+            sizes="64px"
+            className="object-cover"
+          />
+        ) : (
+          <ModuleIcon
+            name={modulo.icono}
+            className={isPrincipal ? "size-7 text-ht-gold" : "size-7 text-ht-muted"}
+          />
+        )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="min-w-0 flex-1">
