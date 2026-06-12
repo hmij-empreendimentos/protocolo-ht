@@ -11,6 +11,7 @@ import {
 } from "@/lib/gamification";
 import { ModuleIcon } from "@/components/icons";
 import { useProgress } from "./useProgress";
+import { useCountUp } from "./useCountUp";
 
 const META_DIAS = 30;
 
@@ -26,6 +27,7 @@ export function StreakCard() {
     setLogros(getLogros());
   }, [tick]);
 
+  const streakAnim = useCountUp(hydrated ? streak : 0);
   const pctMeta = Math.min(100, Math.round((streak / META_DIAS) * 100));
 
   return (
@@ -37,7 +39,7 @@ export function StreakCard() {
           </p>
           <div className="mt-1 flex items-end gap-2">
             <span className="font-display text-6xl font-bold leading-none tabular-nums text-gold-gradient">
-              {hydrated ? streak : 0}
+              {streakAnim}
             </span>
             <span className="mb-1 text-sm font-semibold text-ht-muted">
               {streak === 1 ? "día" : "días"}
@@ -71,6 +73,12 @@ export function StreakCard() {
           />
         </div>
       </div>
+
+      {/* Escudo de racha */}
+      <p className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-ht-muted">
+        <span aria-hidden="true">🛡️</span>
+        Tu escudo protege 1 día perdido por semana.
+      </p>
 
       {/* Logros */}
       <div className="mt-5">

@@ -4,6 +4,7 @@ import { Flame } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getNivelInfo, getStreak, type NivelInfo } from "@/lib/gamification";
 import { useProgress } from "./useProgress";
+import { useCountUp } from "./useCountUp";
 
 /** Chip de Nivel + barra de XP + racha, para el header de la home. */
 export function LevelBadge() {
@@ -15,6 +16,8 @@ export function LevelBadge() {
     setInfo(getNivelInfo());
     setStreak(getStreak());
   }, [tick]);
+
+  const streakAnim = useCountUp(streak);
 
   if (!hydrated || !info) {
     // Placeholder estable para evitar salto de layout
@@ -29,10 +32,10 @@ export function LevelBadge() {
           {info.nivel}
         </span>
         <div className="flex flex-col">
-          <span className="text-[9px] font-bold uppercase leading-none tracking-wider text-ht-muted">
-            Nivel
+          <span className="whitespace-nowrap text-[10px] font-bold uppercase leading-none tracking-wider text-ht-gold">
+            {info.titulo}
           </span>
-          <div className="mt-0.5 h-1.5 w-16 overflow-hidden rounded-full bg-ht-surface-2">
+          <div className="mt-1 h-1.5 w-16 overflow-hidden rounded-full bg-ht-surface-2">
             <div
               className="h-full rounded-full bg-ht-gold transition-[width] duration-500"
               style={{ width: `${info.pct}%` }}
@@ -45,7 +48,7 @@ export function LevelBadge() {
       <div className="flex items-center gap-1 rounded-full bg-ht-surface px-3 py-1.5 ring-1 ring-ht-red/30">
         <Flame className={"size-5 text-ht-red " + (streak > 0 ? "anim-flame" : "")} />
         <span className="font-display text-base font-bold tabular-nums text-ht-text">
-          {streak}
+          {streakAnim}
         </span>
       </div>
     </div>

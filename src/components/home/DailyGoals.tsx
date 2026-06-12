@@ -11,6 +11,7 @@ import {
   type ProgresoHoy,
 } from "@/lib/gamification";
 import { ModuleIcon } from "@/components/icons";
+import { confettiBurst, floatToast } from "@/components/celebrate";
 import { ProgressRing } from "./ProgressRing";
 
 export function DailyGoals() {
@@ -31,10 +32,21 @@ export function DailyGoals() {
   }, []);
 
   function onToggle(id: string) {
+    const wasCompleted = progreso.completed;
     const next = toggleMeta(id);
+    const nextProgreso = getTodayProgress(next);
     setMetas(next);
-    setProgreso(getTodayProgress(next));
+    setProgreso(nextProgreso);
     emitProgress();
+
+    // Dopamina: celebra el día completo; si no, muestra el XP ganado.
+    if (!wasCompleted && nextProgreso.completed) {
+      confettiBurst();
+      floatToast("🔥 ¡Día completado! +25 XP", { grande: true });
+    } else if (next[id]) {
+      const meta = METAS_DIARIAS.find((m) => m.id === id);
+      floatToast(`+${meta?.xp ?? 10} XP`);
+    }
   }
 
   const ringColor = progreso.completed ? "var(--ht-green)" : "var(--ht-gold)";

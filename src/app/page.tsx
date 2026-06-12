@@ -32,7 +32,7 @@ export default function Home() {
         <AvisoBanner />
 
         <div className="anim-rise">
-          <StreakCard />
+          <DailyGoals />
         </div>
 
         <div className="anim-rise">
@@ -40,7 +40,7 @@ export default function Home() {
         </div>
 
         <div className="anim-rise">
-          <DailyGoals />
+          <StreakCard />
         </div>
 
         <ContinueCard />

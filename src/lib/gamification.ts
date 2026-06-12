@@ -50,6 +50,13 @@ function addDaysKey(base: Date, delta: number): string {
   return todayKey(d);
 }
 
+/** Clave de semana (bloques de 7 días) para el "escudo de racha". */
+function weekKey(dateKey: string): string {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  const days = Math.floor(Date.UTC(y, m - 1, d) / 86_400_000);
+  return String(Math.floor(days / 7));
+}
+
 /* ---------- Lectura / escritura ---------- */
 
 function readHistory(): History {
@@ -131,16 +138,24 @@ export function toggleMeta(id: string): Record<string, boolean> {
 export function getStreak(): number {
   const h = readHistory();
   const base = new Date();
+  const weeksUsed = new Set<string>();
   let streak = 0;
 
-  // Hoy cuenta solo si ya está completo.
-  if (h[todayKey(base)]?.completed) streak += 1;
-
-  // Retrocede día a día mientras estén completos.
-  for (let i = 1; i < 400; i++) {
+  for (let i = 0; i < 400; i++) {
     const key = addDaysKey(base, -i);
-    if (h[key]?.completed) streak += 1;
-    else break;
+    if (h[key]?.completed) {
+      streak += 1;
+      continue;
+    }
+    // Hoy todavía sin cumplir: no rompe la racha (aún hay tiempo).
+    if (i === 0) continue;
+    // Escudo: 1 día perdido por semana no rompe la racha.
+    const wk = weekKey(key);
+    if (!weeksUsed.has(wk)) {
+      weeksUsed.add(wk);
+      continue;
+    }
+    break;
   }
   return streak;
 }
@@ -185,10 +200,29 @@ export function getWeekStatus(): DiaSemana[] {
 export type NivelInfo = {
   xp: number;
   nivel: number;
+  titulo: string;
   xpEnNivel: number;
   xpParaSubir: number;
   pct: number;
 };
+
+/** Nombres de nivel (energía masculina ascendente). */
+const NIVEL_TITULOS = [
+  "Iniciado",
+  "Constante",
+  "En forma",
+  "Fuerte",
+  "Fuego",
+  "Imparable",
+  "Guerrero",
+  "Élite",
+  "Maestro",
+  "Leyenda",
+];
+
+export function getNivelTitulo(nivel: number): string {
+  return NIVEL_TITULOS[Math.min(nivel - 1, NIVEL_TITULOS.length - 1)] ?? "Iniciado";
+}
 
 export function getXp(): number {
   const h = readHistory();
@@ -209,6 +243,7 @@ export function getNivelInfo(): NivelInfo {
   return {
     xp,
     nivel,
+    titulo: getNivelTitulo(nivel),
     xpEnNivel,
     xpParaSubir: XP_POR_NIVEL,
     pct: Math.round((xpEnNivel / XP_POR_NIVEL) * 100),
