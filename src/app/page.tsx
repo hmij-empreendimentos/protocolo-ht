@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col">
-      <header className="flex items-center justify-between gap-2 px-5 pt-6 pb-2">
+      <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-border/60 bg-ht-bg/80 px-5 pb-3 pt-6 backdrop-blur-md">
         <LogoMark />
         <LevelBadge />
       </header>

@@ -42,7 +42,9 @@ export function PageHeader({
       >
         <ChevronLeft className="size-6" />
       </Link>
-      <h1 className="truncate text-lg font-extrabold text-ht-text">{titulo}</h1>
+      <h1 className="truncate font-display text-xl font-bold uppercase tracking-wide text-ht-text">
+        {titulo}
+      </h1>
     </header>
   );
 }

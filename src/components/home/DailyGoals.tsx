@@ -40,10 +40,15 @@ export function DailyGoals() {
   const ringColor = progreso.completed ? "var(--ht-green)" : "var(--ht-gold)";
 
   return (
-    <section className="card-premium rounded-3xl p-5">
+    <section
+      className={
+        "card-premium rounded-3xl p-5 transition " +
+        (progreso.completed ? "glow-green" : "")
+      }
+    >
       <div className="flex items-center gap-4">
-        <ProgressRing pct={hydrated ? progreso.pct : 0} color={ringColor} size={76}>
-          <span className="text-lg font-black leading-none text-ht-text">
+        <ProgressRing pct={hydrated ? progreso.pct : 0} color={ringColor} size={78}>
+          <span className="font-display text-2xl font-bold leading-none tabular-nums text-ht-text">
             {hydrated ? progreso.done : 0}
             <span className="text-ht-muted">/{progreso.total}</span>
           </span>
@@ -52,11 +57,15 @@ export function DailyGoals() {
 
         <div className="min-w-0 flex-1">
           <h2 className="text-lg font-extrabold text-ht-text">Metas de hoy</h2>
-          <p className="text-sm text-ht-muted">
-            {progreso.completed
-              ? "¡Día completado! 🔥 Sigue así."
-              : "Cumple tus metas y mantén tu racha viva."}
-          </p>
+          {progreso.completed ? (
+            <p className="anim-pop text-sm font-bold text-ht-green">
+              ✅ ¡Día completado! Sigue así 🔥
+            </p>
+          ) : (
+            <p className="text-sm text-ht-muted">
+              Cumple tus metas y mantén tu racha viva.
+            </p>
+          )}
         </div>
       </div>
 

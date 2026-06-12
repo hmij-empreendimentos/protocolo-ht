@@ -41,11 +41,16 @@ export function BottomNav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={
-                  "flex min-h-16 flex-col items-center justify-center gap-1 px-3 py-2 text-xs font-semibold transition-colors " +
+                  "relative flex min-h-16 flex-col items-center justify-center gap-1 px-3 py-2 text-xs font-semibold transition-colors " +
                   (active ? "text-ht-gold" : "text-ht-muted hover:text-ht-text")
                 }
               >
-                {item.icon}
+                {active && (
+                  <span className="absolute top-0 h-0.5 w-9 rounded-full bg-ht-gold shadow-[0_0_10px_rgba(212,175,55,0.7)]" />
+                )}
+                <span className={active ? "scale-110 transition-transform" : "transition-transform"}>
+                  {item.icon}
+                </span>
                 <span>{item.label}</span>
               </Link>
             </li>

@@ -36,7 +36,7 @@ export function StreakCard() {
             Tu racha
           </p>
           <div className="mt-1 flex items-end gap-2">
-            <span className="text-5xl font-black leading-none text-ht-text">
+            <span className="font-display text-6xl font-bold leading-none tabular-nums text-gold-gradient">
               {hydrated ? streak : 0}
             </span>
             <span className="mb-1 text-sm font-semibold text-ht-muted">

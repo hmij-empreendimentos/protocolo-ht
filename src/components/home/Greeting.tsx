@@ -81,7 +81,7 @@ export function Greeting() {
           }}
           className="group mt-0.5 flex items-center gap-2 text-left"
         >
-          <h1 className="text-2xl font-extrabold leading-tight text-ht-text">
+          <h1 className="font-display text-3xl font-bold uppercase leading-none tracking-wide text-ht-text">
             {name ? (
               <>
                 Hola, <span className="text-gold-gradient">{name}</span>

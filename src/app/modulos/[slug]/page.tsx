@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
@@ -60,8 +61,18 @@ export default async function ModuloPage({
                     href={`/modulos/${m.slug}/${sub.slug}`}
                     className="flex items-center gap-3 rounded-2xl bg-card p-3 ring-1 ring-border transition active:scale-[0.99]"
                   >
-                    <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-ht-surface-2 text-ht-gold">
-                      <ModuleIcon name={sub.icono ?? "play"} className="size-6" />
+                    <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-ht-surface-2 text-ht-gold ring-1 ring-border">
+                      {sub.imagen ? (
+                        <Image
+                          src={sub.imagen}
+                          alt={sub.titulo}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <ModuleIcon name={sub.icono ?? "play"} className="size-6" />
+                      )}
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[10px] font-semibold uppercase tracking-wide text-ht-muted">

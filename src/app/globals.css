@@ -19,6 +19,7 @@
   --color-ring: var(--ring);
 
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
 
   /* Paleta de marca Protocolo HT */
   --color-ht-bg: var(--ht-bg);
@@ -97,9 +98,11 @@
     /* safe-area (notch / home indicator de iOS) */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
-    /* textura sutil: brillo dorado muy tenue arriba */
+    /* profundidad: brillos dorados/rojizos muy tenues + viñeta */
     background-image:
-      radial-gradient(120% 60% at 50% -10%, rgba(212, 175, 55, 0.08), transparent 60%);
+      radial-gradient(130% 55% at 50% -12%, rgba(212, 175, 55, 0.1), transparent 62%),
+      radial-gradient(80% 50% at 100% 0%, rgba(192, 57, 43, 0.06), transparent 60%),
+      radial-gradient(100% 60% at 0% 100%, rgba(212, 175, 55, 0.04), transparent 55%);
     background-attachment: fixed;
   }
 
