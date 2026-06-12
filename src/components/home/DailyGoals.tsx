@@ -97,15 +97,22 @@ export function DailyGoals() {
                     <ModuleIcon name={meta.icono} className="size-5" />
                   )}
                 </span>
-                <span
-                  className={
-                    "flex-1 text-sm font-semibold " +
-                    (marcada ? "text-ht-text line-through decoration-ht-green/60" : "text-ht-text")
-                  }
-                >
-                  {meta.label}
+                <span className="min-w-0 flex-1">
+                  <span
+                    className={
+                      "block text-sm font-bold " +
+                      (marcada
+                        ? "text-ht-text line-through decoration-ht-green/60"
+                        : "text-ht-text")
+                    }
+                  >
+                    {meta.label}
+                  </span>
+                  <span className="block text-[11px] leading-snug text-ht-muted">
+                    {meta.beneficio}
+                  </span>
                 </span>
-                <span className="text-[11px] font-bold text-ht-muted">
+                <span className="shrink-0 self-start rounded-full bg-ht-gold/10 px-2 py-0.5 text-[10px] font-extrabold text-ht-gold">
                   +{meta.xp} XP
                 </span>
               </button>

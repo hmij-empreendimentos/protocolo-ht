@@ -50,10 +50,7 @@ function NoticiaCard({ noticia }: { noticia: Noticia }) {
     </div>
   );
 
-  if (noticia.url) {
-    return <Link href={noticia.url}>{inner}</Link>;
-  }
-  return inner;
+  return <Link href={`/noticias/${noticia.id}`}>{inner}</Link>;
 }
 
 export function NewsFeed() {

@@ -6,6 +6,7 @@ import { Greeting } from "@/components/home/Greeting";
 import { ContinueCard } from "@/components/home/ContinueCard";
 import { LevelBadge } from "@/components/home/LevelBadge";
 import { StreakCard } from "@/components/home/StreakCard";
+import { LeccionDelDia } from "@/components/home/LeccionDelDia";
 import { DailyGoals } from "@/components/home/DailyGoals";
 import { AvisoBanner } from "@/components/home/AvisoBanner";
 import { NewsFeed } from "@/components/home/NewsFeed";
@@ -32,6 +33,10 @@ export default function Home() {
 
         <div className="anim-rise">
           <StreakCard />
+        </div>
+
+        <div className="anim-rise">
+          <LeccionDelDia />
         </div>
 
         <div className="anim-rise">

@@ -10,54 +10,54 @@ export type Tip = {
 
 export const TIPS: Tip[] = [
   {
-    titulo: "Empieza por lo simple",
+    titulo: "Imagina tu versión de 30 días",
     texto:
-      "No intentes cambiar todo de golpe. Elige una sola meta hoy y cúmplela. La constancia gana.",
+      "Con más energía, más firme y más seguro. Cada meta que cumples hoy es un paso real hacia ese hombre. Empieza ahora.",
   },
   {
-    titulo: "Hidratación primero",
+    titulo: "El vaso de agua que lo cambia todo",
     texto:
-      "Bebe un vaso de agua al despertar. Es el gesto más simple que activa tu cuerpo para el día.",
+      "Bebe agua al despertar y siente la diferencia: mente más clara y cuerpo activado en minutos. Tan simple, tan poderoso.",
   },
   {
-    titulo: "El sueño es rendimiento",
+    titulo: "Duerme bien y despierta a otro nivel",
     texto:
-      "Dormir bien no es perder tiempo: es cuando tu cuerpo se recupera y tu mente se afila.",
+      "Mientras duermes, tu cuerpo recupera energía y testosterona. 7 horas hoy = más fuerza y mejor ánimo mañana.",
   },
   {
-    titulo: "Muévete 10 minutos",
+    titulo: "10 minutos que tu cuerpo agradece",
     texto:
-      "Si no tienes tiempo para entrenar, camina 10 minutos. Hecho es mejor que perfecto.",
+      "No necesitas horas. Mueve tu cuerpo 10 minutos y activa tu energía, tu fuerza y tu confianza para todo el día.",
   },
   {
-    titulo: "Mira tu lección",
+    titulo: "Una lección al día, una vida nueva",
     texto:
-      "Avanzar un módulo al día parece poco, pero en un mes habrás transformado tu rutina.",
+      "Parece poco, pero en un mes habrás transformado tu rutina y tus resultados. La constancia es tu superpoder.",
   },
   {
-    titulo: "La postura habla",
+    titulo: "Tu postura cambia cómo te ven",
     texto:
-      "Endereza la espalda y los hombros atrás. Tu cuerpo le dice a tu mente cómo sentirse.",
+      "Espalda recta, hombros atrás, mirada al frente. En segundos proyectas más presencia y te sientes más seguro.",
   },
   {
-    titulo: "Menos azúcar, más energía",
+    titulo: "Menos azúcar, más hombre",
     texto:
-      "Reduce el azúcar de hoy. Tu energía será más estable y tu cabeza más clara.",
+      "Baja el azúcar hoy y nota energía estable, cabeza clara y menos cansancio. Tu cuerpo te lo devuelve rápido.",
   },
   {
-    titulo: "Respira antes de reaccionar",
+    titulo: "El hombre tranquilo manda",
     texto:
-      "3 respiraciones profundas antes de responder. El hombre tranquilo controla la situación.",
+      "3 respiraciones profundas antes de reaccionar. Quien controla su calma, controla la situación. Practícalo hoy.",
   },
   {
-    titulo: "Tu palabra es tu poder",
+    titulo: "Cumple tu palabra contigo mismo",
     texto:
-      "Cumple lo que te prometes a ti mismo. Cada promesa cumplida construye tu confianza.",
+      "Cada promesa que te cumples construye tu confianza. Hoy: una meta, cúmplela, y siente cómo crece tu poder.",
   },
   {
-    titulo: "Sol de la mañana",
+    titulo: "Sol de la mañana, energía todo el día",
     texto:
-      "10 minutos de luz natural temprano regulan tu energía y tu descanso de la noche.",
+      "10 minutos de luz natural temprano ordenan tu energía y tu descanso. Un detalle pequeño, un cambio enorme.",
   },
 ];
 

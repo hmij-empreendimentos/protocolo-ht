@@ -46,3 +46,13 @@ export const NOTICIAS: Noticia[] = [
     url: "/modulos/protocolo-ht",
   },
 ];
+
+/** Busca una noticia por id (para la página de artículo). */
+export function getNoticia(id: string): Noticia | undefined {
+  return NOTICIAS.find((n) => n.id === id);
+}
+
+/** Ruta HTML del contenido de la noticia. */
+export function noticiaHtml(id: string): string {
+  return `/contenido/noticias/${id}.html`;
+}
