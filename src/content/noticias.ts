@@ -22,6 +22,7 @@ export const NOTICIAS: Noticia[] = [
     resumen:
       "3 hábitos simples al despertar para activar tu energía y tu enfoque durante todo el día.",
     etiqueta: "Consejo",
+    imagen: "/noticias/1.png",
     url: "/modulos/codigo-del-hombre",
   },
   {
@@ -31,6 +32,7 @@ export const NOTICIAS: Noticia[] = [
     resumen:
       "La guía rápida para ver resultados antes, manteniendo las bases del protocolo.",
     etiqueta: "Nuevo",
+    imagen: "/noticias/2.png",
     url: "/modulos/modo-acelerado",
   },
   {
@@ -40,6 +42,7 @@ export const NOTICIAS: Noticia[] = [
     resumen:
       "Por qué el descanso es el factor más subestimado para tu transformación.",
     etiqueta: "Salud",
+    imagen: "/noticias/3.png",
     url: "/modulos/protocolo-ht",
   },
 ];

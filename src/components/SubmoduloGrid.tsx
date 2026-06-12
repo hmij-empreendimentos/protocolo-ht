@@ -25,7 +25,7 @@ export function SubmoduloGrid({ slug, submodulos }: Props) {
   }, [slug]);
 
   return (
-    <ul className="grid grid-cols-2 gap-x-3 gap-y-5">
+    <ul className="grid grid-cols-2 gap-3">
       {submodulos.map((sub, i) => {
         const visto = hydrated && visitados.includes(sub.slug);
         return (
@@ -37,7 +37,7 @@ export function SubmoduloGrid({ slug, submodulos }: Props) {
             >
               <div
                 className={
-                  "relative aspect-square overflow-hidden rounded-2xl bg-ht-surface ring-1 transition active:scale-[0.97] " +
+                  "relative aspect-[256/454] overflow-hidden rounded-2xl bg-ht-surface ring-1 transition active:scale-[0.97] " +
                   (visto
                     ? "ring-ht-gold/60 shadow-[0_10px_28px_-14px_rgba(212,175,55,0.5)]"
                     : "ring-border shadow-[0_8px_22px_-14px_rgba(0,0,0,0.7)]")
@@ -76,14 +76,6 @@ export function SubmoduloGrid({ slug, submodulos }: Props) {
                   </span>
                 )}
               </div>
-
-              <p className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-ht-muted">
-                Parte {i + 1}
-                {visto && <span className="ml-1 text-ht-gold">· Visto</span>}
-              </p>
-              <h3 className="line-clamp-2 text-sm font-bold leading-tight text-ht-text">
-                {sub.titulo}
-              </h3>
             </Link>
           </li>
         );

@@ -15,7 +15,7 @@ function formatFecha(iso: string): string {
 function NoticiaCard({ noticia }: { noticia: Noticia }) {
   const inner = (
     <div className="flex w-64 shrink-0 flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-border transition active:scale-[0.98]">
-      <div className="relative h-32 w-full overflow-hidden bg-gradient-to-br from-ht-surface-2 to-ht-bg">
+      <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-ht-surface-2 to-ht-bg">
         {noticia.imagen ? (
           <Image
             src={noticia.imagen}
