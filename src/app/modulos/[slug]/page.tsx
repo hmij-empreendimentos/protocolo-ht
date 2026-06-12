@@ -1,10 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight } from "lucide-react";
 import { PageHeader } from "@/components/Brand";
 import { ContentBody } from "@/components/ContentBody";
-import { ModuleIcon } from "@/components/icons";
+import { SubmoduloGrid } from "@/components/SubmoduloGrid";
 import {
   getModulosContenido,
   getModulo,
@@ -54,39 +51,7 @@ export default async function ModuloPage({
                 {m.descripcion}
               </p>
             )}
-            <ul className="flex flex-col gap-3">
-              {m.submodulos!.map((sub, i) => (
-                <li key={sub.slug}>
-                  <Link
-                    href={`/modulos/${m.slug}/${sub.slug}`}
-                    className="flex items-center gap-3 rounded-2xl bg-card p-3 ring-1 ring-border transition active:scale-[0.99]"
-                  >
-                    <span className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-ht-surface-2 text-ht-gold ring-1 ring-border">
-                      {sub.imagen ? (
-                        <Image
-                          src={sub.imagen}
-                          alt={sub.titulo}
-                          fill
-                          sizes="64px"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <ModuleIcon name={sub.icono ?? "play"} className="size-6" />
-                      )}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[10px] font-semibold uppercase tracking-wide text-ht-muted">
-                        Parte {i + 1}
-                      </p>
-                      <h3 className="truncate text-sm font-bold text-ht-text sm:text-base">
-                        {sub.titulo}
-                      </h3>
-                    </div>
-                    <ChevronRight className="size-5 shrink-0 text-ht-gold" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <SubmoduloGrid slug={m.slug} submodulos={m.submodulos!} />
           </>
         ) : (
           <ContentBody video={m.video} descripcion={m.descripcion} pdfs={m.pdfs} />
