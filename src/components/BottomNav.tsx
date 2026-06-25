@@ -7,7 +7,7 @@ import { WhatsappIcon } from "./icons";
 import { InstallButton } from "./InstallButton";
 
 const WHATSAPP_URL =
-  "https://wa.me/5537991211613?text=Hola%2C%20tengo%20una%20duda%20sobre%20el%20Protocolo%20HT.";
+  "https://wa.me/5537991209892?text=Hola%2C%20tengo%20dudas%20sobre%20el%20Honey%20Trick%20Protocol.";
 
 type NavItem = {
   href: string;

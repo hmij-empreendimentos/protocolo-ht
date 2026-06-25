@@ -10,7 +10,7 @@ export const metadata = {
 const CHAT_EMBED_URL: string | null = "https://soporte-ht.netlify.app/";
 
 const WHATSAPP_URL =
-  "https://wa.me/5537991211613?text=Hola%2C%20quiero%20hablar%20con%20el%20especialista%20del%20Protocolo%20HT.";
+  "https://wa.me/5537991209892?text=Hola%2C%20quiero%20hablar%20con%20el%20especialista%20del%20Honey%20Trick%20Protocol.";
 
 export default function EspecialistaPage() {
   return (

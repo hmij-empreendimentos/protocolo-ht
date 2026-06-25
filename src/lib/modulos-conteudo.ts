@@ -134,7 +134,7 @@ function subs(slug: string, titulos: string[]): Submodulo[] {
 
 // Número de WhatsApp del soporte (Honey Trick Protocol).
 const WHATSAPP =
-  "https://wa.me/5537991211613?text=Hola%2C%20tengo%20dudas%20sobre%20el%20Protocolo%20HT.";
+  "https://wa.me/5537991209892?text=Hola%2C%20tengo%20dudas%20sobre%20el%20Honey%20Trick%20Protocol.";
 
 export const MODULOS: Modulo[] = [
   {
